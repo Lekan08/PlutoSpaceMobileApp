@@ -1,0 +1,18 @@
+{
+    "build": {
+      "tara": {
+        "android": {
+          "buildType": "apk"
+        }
+      },
+      "tara2": {
+        "android": {
+          "gradleCommand": ":app:assembleRelease"
+        }
+      },
+      "tara3": {
+        "developmentClient": true
+      },
+      "production": {}
+    }
+  }
