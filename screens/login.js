@@ -23,6 +23,8 @@ import { REACT_APP_TARA_URL, FLUTTER_AUTH_KEY } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Loader, InnerLoader } from "../components/loader";
 import { Toast } from "../components/alert";
+import { printToFileAsync } from "expo-print";
+import { shareAsync } from "expo-sharing";
 
 export default function Login({ navigation }) {
   const [usernamex, setUsername] = useState("");
@@ -31,6 +33,28 @@ export default function Login({ navigation }) {
   const [toastObject, setToastObject] = useState({});
 
   const [passwordShown, setPasswordShown] = useState(true);
+
+  let [name, setName] = useState("anthony");
+
+  const html = `
+    <html>
+      <body>
+        <h1>Hi ${name}</h1>
+        <p style="color: green;">55 packages are looking for fundingrun for detail2 vulnerabilities (1 high, 1 criticalTo address issues that do not require attention, run:npm audit fiTo address all issues, run:npm audit fix --forcRun  for details.</p>
+        <p style="color: red;">Hello. Bonjour. Hola.</p>
+        <p style="color: coral;">Hello. Bonjour. Hola.</p>
+      </body>
+    </html>
+  `;
+
+  let generatePdf = async () => {
+    const file = await printToFileAsync({
+      html: html,
+      base64: false,
+    });
+
+    await shareAsync(file.uri);
+  };
 
   const handlePress = () => {
     setLoading(true);
@@ -90,6 +114,7 @@ export default function Login({ navigation }) {
   };
 
   const clickHandler = () => {
+    navigation.navigate("Home", { replace: true });
     if (
       usernamex.length === 0 ||
       usernamex === "" ||
@@ -195,6 +220,7 @@ export default function Login({ navigation }) {
                 />
               </Pressable>
             </View>
+            <Button title="print" onPress={generatePdf} />
             {/* <PayWithFlutterwave
             onRedirect={handleOnRedirect}
             options={{

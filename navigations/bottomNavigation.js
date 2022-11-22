@@ -7,6 +7,7 @@ import Dashboard from "../screens/dashboard";
 import Products from "../screens/products";
 import Profile from "../screens/profile";
 import History from "../screens/transactionHistory";
+import Sales from "../screens/sales";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,6 +28,19 @@ function BottomTabs() {
       }}
     >
       <Tab.Screen
+        name="Sales"
+        component={Sales}
+        options={{
+          // title: "Sales",
+          headerTitle: () => <Header title="Sales" navigation={navigation} />,
+          tabBarLabel: "Sales",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="sale" color={color} size={size} />
+          ),
+          //   tabBarBadge: 3,
+        }}
+      />
+      <Tab.Screen
         name="Dashboard"
         component={Dashboard}
         options={{
@@ -36,25 +50,6 @@ function BottomTabs() {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
-        }}
-      />
-      <Tab.Screen
-        name="Products"
-        component={Products}
-        options={{
-          // title: "Products",
-          headerTitle: () => (
-            <Header title="Products" navigation={navigation} />
-          ),
-          tabBarLabel: "Products",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="view-grid-outline"
-              color={color}
-              size={size}
-            />
-          ),
-          //   tabBarBadge: 3,
         }}
       />
       <Tab.Screen
