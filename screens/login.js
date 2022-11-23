@@ -19,7 +19,7 @@ import {
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { PayWithFlutterwave } from "flutterwave-react-native";
 // or import PayWithFlutterwave from 'flutterwave-react-native';
-import { REACT_APP_TARA_URL, FLUTTER_AUTH_KEY } from "@env";
+import { REACT_APP_ZAVE_URL, FLUTTER_AUTH_KEY } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Loader, InnerLoader } from "../components/loader";
 import { Toast } from "../components/alert";
@@ -49,7 +49,13 @@ export default function Login({ navigation }) {
       redirect: "follow",
     };
 
-    fetch(`${REACT_APP_TARA_URL}/users/doLogin`, requestOptions)
+    fetch(`${proREACT_APP_ZAVE_URL}/users/doLogin`, requestOptions)
+      .then(async (res) => {
+        // console.log(res.headers);;;;
+        const aToken = res.headers.get("token-1");
+        localStorage.setItem("rexxdex1", aToken);
+        return res.json();
+      })
       .then((res) => res.json())
       .then((result) => {
         setLoading(false);
@@ -243,7 +249,7 @@ export default function Login({ navigation }) {
               </View>
             </TouchableOpacity>
           </View>
-          <View style={{ alignItems: "center" }}>
+          {/* <View style={{ alignItems: "center" }}>
             <View
               style={{
                 paddingTop: 15,
@@ -262,7 +268,7 @@ export default function Login({ navigation }) {
                 <Text style={styles.link}>Forgot Password?</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </View> */}
         </ScrollView>
         {/* <Loader animating={true} /> */}
         {/* <Toast /> */}
@@ -281,7 +287,7 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0F0F0F",
+    backgroundColor: "#282A3A",
     alignItems: "center",
     paddingTop: 60,
     justifyContent: "center",
