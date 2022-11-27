@@ -19,6 +19,9 @@ import ChangePassword from "../screens/changePassword";
 import Cart from "../screens/cart";
 import ProductDetails from "../screens/productDetails";
 import Initial from "../screens/initial";
+import Individual from "../screens/individual";
+import seeAllindividuals from "../screens/seeAllindividuals";
+import Myindi from "../screens/Myindi";
 
 const Stack = createStackNavigator();
 
@@ -35,13 +38,34 @@ function NavigationStack() {
         <Stack.Screen
           name="initial"
           component={Initial}
-          options={{ title: "Dashboard2" }}
+          options={{ title: "Initial" }}
         />
+        <Stack.Screen
+          name="Individual"
+          component={Individual}
+          options={{ title: "Individual" }}
+        />
+        <Stack.Screen
+          name="seeAllindividuals"
+          component={seeAllindividuals}
+          options={{ title: "seeAllindividuals" }}
+        />
+        {/* <Stack.Screen
+          name="Myindi"
+          component={Myindi}
+          options={{ title: "Myindi" }}
+        /> */}
         <Stack.Screen
           name="Appintro"
           component={Appintro}
           options={{ title: "Appintro" }}
         />
+
+        {/* <Stack.Screen
+          name="Dashboard2"
+          component={Dashboard2}
+          options={{ title: "Dashboard2" }}
+        /> */}
         {/*       
       <Stack.Screen
           name="Profile"

@@ -19,7 +19,7 @@ import {
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { PayWithFlutterwave } from "flutterwave-react-native";
 // or import PayWithFlutterwave from 'flutterwave-react-native';
-import { REACT_APP_TARA_URL, FLUTTER_AUTH_KEY } from "@env";
+import { REACT_APP_ZAVE_URL, FLUTTER_AUTH_KEY } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Loader, InnerLoader } from "../components/loader";
 import { ToastAlert } from "../components/alert";
@@ -311,7 +311,7 @@ export default function Login({ navigation }) {
               </View>
             </TouchableOpacity>
           </View>
-          <View style={{ alignItems: "center" }}>
+          {/* <View style={{ alignItems: "center" }}>
             <View
               style={{
                 paddingTop: 15,
@@ -330,7 +330,7 @@ export default function Login({ navigation }) {
                 <Text style={styles.link}>Forgot Password?</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </View> */}
         </ScrollView>
         {/* <Loader animating={true} /> */}
         {/* <ToastAlert /> */}
@@ -349,7 +349,7 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0F0F0F",
+    backgroundColor: "#282A3A",
     alignItems: "center",
     paddingTop: 60,
     justifyContent: "center",

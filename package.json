@@ -28,6 +28,7 @@
     "react-native": "0.69.6",
     "react-native-animated-loader": "^1.0.0",
     "react-native-app-intro-slider": "^4.0.4",
+    "react-native-calendar-picker": "^7.1.2",
     "react-native-dotenv": "^3.4.2",
     "react-native-dropdown-select-list": "^1.0.23",
     "react-native-gesture-handler": "~2.5.0",
