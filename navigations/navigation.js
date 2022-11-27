@@ -18,6 +18,9 @@ import Dashboard2 from "../screens/dashboard2";
 import ChangePassword from "../screens/changePassword";
 import Cart from "../screens/cart";
 import ProductDetails from "../screens/productDetails";
+import Individual from "../screens/individual";
+import seeAllindividuals from "../screens/seeAllindividuals";
+import Myindi from "../screens/Myindi";
 
 const Stack = createStackNavigator();
 
@@ -25,22 +28,38 @@ function NavigationStack() {
   return (
     <NavigationContainer theme={{ colors: { background: "#0f0f0f" } }}>
       <Stack.Navigator
-        initialRouteName="Appintro"
+        initialRouteName="Individual"
         screenOptions={{
           headerTintColor: "white",
           headerStyle: { height: 0 },
         }}
       >
+        <Stack.Screen
+          name="Individual"
+          component={Individual}
+          options={{ title: "Individual" }}
+        />
+        <Stack.Screen
+          name="seeAllindividuals"
+          component={seeAllindividuals}
+          options={{ title: "seeAllindividuals" }}
+        />
         {/* <Stack.Screen
-          name="Dashboard2"
-          component={Dashboard2}
-          options={{ title: "Dashboard2" }}
+          name="Myindi"
+          component={Myindi}
+          options={{ title: "Myindi" }}
         /> */}
         <Stack.Screen
           name="Appintro"
           component={Appintro}
           options={{ title: "Appintro" }}
         />
+
+        {/* <Stack.Screen
+          name="Dashboard2"
+          component={Dashboard2}
+          options={{ title: "Dashboard2" }}
+        /> */}
         {/*       
       <Stack.Screen
           name="Profile"

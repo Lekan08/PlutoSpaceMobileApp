@@ -6,7 +6,6 @@ import {
   Image,
   Button,
   TextInput,
-  ScrollView,
   FlatList,
   TouchableOpacity,
   Form,
@@ -15,39 +14,27 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-// import SweetAlert from 'react-native-sweet-alert';
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import CalenderPicker from "react-native-calendar-picker";
+import { globalStyles } from "../styles/global";
 import { SelectList } from "react-native-dropdown-select-list";
-
-// import DatePicker from "react-native-datepicker";
 import { Picker } from "@react-native-picker/picker";
-// import SelectList from "../components/dropdown";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ScrollView } from "react-native-gesture-handler";
 import AllCountriesAndStates from "../countries-states-master/countries";
-import {
-  REACT_APP_ZAVE_URL,
-  REACT_APP_LOUGA_URL,
-  FLUTTER_AUTH_KEY,
-} from "@env";
-import GHeaders from "../getHeaders";
-import PHeaders from "../pHeaders";
-
-// KPURKISH👌👌👌👌
 import { Loader, InnerLoader } from "../components/loader";
 
-export default function Individual({ navigation }) {
+export default function seeAllindividuals({ navigation }) {
   const [firstnamex, setFirstname] = useState("");
   const [lastnamex, setLastname] = useState("");
   const [othernamex, setOthername] = useState("");
   const [titlex, setTitle] = useState("");
-  const [occupationx, setOccupation] = useState("");
-  const [portfoliox, setPortfolio] = useState("");
-  const [marraigestatusx, setMarraigestatus] = useState("");
-  const [facebookx, setFacebook] = useState("");
-  const [instagramx, setInstagram] = useState("");
-  const [twitterx, setTwitter] = useState("");
-  const [linkedInx, setLinkedIn] = useState("");
-  const [websitex, setWebsite] = useState("");
+  //   const [occupationx, setOccupation] = useState("");
+  //   const [portfoliox, setPortfolio] = useState("");
+  //   const [marraigestatusx, setMarraigestatus] = useState("");
+  //   const [facebookx, setFacebook] = useState("");
+  //   const [instagramx, setInstagram] = useState("");
+  //   const [twitterx, setTwitter] = useState("");
+  //   const [linkedInx, setLinkedIn] = useState("");
+  //   const [websitex, setWebsite] = useState("");
   const [phonenumberx, setPhonenumber] = useState("");
   const [emailx, setEmail] = useState("");
   const [cityx, setCity] = useState("");
@@ -55,10 +42,8 @@ export default function Individual({ navigation }) {
   const [duty, setDutyRelieverx] = useState("");
   const [user, setUser] = useState([]);
   const [selected, setSelected] = React.useState("");
-
-  const [loading, setLoading] = useState(false);
-
   const { countriesAndStates: AlCountry } = AllCountriesAndStates();
+  const [loading, setLoading] = useState(false);
 
   const data = AlCountry.map((data) => {
     return { key: data.code3, value: data.name };
@@ -66,8 +51,6 @@ export default function Individual({ navigation }) {
   const [allStates, setAllStates] = useState([]);
   const [residentialStatex, setResidentialState] = useState("");
   const [residentialCountryx, setResidentialCountry] = useState("");
-  const { allPHeaders: myHeaders } = PHeaders();
-  const { allGHeaders: miHeaders } = GHeaders();
 
   const handleOnChangeRCCountry = (valuex) => {
     console.log(valuex);
@@ -87,6 +70,7 @@ export default function Individual({ navigation }) {
     setResidentialState(valuex);
   };
 
+  // KPURKISH👌👌👌👌👌👌
   const handlePress = () => {
     setLoading(true);
     const data11 = JSON.parse(AsyncStorage.getItem("user1"));
@@ -159,45 +143,7 @@ export default function Individual({ navigation }) {
         });
       });
   };
-
-  useEffect(() => {
-    const headers = miHeaders;
-
-    const data11 = JSON.parse(AsyncStorage.getItem("user1"));
-
-    const orgIDs = data11.orgID;
-    let isMounted = true;
-    setOpened(true);
-    fetch(`${process.env.REACT_APP_ZAVE_URL}/user/getAllUserInfo/${orgIDs}`, {
-      headers,
-    })
-      .then(async (res) => {
-        const aToken = res.headers.get("token-1");
-        AsyncStorage.setItem("rexxdex", aToken);
-        return res.json();
-      })
-      .then((result) => {
-        if (result.message === "Expired Access") {
-          navigate("/authentication/sign-in");
-          window.location.reload();
-        }
-        if (result.message === "Token Does Not Exist") {
-          navigate("/authentication/sign-in");
-          window.location.reload();
-        }
-        if (result.message === "Unauthorized Access") {
-          navigate("/authentication/forbiddenPage");
-          window.location.reload();
-        }
-        if (isMounted) {
-          setUser(result);
-          setOpened(false);
-        }
-      });
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  // KPURKISH👌👌👌👌👌👌
   const clickHandler = () => {
     if (
       firstnamex.length === 0 ||
@@ -210,8 +156,6 @@ export default function Individual({ navigation }) {
       titlex === "" ||
       phonenumberx.length === 0 ||
       phonenumberx === "" ||
-      marraigestatusx.length === 0 ||
-      marraigestatusx === "" ||
       emailx.length === 0 ||
       emailx === "" ||
       cityx.length === 0 ||
@@ -224,7 +168,6 @@ export default function Individual({ navigation }) {
       handlePress();
     }
   };
-
   // KPURKISH👌👌👌👌👌👌
   // TitleData
   const titlez = [
@@ -245,18 +188,10 @@ export default function Individual({ navigation }) {
     { value: "Vice", key: 15 },
     { value: "Others", key: 16 },
   ];
-
-  // const maptitlez = titlez.map((item) => {
-  //   return item.name;
-  // });
-  // console.log(titlez);
-  // console.log(maptitlez);
-
   return (
-    // <Sandbox />
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
+      <ScrollView>
+        <View style={globalStyles.container}>
           <View>
             <Image source={require("../images/house_of_tara_logo.png")} />
           </View>
@@ -275,6 +210,7 @@ export default function Individual({ navigation }) {
               Create Individual Client
             </Text>
           </View>
+
           <View style={{ paddingTop: 40 }}>
             <Text style={styles.inputText}>First Name:</Text>
             <TextInput
@@ -334,78 +270,7 @@ export default function Individual({ navigation }) {
                 save="value"
               />
             </View>
-            {/* <Text style={styles.inputText}>Occupation:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Occupation"
-              value={occupationx}
-              onChangeText={(value) => setOccupation(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            /> */}
-            {/* <Text style={styles.inputText}>Portfolio:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Portfolio"
-              value={portfoliox}
-              onChangeText={(value) => setPortfolio(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <Text style={styles.inputText}>Marraige Status:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Optional"
-              value={marraigestatusx}
-              onChangeText={(value) => setMarraigestatus(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            /> */}
-            {/* <Text style={styles.inputText}>Facebook Handle:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Optional"
-              value={facebookx}
-              onChangeText={(value) => setFacebook(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <Text style={styles.inputText}>Instagram Handle:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Optional"
-              value={instagramx}
-              onChangeText={(value) => setInstagram(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <Text style={styles.inputText}>Twitter Handle:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Optional"
-              value={twitterx}
-              onChangeText={(value) => setTwitter(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <Text style={styles.inputText}>linkedIn:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Optional"
-              value={linkedInx}
-              onChangeText={(value) => setLinkedIn(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            /> */}
-            {/* <Text style={styles.inputText}>Website:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Optional"
-              value={websitex}
-              onChangeText={(value) => setWebsite(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            /> */}
+
             <Text style={styles.inputText}>Email:</Text>
             <TextInput
               keyboardType="default"
@@ -524,6 +389,22 @@ export default function Individual({ navigation }) {
               </View>
             </TouchableOpacity>
           </View>
+          <TouchableOpacity
+            style={{ width: 315, paddingTop: 10 }}
+            onPress={() => navigation.navigate("EditProfile")}
+          >
+            <View style={styles.loginButton}>
+              <Text style={styles.loginText}>Edit Profile</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ width: 315, paddingTop: 2 }}
+            onPress={() => navigation.navigate("changePassword")}
+          >
+            <View style={styles.loginButton}>
+              <Text style={styles.loginText}>Change Password</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </TouchableWithoutFeedback>

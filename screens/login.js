@@ -53,7 +53,7 @@ export default function Login({ navigation }) {
       .then(async (res) => {
         // console.log(res.headers);;;;
         const aToken = res.headers.get("token-1");
-        localStorage.setItem("rexxdex1", aToken);
+        AsyncStorage.setItem("rexxdex1", aToken);
         return res.json();
       })
       .then((res) => res.json())
