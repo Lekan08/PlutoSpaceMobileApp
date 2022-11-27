@@ -1,14 +1,15 @@
 {
   "expo": {
-    "name": "Tara Store",
+    "name": "House Of Tara",
     "slug": "tara-store-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/clr.jpg",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "resizeMode": "contain",
-      "backgroundColor": "#0f0f0f"
+      "image": "./assets/splash.png",
+      "backgroundColor": "#0F0F0F"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -24,7 +25,7 @@
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#0F0F0F"
       }
     },
     "web": {

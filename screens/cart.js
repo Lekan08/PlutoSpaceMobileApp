@@ -25,7 +25,7 @@ import { PayWithFlutterwave } from "flutterwave-react-native";
 import { globalStyles } from "../styles/global";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
-import { Toast } from "../components/alert";
+import { ToastAlert } from "../components/alert";
 
 function Cart() {
   const [userDatax, setUserData] = useState({});
@@ -531,7 +531,7 @@ function Cart() {
           }}
         />
       </View>
-      <Toast
+      <ToastAlert
         status={toastObject.status}
         message={toastObject.message}
         open={toastObject.open}

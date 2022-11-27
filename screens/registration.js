@@ -23,7 +23,7 @@ import AllCountriesAndStates from "../countries-states-master/countries";
 import { REACT_APP_TARA_URL } from "@env";
 
 import { Loader, InnerLoader } from "../components/loader";
-import { Toast } from "../components/alert";
+import { ToastAlert } from "../components/alert";
 // import RNPickerSelect from "react-native-picker-select";
 // import Header from "./components/header";
 // import TodoItem from "./components/todoItem";
@@ -466,7 +466,7 @@ export default function Registration({ navigation, route }) {
             </View>
           </View>
         </View>
-        <Toast
+        <ToastAlert
           status={toastObject.status}
           message={toastObject.message}
           open={toastObject.open}

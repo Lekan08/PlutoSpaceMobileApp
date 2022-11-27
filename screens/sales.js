@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,27 +15,41 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Dimensions,
+  Animated,
+  Easing,
+  ActivityIndicator,
   KeyboardAvoidingView,
 } from "react-native";
 
 import Icon from "@expo/vector-icons/MaterialIcons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { PayWithFlutterwave } from "flutterwave-react-native";
 // or import PayWithFlutterwave from 'flutterwave-react-native';
 import { REACT_APP_TARA_URL, FLUTTER_AUTH_KEY } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Loader, InnerLoader } from "../components/loader";
-import { Toast } from "../components/alert";
+import { ToastAlert } from "../components/alert";
 import { printToFileAsync } from "expo-print";
 import { shareAsync } from "expo-sharing";
 import { Picker } from "@react-native-picker/picker";
 import AllCountriesAndStates from "../countries-states-master/countries";
+import { useIsFocused } from "@react-navigation/native";
+import { GHeaders } from "../getHeader";
+import PHeaders from "../postHeader";
 
 const windowWidth = Dimensions.get("screen").width;
 
 export default function Sales({ navigation }) {
-  const [usernamex, setUsername] = useState("");
+  //   const { allPHeaders: myHeaders } = PHeaders();
+  //   const { allGHeaders: miHeaders } = GHeaders();
+  //   const miHeaders = GHeaders();
+
+  const [commentx, setComment] = useState("");
   const [passwordx, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [disabledButton, setDisabledButton] = useState(false);
+  const [loading1, setLoading1] = useState(false);
+  const [input, setInput] = useState(false);
   const [toastObject, setToastObject] = useState({});
 
   const [passwordShown, setPasswordShown] = useState(true);
@@ -44,11 +58,43 @@ export default function Sales({ navigation }) {
 
   const [firstnamex, setFirstname] = useState("");
   const [lastnamex, setLastname] = useState("");
+  const [othernamex, setOthername] = useState("");
   const [titlex, setTitle] = useState("");
   const [emailx, setEmail] = useState("");
   const [cityx, setCity] = useState("");
   const [addressx, setAddress] = useState("");
+  const [clientsx, setClients] = useState([]);
+  const [clientx, setClientx] = useState("");
+  const [userDatax, setUserData] = useState({});
+  const [bonusAmountx, setBonusAmount] = useState(0);
   // const [countryx, setCountryx] = useState("");
+
+  const [idx, setID] = useState("");
+  const [products, setProducts] = useState([]);
+  const [productID, setProductID] = useState("");
+  const [productBranches, setProductBranches] = useState([]);
+  const [productBranchID, setProductBranchID] = useState("");
+  const [saleTypex, setSaleType] = useState("");
+  const [pricePerUnitx, setPricePerUnit] = useState("");
+  const [quantityx, setQuantity] = useState("");
+  const [amountx, setAmount] = useState(0);
+  const [taxAmountx, setTaxAmount] = useState(0);
+  const [totalAmountx, setTotalAmount] = useState("");
+  const [allSaleItem, setAllSaleItem] = useState([]);
+  const [subTotalAmountx, setSubTotalAmount] = useState(0);
+
+  const [transferPaidAmount, setTransferPaidAmount] = useState("");
+  const [cashPaidAmount, setCashPaidAmount] = useState("");
+  const [tfRemain, setTFRemain] = useState("");
+  const [chRemain, setCHRemain] = useState("");
+
+  const saleTypeArray = [
+    { id: "1", name: "Product" },
+    { id: "2", name: "Company Service" },
+    { id: "3", name: "Custom Sales" },
+  ];
+
+  const isFocused = useIsFocused();
 
   const data = AlCountry.map((data) => {
     return { key: data.code3, value: data.name };
@@ -77,9 +123,62 @@ export default function Sales({ navigation }) {
 
   let [name, setName] = useState("anthony");
 
+  const [editablex, setEditable] = React.useState(false);
+  const [disableTrans, setDisableTrans] = React.useState(false);
+  const [disableCash, setDisableCash] = React.useState(false);
+  const [disableTransButton, setDisableTransButton] = React.useState(false);
+  const [disableCashButton, setDisableCashButton] = React.useState(false);
+  const [showTransfer, setShowTransfer] = React.useState(false);
+  const [showCash, setShowCash] = React.useState(false);
   const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const [isSalesModalVisible, setIsSalesModalVisible] = React.useState(false);
+  const [isSalesModal2Visible, setIsSalesModal2Visible] = React.useState(false);
+  const [isPaymentModalVisible, setIsPaymentModalVisible] =
+    React.useState(false);
 
   const handleModal = () => setIsModalVisible(() => !isModalVisible);
+  const handleSalesModal = () =>
+    setIsSalesModalVisible(() => !isSalesModalVisible);
+  const handleSalesModal2 = () =>
+    setIsSalesModal2Visible(() => !isSalesModal2Visible);
+  const handlePaymentModal = () =>
+    setIsPaymentModalVisible(() => !isPaymentModalVisible);
+
+  const handleCloseSalesModal2 = () => {
+    setSaleType("");
+    setProductID("");
+    setProducts([]);
+    setProductBranches([]);
+    setProductBranchID("");
+    setPricePerUnit("");
+    setQuantity("");
+    setAmount("");
+    setTaxAmount("");
+    setTotalAmount("");
+    setIsSalesModal2Visible(!isSalesModal2Visible);
+  };
+
+  const handleTransCashChange = (value, num) => {
+    if (num === 1) {
+      setTransferPaidAmount(value);
+
+      let sta = parseInt(subTotalAmountx, 10);
+      if (isNaN(sta)) {
+        sta = 0;
+      }
+      let val = parseInt(value, 10);
+      if (isNaN(val)) {
+        val = 0;
+      }
+      const subVal = sta - val;
+      setTFRemain(subVal);
+      if (subVal === 0) {
+        setDisableTransButton(false);
+      } else {
+        setDisableTransButton(true);
+      }
+    }
+  };
 
   const html = `
     <html>
@@ -101,69 +200,442 @@ export default function Sales({ navigation }) {
     await shareAsync(file.uri);
   };
 
-  const handlePress = () => {
-    setLoading(true);
-    const raw = JSON.stringify({
-      username: usernamex.toLowerCase(),
-      password: passwordx,
-    });
-    const myHeaders = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    };
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
+  function numberWithCommas(x) {
+    var parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+  }
 
-    fetch(`${REACT_APP_TARA_URL}/users/doLogin`, requestOptions)
-      .then((res) => res.json())
-      .then((result) => {
-        setLoading(false);
-        console.log(result);
-        if (result.status === "SUCCESS") {
-          // storing data
+  useEffect(() => {
+    if (isFocused) {
+      setLoading1(true);
+      async function fetchData() {
+        console.log("nowwww");
+
+        let ogrIDx;
+        let headers;
+        // getting data
+        try {
+          const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
+          let GeneToken = await AsyncStorage.getItem("rexxdex1");
+          let apiToken = await AsyncStorage.getItem("rexxdex");
+          console.log(GeneToken);
+          console.log(apiToken);
+
+          //   if (apiToken !== "null" && apiToken !== null) {
+          //     await AsyncStorage.setItem("rexxdex1", apiToken);
+          //   }
+          const token = await AsyncStorage.getItem("rexxdex1");
+          headers = {
+            "Content-Type": "application/json",
+            "Token-1": `${token}`,
+          };
+          console.log(headers);
+          setUserData(userData);
+          ogrIDx = userData.orgID;
+        } catch (error) {
+          console.log(error);
+        }
+
+        let isMounted = true;
+        await fetch(
+          `${process.env.REACT_APP_LOUGA_URL}/individual/gets/${ogrIDx}`,
+          {
+            headers,
+          }
+        )
+          .then(async (res) => {
+            const storeUser = async (value) => {
+              try {
+                const aToken = value.headers.get("token-1");
+
+                if (
+                  aToken === "null" ||
+                  aToken === null ||
+                  aToken === undefined ||
+                  aToken === ""
+                ) {
+                  // sup[Danga]
+                } else {
+                  await AsyncStorage.setItem("rexxdex1", aToken);
+                }
+              } catch (error) {
+                console.log(error);
+              }
+            };
+            storeUser(res);
+            const resultres = await res.text();
+            if (
+              resultres === null ||
+              resultres === undefined ||
+              resultres === ""
+            ) {
+              return {};
+            }
+            return JSON.parse(resultres);
+          })
+          .then((result) => {
+            setLoading1(false);
+            console.log(result);
+            if (result.message === "Expired Access") {
+              navigation.navigate("initial");
+            }
+            if (result.message === "Token Does Not Exist") {
+              navigation.navigate("initial");
+            }
+            if (result.message === "Unauthorized Access") {
+              navigation.navigate("initial");
+            }
+            if (isMounted) {
+              console.log(result.length);
+              if (result.length) {
+                if (result.length !== 0) {
+                  setClients(result);
+                } else {
+                  setClients([]);
+                }
+              }
+            }
+          });
+        return () => {
+          isMounted = false;
+        };
+      }
+      fetchData();
+    }
+  }, [isFocused, input]);
+
+  const handlePress = () => {
+    async function fetchData() {
+      setLoading(true);
+      setDisabledButton(true);
+      console.log("nowwww");
+
+      let requestOptions;
+      // getting data
+      try {
+        const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
+        let GeneToken = await AsyncStorage.getItem("rexxdex1");
+        let apiToken = await AsyncStorage.getItem("rexxdex");
+        console.log(GeneToken);
+
+        //   if (apiToken !== "null" && apiToken !== null) {
+        //     await AsyncStorage.setItem("rexxdex1", apiToken);
+        //   }
+        let ogrIDx = userData.orgID;
+        let personalIDx = userData.personalID;
+        const raw = JSON.stringify([
+          {
+            orgID: ogrIDx,
+            fname: firstnamex,
+            lname: lastnamex,
+            oname: othernamex,
+            title: titlex,
+            street: addressx,
+            city: cityx,
+            state: residentialStatex,
+            country: residentialCountryx,
+            email: emailx,
+            createdBy: personalIDx,
+            accountOwnerID: personalIDx,
+          },
+        ]);
+        console.log(raw);
+        let myHeaders;
+        const token = await AsyncStorage.getItem("rexxdex1");
+        myHeaders = {
+          "Content-Type": "application/json",
+          "Token-1": `${token}`,
+        };
+        requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+        console.log(requestOptions);
+        setUserData(userData);
+      } catch (error) {
+        console.log(error);
+      }
+
+      await fetch(
+        `${process.env.REACT_APP_LOUGA_URL}/individual/add`,
+        requestOptions
+      )
+        .then(async (res) => {
           const storeUser = async (value) => {
             try {
-              await AsyncStorage.setItem("userInfo", JSON.stringify(value));
+              const aToken = value.headers.get("token-1");
+              if (
+                aToken === "null" ||
+                aToken === null ||
+                aToken === undefined ||
+                aToken === ""
+              ) {
+                // sup[Danga]
+              } else {
+                await AsyncStorage.setItem("rexxdex1", aToken);
+              }
             } catch (error) {
               console.log(error);
             }
           };
-          storeUser(result.data);
-          setToastObject({
-            status: result.status,
-            message: result.message,
-            open: true,
-            type: "success",
-            change: Math.floor(Math.random() * 100),
-          });
-          navigation.navigate("Home", { replace: true });
-        } else {
-          // Alert.alert(result.status, result.message);
-          setToastObject({
-            status: result.status,
-            message: result.message,
-            open: true,
-            type: "error",
-            change: Math.floor(Math.random() * 100),
-          });
+          storeUser(res);
+          const resultres = await res.text();
+          if (
+            resultres === null ||
+            resultres === undefined ||
+            resultres === ""
+          ) {
+            return {};
+          }
+          return JSON.parse(resultres);
+        })
+        .then((result) => {
+          console.log(result);
+          setLoading(false);
+          setDisabledButton(false);
+          if (result.message === "Expired Access") {
+            navigation.navigate("initial");
+          }
+          if (result.message === "Token Does Not Exist") {
+            navigation.navigate("initial");
+          }
+          if (result.message === "Unauthorized Access") {
+            navigation.navigate("initial");
+          }
+          if (result.status === "SUCCESS") {
+            // storing data
+            setInput(!input);
+            handleModal();
+            setFirstname("");
+            setLastname("");
+            setOthername("");
+            setEmail("");
+            setTitle("");
+            setResidentialCountry("");
+            setResidentialState("");
+            setCity("");
+            setAddress("");
+            storeUser(result.data);
+            setToastObject({
+              status: result.status,
+              message: result.message,
+              open: true,
+              type: "success",
+              change: Math.floor(Math.random() * 100),
+            });
+            navigation.navigate("Home", { replace: true });
+          } else {
+            // Alert.alert(result.status, result.message);
+            setToastObject({
+              status: result.status,
+              message: result.message,
+              open: true,
+              type: "error",
+              change: Math.floor(Math.random() * 100),
+            });
+          }
+        })
+        .catch((error) => {
+          setLoading(false);
+          setDisabledButton(false);
+          console.log(error);
+        });
+      return () => {
+        isMounted = false;
+      };
+    }
+    fetchData();
+  };
+
+  /* An example function called when transaction is completed successfully or canceled */
+  const handleAddSale = () => {
+    // if (data.status === "successful") {
+    async function fetchData() {
+      setLoading(true);
+      setDisableTransButton(true);
+      setDisableCashButton(true);
+      console.log("nowwww");
+
+      let requestOptions;
+      // getting data
+      try {
+        const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
+        let GeneToken = await AsyncStorage.getItem("rexxdex1");
+        let apiToken = await AsyncStorage.getItem("rexxdex");
+        console.log(GeneToken);
+
+        //   if (apiToken !== "null" && apiToken !== null) {
+        //     await AsyncStorage.setItem("rexxdex1", apiToken);
+        //   }
+        let ogrIDx = userData.orgID;
+        let personalIDx = userData.personalID;
+        let itemss = [];
+        allSaleItem.map((item) => {
+          const obj = {
+            saleType: item.saleType,
+            salesID: item.salesID,
+            branchID: item.branchID,
+            pricePerUnit: item.pricePerUnit,
+            quantity: item.quantity,
+            amount: item.amount,
+            taxAmount: item.taxAmount,
+            totalAmount: item.totalAmount,
+          };
+          itemss.push(obj);
+        });
+
+        let subTotalx = parseInt(subTotalAmountx, 10);
+        let bonusx = parseInt(bonusAmountx, 10);
+        if (isNaN(subTotalx)) {
+          subTotalx = 0;
         }
-      })
-      .catch((error) => {
-        setLoading(false);
+        if (isNaN(bonusx)) {
+          bonusx = 0;
+        }
+        const raw = JSON.stringify({
+          orgID: ogrIDx,
+          individualID: clientx,
+          items: itemss,
+          bonusAmount: bonusAmountx,
+          subTotalAmount: subTotalAmountx,
+          totalAmount: subTotalx - bonusx,
+          createdBy: personalIDx,
+          comment: commentx,
+          receiptStatus: 0,
+        });
+        console.log(raw);
+        let myHeaders;
+        const token = await AsyncStorage.getItem("rexxdex1");
+        myHeaders = {
+          "Content-Type": "application/json",
+          "Token-1": `${token}`,
+        };
+        requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+        console.log(requestOptions);
+        setUserData(userData);
+      } catch (error) {
         console.log(error);
-      });
+      }
+
+      await fetch(
+        `${process.env.REACT_APP_LOUGA_URL}/sales/add`,
+        requestOptions
+      )
+        .then(async (res) => {
+          const storeUser = async (value) => {
+            try {
+              const aToken = value.headers.get("token-1");
+              if (
+                aToken === "null" ||
+                aToken === null ||
+                aToken === undefined ||
+                aToken === ""
+              ) {
+                // sup[Danga]
+              } else {
+                await AsyncStorage.setItem("rexxdex1", aToken);
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          };
+          storeUser(res);
+          const resultres = await res.text();
+          if (
+            resultres === null ||
+            resultres === undefined ||
+            resultres === ""
+          ) {
+            return {};
+          }
+          return JSON.parse(resultres);
+        })
+        .then((result) => {
+          console.log(result);
+          setLoading(false);
+          setDisableTransButton(false);
+          setDisableCashButton(false);
+          if (result.message === "Expired Access") {
+            navigation.navigate("initial");
+          }
+          if (result.message === "Token Does Not Exist") {
+            navigation.navigate("initial");
+          }
+          if (result.message === "Unauthorized Access") {
+            navigation.navigate("initial");
+          }
+          if (result.status === "SUCCESS") {
+            // storing data
+            setInput(!input);
+            handleModal();
+            setFirstname("");
+            setLastname("");
+            setOthername("");
+            setEmail("");
+            setTitle("");
+            setResidentialCountry("");
+            setResidentialState("");
+            setCity("");
+            setAddress("");
+            storeUser(result.data);
+            setToastObject({
+              status: result.status,
+              message: result.message,
+              open: true,
+              type: "success",
+              change: Math.floor(Math.random() * 100),
+            });
+            navigation.navigate("Home", { replace: true });
+          } else {
+            // Alert.alert(result.status, result.message);
+            setToastObject({
+              status: result.status,
+              message: result.message,
+              open: true,
+              type: "error",
+              change: Math.floor(Math.random() * 100),
+            });
+          }
+        })
+        .catch((error) => {
+          setLoading(false);
+          setDisableTransButton(false);
+          setDisableCashButton(false);
+          console.log(error);
+        });
+      return () => {
+        isMounted = false;
+      };
+    }
+    fetchData();
+    // }
+  };
+
+  const handleOnRedirect = (data) => {
+    console.log(data);
+    if (data.status === "successful") {
+      handleAddSale();
+    }
   };
 
   const clickHandler = () => {
     if (
-      usernamex.length === 0 ||
-      usernamex === "" ||
-      passwordx.length === 0 ||
-      passwordx === ""
+      firstnamex.length === 0 ||
+      firstnamex === "" ||
+      lastnamex.length === 0 ||
+      lastnamex === "" ||
+      othernamex.length === 0 ||
+      othernamex === "" ||
+      titlex.length === 0 ||
+      titlex === ""
     ) {
       // Alert.alert("EMPTY_TEXTFIELDS", "Fill empty textfields");
       setToastObject({
@@ -178,11 +650,6 @@ export default function Sales({ navigation }) {
     }
   };
 
-  /* An example function called when transaction is completed successfully or canceled */
-  const handleOnRedirect = (data) => {
-    console.log(data);
-  };
-
   /* An example function to generate a random transaction reference */
   const generateTransactionRef = (length) => {
     var result = "";
@@ -193,6 +660,523 @@ export default function Sales({ navigation }) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return `flw_tx_ref_${result}`;
+  };
+
+  //   useEffect(() => {
+  //     setSaleType(saleTypex);
+  //   }, [saleTypex]);
+
+  const handlefetchPS = async (newValue) => {
+    setSaleType(newValue);
+    console.log(newValue);
+    if (newValue !== "3" && newValue !== "") {
+      setEditable(false);
+      setLoading1(true);
+      let endpoints;
+      if (newValue === "1") {
+        endpoints = "products";
+      } else if (newValue === "2") {
+        endpoints = "companyServices";
+      }
+      let ogrIDx;
+      let headers;
+      // getting data
+      try {
+        const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
+        let GeneToken = await AsyncStorage.getItem("rexxdex1");
+        let apiToken = await AsyncStorage.getItem("rexxdex");
+        console.log(GeneToken);
+
+        //   if (apiToken !== "null" && apiToken !== null) {
+        //     await AsyncStorage.setItem("rexxdex1", apiToken);
+        //   }
+        const token = await AsyncStorage.getItem("rexxdex1");
+        headers = {
+          "Content-Type": "application/json",
+          "Token-1": `${token}`,
+        };
+        console.log(headers);
+        setUserData(userData);
+        ogrIDx = userData.orgID;
+      } catch (error) {
+        console.log(error);
+      }
+
+      await fetch(
+        `${process.env.REACT_APP_LOUGA_URL}/${endpoints}/gets/${ogrIDx}`,
+        {
+          headers,
+        }
+      )
+        .then(async (res) => {
+          const storeUser = async (value) => {
+            try {
+              const aToken = value.headers.get("token-1");
+              if (
+                aToken === "null" ||
+                aToken === null ||
+                aToken === undefined ||
+                aToken === ""
+              ) {
+                // sup[Danga]
+              } else {
+                await AsyncStorage.setItem("rexxdex1", aToken);
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          };
+          storeUser(res);
+          const resultres = await res.text();
+          console.log(resultres);
+          if (
+            resultres === null ||
+            resultres === undefined ||
+            resultres === ""
+          ) {
+            return {};
+          }
+          return JSON.parse(resultres);
+        })
+        .then((result) => {
+          setLoading1(false);
+          console.log(result);
+          if (result.message === "Expired Access") {
+            navigation.navigate("initial");
+          }
+          if (result.message === "Token Does Not Exist") {
+            navigation.navigate("initial");
+          }
+          if (result.message === "Unauthorized Access") {
+            navigation.navigate("initial");
+          }
+          console.log(result.length);
+          if (result.length) {
+            if (result.length !== 0) {
+              setProducts([]);
+              setProductBranches([]);
+              setProducts(result);
+            } else {
+              setProducts([]);
+              setProductBranches([]);
+              setProductBranchID("");
+              setProductID("");
+            }
+          }
+        });
+    } else {
+      setEditable(true);
+      setPricePerUnit("");
+      setProductBranches([]);
+      setProductBranchID("");
+      setQuantity("");
+      setAmount("");
+      setTaxAmount("");
+    }
+  };
+
+  const handleGetProductBranches = async (id) => {
+    setLoading1(true);
+    // if (newValue !== "2" && newValue !== "") {
+    let ogrIDx;
+    let headers;
+    // getting data
+    try {
+      const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
+      let GeneToken = await AsyncStorage.getItem("rexxdex1");
+      let apiToken = await AsyncStorage.getItem("rexxdex");
+      console.log(GeneToken);
+
+      //   if (apiToken !== "null" && apiToken !== null) {
+      //     await AsyncStorage.setItem("rexxdex1", apiToken);
+      //   }
+      const token = await AsyncStorage.getItem("rexxdex1");
+      headers = {
+        "Content-Type": "application/json",
+        "Token-1": `${token}`,
+      };
+      console.log(headers);
+      setUserData(userData);
+      ogrIDx = userData.orgID;
+    } catch (error) {
+      console.log(error);
+    }
+
+    await fetch(
+      `${process.env.REACT_APP_LOUGA_URL}/productBranch/gets/${ogrIDx}/${id}`,
+      {
+        headers,
+      }
+    )
+      .then(async (res) => {
+        const storeUser = async (value) => {
+          try {
+            const aToken = value.headers.get("token-1");
+            if (
+              aToken === "null" ||
+              aToken === null ||
+              aToken === undefined ||
+              aToken === ""
+            ) {
+              // sup[Danga]
+            } else {
+              await AsyncStorage.setItem("rexxdex1", aToken);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        storeUser(res);
+        const resultres = await res.text();
+        console.log(resultres);
+        if (resultres === null || resultres === undefined || resultres === "") {
+          return {};
+        }
+        return JSON.parse(resultres);
+      })
+      .then((result) => {
+        setLoading1(false);
+        console.log(result);
+        if (result.message === "Expired Access") {
+          navigation.navigate("initial");
+        }
+        if (result.message === "Token Does Not Exist") {
+          navigation.navigate("initial");
+        }
+        if (result.message === "Unauthorized Access") {
+          navigation.navigate("initial");
+        }
+        console.log(result.length);
+        if (result.length) {
+          if (result.length !== 0) {
+            setProductBranches([]);
+            setProductBranches(result);
+          } else {
+            setProductBranches([]);
+            setProductBranchID("");
+          }
+        }
+      });
+    // }
+  };
+
+  const handleOnProductChange = (value, filteredData) => {
+    setProductID(value);
+    if (saleTypex === "1") {
+      const filteredItems = filteredData.filter((item) => item.id === value);
+      console.log(filteredItems[0]);
+      setPricePerUnit(`${filteredItems[0].pricePerQuantity}`);
+      handleGetProductBranches(value);
+    } else if (saleTypex === "2") {
+      const filteredItems = filteredData.filter((item) => item.id === value);
+      setPricePerUnit(`${filteredItems[0].pricePerUnit}`);
+      if (filteredItems[0].branches) {
+        if (filteredItems[0].branches.length !== 0) {
+          setProductBranches([]);
+          setProductBranchID("");
+          console.log(filteredItems[0].branches);
+          setProductBranches(filteredItems[0].branches);
+        } else {
+          setProductBranches([]);
+          setProductBranchID("");
+        }
+      } else {
+        setProductBranches([]);
+        setProductBranchID("");
+      }
+    } else {
+      setPricePerUnit("");
+      setProductBranches([]);
+      setProductBranchID("");
+    }
+  };
+
+  // useEffect(() => {
+  //   setPricePerUnit(pricePerUnitx);
+  //   setQuantity(quantityx);
+  // }, [pricePerUnitx, quantityx]);
+
+  useEffect(() => {
+    console.log("amount");
+    const ppu = parseInt(pricePerUnitx, 10);
+    const qqq = parseInt(quantityx, 10);
+    let amt = ppu * qqq;
+    if (isNaN(amt)) {
+      amt = 0;
+    }
+    console.log(amt);
+    setAmount(`${amt}`);
+  }, [pricePerUnitx, quantityx]);
+
+  useEffect(() => {
+    console.log("total amount");
+    const ppu = parseInt(pricePerUnitx, 10);
+    const qqq = parseInt(quantityx, 10);
+    let txa = parseInt(taxAmountx, 10);
+    const amt = ppu * qqq;
+    if (isNaN(txa)) {
+      txa = 0;
+    }
+    let tam = amt + txa;
+    if (isNaN(tam)) {
+      tam = 0;
+    }
+    console.log(tam);
+    setTotalAmount(`${tam}`);
+  }, [pricePerUnitx, quantityx, taxAmountx]);
+
+  const addSaleItem = () => {
+    const filteredProducts = products.filter((item) => item.id === productID);
+    const filteredBranch = productBranches.filter(
+      (item) => item.id === productBranchID
+    );
+    const filteredSaleType = saleTypeArray.filter(
+      (item) => item.id === saleTypex
+    );
+    console.log(filteredProducts);
+    console.log(filteredBranch);
+    let branchNamee = "";
+    if (filteredBranch.length > 0) {
+      branchNamee = filteredBranch[0].branchName;
+    }
+
+    let productNamee = "";
+    if (filteredProducts.length > 0) {
+      productNamee = filteredProducts[0].name;
+    }
+    const saleItemObj = {
+      id: `SALE${new Date().getTime() * 8 + 2}`,
+      saleType: saleTypex,
+      saleTypeName: filteredSaleType[0].name,
+      salesID: productID,
+      productName: productNamee,
+      branchID: productBranchID,
+      branchName: branchNamee,
+      pricePerUnit: pricePerUnitx,
+      quantity: quantityx,
+      amount: amountx,
+      taxAmount: taxAmountx,
+      totalAmount: totalAmountx,
+    };
+    if (allSaleItem.length === 0) {
+      let bbamt = parseInt(bonusAmountx, 10);
+      if (isNaN(bbamt)) {
+        bbamt = 0;
+      }
+
+      let subTotalx = parseInt(totalAmountx, 10);
+      setSubTotalAmount(subTotalx + bbamt);
+    } else {
+      let subTotalx = parseInt(totalAmountx, 10);
+      allSaleItem.map((subb) => {
+        const curTotal = parseInt(subb.totalAmount, 10);
+        subTotalx += curTotal;
+      });
+      let bbamt = parseInt(bonusAmountx, 10);
+      if (isNaN(bbamt)) {
+        bbamt = 0;
+      }
+      setSubTotalAmount(subTotalx + bbamt);
+    }
+    setAllSaleItem([...allSaleItem, saleItemObj]);
+    setSaleType("");
+    setProductID("");
+    setProducts([]);
+    setProductBranches([]);
+    setProductBranchID("");
+    setPricePerUnit("");
+    setQuantity("");
+    setAmount("");
+    setTaxAmount("");
+    setTotalAmount("");
+    setIsSalesModalVisible(false);
+  };
+
+  const updateSaleItem = () => {
+    let newAllSaleItem = allSaleItem;
+    const filteredProducts = products.filter((item) => item.id === productID);
+    const filteredBranch = productBranches.filter(
+      (item) => item.id === productBranchID
+    );
+    const filteredSaleType = saleTypeArray.filter(
+      (item) => item.id === saleTypex
+    );
+    let branchNamee = "";
+    if (filteredBranch.length > 0) {
+      branchNamee = filteredBranch[0].branchName;
+    }
+
+    let productNamee = "";
+    if (filteredProducts.length > 0) {
+      productNamee = filteredProducts[0].name;
+    }
+    const saleItemObj = {
+      id: idx,
+      saleType: saleTypex,
+      saleTypeName: filteredSaleType[0].name,
+      salesID: productID,
+      productName: productNamee,
+      branchID: productBranchID,
+      branchName: branchNamee,
+      pricePerUnit: pricePerUnitx,
+      quantity: quantityx,
+      amount: amountx,
+      taxAmount: taxAmountx,
+      totalAmount: totalAmountx,
+    };
+    if (allSaleItem.length === 0) {
+      let bbamt = parseInt(bonusAmountx, 10);
+      if (isNaN(bbamt)) {
+        bbamt = 0;
+      }
+      let subTotalx = parseInt(totalAmountx, 10);
+      setSubTotalAmount(subTotalx + bbamt);
+    } else {
+      let objIndex;
+      //Find index of specific object using findIndex method.
+      objIndex = newAllSaleItem.findIndex((obj) => obj.id == idx);
+
+      //Update object's name property.
+      newAllSaleItem[objIndex] = saleItemObj;
+
+      let subTotalx = 0;
+      newAllSaleItem.map((subb) => {
+        const curTotal = parseInt(subb.totalAmount, 10);
+        console.log(curTotal);
+        subTotalx += curTotal;
+      });
+      let bbamt = parseInt(bonusAmountx, 10);
+      if (isNaN(bbamt)) {
+        bbamt = 0;
+      }
+      setSubTotalAmount(subTotalx + bbamt);
+    }
+    setAllSaleItem(newAllSaleItem);
+    setSaleType("");
+    setProductID("");
+    setProducts([]);
+    setProductBranches([]);
+    setProductBranchID("");
+    setPricePerUnit("");
+    setQuantity("");
+    setAmount("");
+    setTaxAmount("");
+    setTotalAmount("");
+    setIsSalesModal2Visible(false);
+  };
+
+  const handleUpdate = (value) => {
+    const filteredItems = allSaleItem.filter((item) => item.id === value);
+    console.log(filteredItems[0]);
+    handleGetProductBranches(filteredItems[0].salesID);
+    handlefetchPS(`${filteredItems[0].saleType}`);
+    setID(filteredItems[0].id);
+    setSaleType(filteredItems[0].saleType);
+    setProductID(filteredItems[0].salesID);
+    setProductBranchID(filteredItems[0].branchID);
+    setPricePerUnit(filteredItems[0].pricePerUnit);
+    setQuantity(filteredItems[0].quantity);
+    setAmount(filteredItems[0].amount);
+    setTaxAmount(filteredItems[0].taxAmount);
+    setTotalAmount(filteredItems[0].totalAmount);
+    handleSalesModal2();
+  };
+
+  const removeSaleItem = (value) => {
+    let newAllSaleItem = allSaleItem.filter((item) => item.id !== value);
+
+    let subTotalx = 0;
+    newAllSaleItem.map((subb) => {
+      const curTotal = parseInt(subb.totalAmount, 10);
+      console.log(curTotal);
+      subTotalx += curTotal;
+    });
+    let bbamt = parseInt(bonusAmountx, 10);
+    if (isNaN(bbamt)) {
+      bbamt = 0;
+    }
+    setSubTotalAmount(subTotalx + bbamt);
+
+    setAllSaleItem(newAllSaleItem);
+    handleCloseSalesModal2();
+  };
+
+  const handleAddBonus = (value) => {
+    setBonusAmount(value);
+    if (value === "") {
+      setBonusAmount(0);
+    }
+    // let sta = subTotalAmountx;
+    // if (isNaN(sta)) {
+    //   sta = 0;
+    // }
+    if (allSaleItem.length === 0) {
+      let bbamt = parseInt(value, 10);
+      if (isNaN(bbamt)) {
+        bbamt = 0;
+      }
+      setSubTotalAmount(bbamt);
+    } else {
+      let subTotalx = 0;
+      allSaleItem.map((subb) => {
+        const curTotal = parseInt(subb.totalAmount, 10);
+        subTotalx += curTotal;
+      });
+      let bbamt = parseInt(value, 10);
+      if (isNaN(bbamt)) {
+        bbamt = 0;
+      }
+      setSubTotalAmount(subTotalx + bbamt);
+    }
+  };
+
+  const popAnim = useRef(new Animated.Value(45)).current;
+  const popAnim2 = useRef(new Animated.Value(45)).current;
+
+  const transSlideIn = (easing) => {
+    setShowTransfer(true);
+    setDisableTrans(true);
+    Animated.timing(popAnim, {
+      toValue: 200,
+      duration: 300,
+      easing,
+      useNativeDriver: false,
+    }).start();
+    // }).start();
+  };
+
+  const transSlideOut = (easing) => {
+    setShowTransfer(false);
+    setDisableTrans(false);
+    Animated.timing(popAnim, {
+      toValue: 50,
+      easing,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const cashSlideIn = (easing) => {
+    setShowCash(true);
+    setDisableCash(true);
+    Animated.timing(popAnim2, {
+      toValue: 200,
+      duration: 300,
+      easing,
+      useNativeDriver: false,
+    }).start();
+    // }).start();
+  };
+
+  const cashSlideOut = (easing) => {
+    setShowCash(false);
+    setDisableCash(false);
+    Animated.timing(popAnim2, {
+      toValue: 50,
+      duration: 300,
+      easing,
+      useNativeDriver: false,
+    }).start();
   };
 
   return (
@@ -234,6 +1218,7 @@ export default function Sales({ navigation }) {
               style={{
                 color: "#777",
                 margin: -5,
+                width: "95%",
               }}
               itemStyle={{
                 backgroundColor: "#F96D02",
@@ -241,32 +1226,42 @@ export default function Sales({ navigation }) {
                 fontFamily: "Ebrima",
                 fontSize: 19,
               }}
-              selectedValue={residentialCountryx}
-              onValueChange={(newValue) => setResidentialCountry(newValue)}
+              selectedValue={clientx}
+              onValueChange={(newValue) => setClientx(newValue)}
             >
               <Picker.Item label="Select Client" value="" />
-              {AlCountry.map((apic) => (
+              {clientsx.map((apic) => (
                 <Picker.Item
-                  label={apic.name}
-                  key={apic.code3}
-                  value={apic.name}
+                  label={`${apic.fname} ${apic.lname}`}
+                  key={apic.id}
+                  value={apic.id}
                 />
               ))}
             </Picker>
+            <Icon name="add" size={35} onPress={handleModal} color="#f96d02" />
           </View>
+          <Text style={styles.inputText}>Bonus Amount:</Text>
+          <TextInput
+            keyboardType="numeric"
+            placeholder="Bonus Amount"
+            value={bonusAmountx}
+            onChangeText={(value) => handleAddBonus(value)}
+            style={styles.input}
+            placeholderTextColor={"#777"}
+          />
           <Text style={styles.inputText}>Comment:</Text>
           <TextInput
             keyboardType="default"
             // placeholder="Comment"
-            value={usernamex}
+            value={commentx}
             multiline
             numberOfLines={5}
-            onChangeText={(value) => setUsername(value)}
+            onChangeText={(value) => setComment(value)}
             style={styles.txAInput}
             placeholderTextColor={"#777"}
           />
-          <View style={{ marginVertical: 30, height: 1, width: "80%" }} />
-          <Button title="button" onPress={handleModal} />
+          {/* <View style={{ marginVertical: 30, height: 1, width: "80%" }} />
+          <Button title="button" onPress={handleModal} /> */}
           <Modal
             transparent={true}
             animationType="slide"
@@ -317,7 +1312,7 @@ export default function Sales({ navigation }) {
                         color: "#fff",
                       }}
                     >
-                      Add User
+                      Add Client
                     </Text>
                   </View>
                   <Text style={styles.inputText}>
@@ -344,6 +1339,17 @@ export default function Sales({ navigation }) {
                     placeholderTextColor={"#777"}
                   />
                   <Text style={styles.inputText}>
+                    <Text style={{ color: "red" }}>* </Text>Other Name:
+                  </Text>
+                  <TextInput
+                    keyboardType="default"
+                    placeholder="Other Name"
+                    value={othernamex}
+                    onChangeText={(value) => setOthername(value)}
+                    style={styles.input}
+                    placeholderTextColor={"#777"}
+                  />
+                  <Text style={styles.inputText}>
                     <Text style={{ color: "red" }}>* </Text>Title:
                   </Text>
                   <View style={styles.pickerContainer2}>
@@ -355,7 +1361,7 @@ export default function Sales({ navigation }) {
                       selectedValue={titlex}
                       onValueChange={(newValue) => setTitle(newValue)}
                     >
-                      <Picker.Item label="Select Country" value="" />
+                      <Picker.Item label="Select Title" value="" />
                       <Picker.Item label="Mr" value="Mr" />
                       <Picker.Item label="Mrs" value="Mrs" />
                       <Picker.Item label="Miss" value="Miss" />
@@ -439,7 +1445,10 @@ export default function Sales({ navigation }) {
                     style={styles.input}
                     placeholderTextColor={"#777"}
                   />
-                  <TouchableOpacity onPress={clickHandler}>
+                  <TouchableOpacity
+                    disabled={disabledButton}
+                    onPress={clickHandler}
+                  >
                     <View
                       style={[
                         styles.loginButton,
@@ -458,57 +1467,1170 @@ export default function Sales({ navigation }) {
               </View>
             </View>
           </Modal>
-          <View
-            style={{
-              marginTop: 20,
-              paddingTop: 20,
-              borderTopWidth: 1,
-              borderColor: "#777",
-            }}
-          >
-            <View>
+          <View>
+            <TouchableOpacity onPress={handleSalesModal}>
               <View
                 style={{
-                  flexDirection: "row",
+                  padding: 10,
+                  marginTop: 10,
+                  backgroundColor: "#F96D02",
+                  marginHorizontal: 10,
+                  borderRadius: 5,
+                  width: 100,
                 }}
               >
                 <Text
                   style={{
-                    width: "40%",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    color: "#fff",
                   }}
                 >
-                  Product
+                  ADD ITEM
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <Modal
+            transparent={true}
+            animationType="slide"
+            visible={isSalesModalVisible}
+          >
+            <View style={{ flex: 1, justifyContent: "center" }}>
+              <View style={styles.modalView}>
+                <View
+                  style={{
+                    alignItems: "flex-start",
+                    backgroundColor: "#fff",
+                    // borderBottomWidth: 1,
+                    borderColor: "#f96d02",
+                    // padding: 2,
+                    marginBottom: 10,
+                  }}
+                >
+                  <Icon
+                    name="highlight-remove"
+                    size={30}
+                    onPress={handleSalesModal}
+                    color="#f96d02"
+                  />
+                </View>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      backgroundColor: "#f96d02",
+                      padding: 20,
+                      borderRadius: 5,
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 2,
+                      },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 4,
+                      elevation: 5,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        textTransform: "uppercase",
+                        fontWeight: "bold",
+                        fontSize: 20,
+                        color: "#fff",
+                      }}
+                    >
+                      Sales Item
+                    </Text>
+                  </View>
+                  <Text style={styles.inputText}>
+                    <Text style={{ color: "red" }}>* </Text>Sale Type:
+                  </Text>
+                  <View style={styles.pickerContainer2}>
+                    <Picker
+                      style={{
+                        color: "#777",
+                        margin: -5,
+                      }}
+                      selectedValue={saleTypex}
+                      onValueChange={(newValue) => handlefetchPS(newValue)}
+                    >
+                      <Picker.Item label="Select Type" value="" />
+                      <Picker.Item value="1" label="Product" />
+                      <Picker.Item value="2" label="Company Service" />
+                      <Picker.Item value="3" label="Custom Sales" />
+                    </Picker>
+                  </View>
+                  {saleTypex !== "" && saleTypex !== "3" && (
+                    <>
+                      {saleTypex === "1" && (
+                        <>
+                          <Text style={styles.inputText}>
+                            <Text style={{ color: "red" }}>* </Text>
+                            Product:
+                          </Text>
+                          <View style={styles.pickerContainer2}>
+                            <Picker
+                              style={{
+                                color: "#777",
+                                margin: -5,
+                              }}
+                              itemStyle={{
+                                backgroundColor: "#F96D02",
+                                color: "#000",
+                                fontFamily: "Ebrima",
+                                fontSize: 19,
+                              }}
+                              selectedValue={productID}
+                              onValueChange={(newValue) =>
+                                handleOnProductChange(newValue, products)
+                              }
+                            >
+                              <Picker.Item label="Select Product" value="" />
+                              {products.map((apic) => (
+                                <Picker.Item
+                                  label={apic.name}
+                                  key={apic.id}
+                                  value={apic.id}
+                                />
+                              ))}
+                            </Picker>
+                          </View>
+                          <Text style={styles.inputText}>
+                            <Text style={{ color: "red" }}>* </Text>
+                            Branch:
+                          </Text>
+                          <View style={styles.pickerContainer2}>
+                            <Picker
+                              style={{
+                                color: "#777",
+                                margin: -5,
+                              }}
+                              itemStyle={{
+                                backgroundColor: "#F96D02",
+                                color: "#000",
+                                fontFamily: "Ebrima",
+                                fontSize: 19,
+                              }}
+                              selectedValue={productBranchID}
+                              onValueChange={(newValue) =>
+                                setProductBranchID(newValue)
+                              }
+                            >
+                              <Picker.Item label="Select Branch" value="" />
+                              {productBranches.map((apic) => (
+                                <Picker.Item
+                                  label={apic.branchName}
+                                  key={apic.id}
+                                  value={apic.id}
+                                />
+                              ))}
+                            </Picker>
+                          </View>
+                        </>
+                      )}
+                      {saleTypex === "2" && (
+                        <>
+                          <Text style={styles.inputText}>
+                            <Text style={{ color: "red" }}>* </Text>
+                            Company Services:
+                          </Text>
+                          <View style={styles.pickerContainer2}>
+                            <Picker
+                              style={{
+                                color: "#777",
+                                margin: -5,
+                              }}
+                              itemStyle={{
+                                backgroundColor: "#F96D02",
+                                color: "#000",
+                                fontFamily: "Ebrima",
+                                fontSize: 19,
+                              }}
+                              selectedValue={productID}
+                              onValueChange={(newValue) =>
+                                handleOnProductChange(newValue, products)
+                              }
+                            >
+                              <Picker.Item label="Select Service" value="" />
+                              {products.map((apic) => (
+                                <Picker.Item
+                                  label={apic.name}
+                                  key={apic.id}
+                                  value={apic.id}
+                                />
+                              ))}
+                            </Picker>
+                          </View>
+                          <Text style={styles.inputText}>
+                            <Text style={{ color: "red" }}>* </Text>
+                            Branch:
+                          </Text>
+                          <View style={styles.pickerContainer2}>
+                            <Picker
+                              style={{
+                                color: "#777",
+                                margin: -5,
+                              }}
+                              itemStyle={{
+                                backgroundColor: "#F96D02",
+                                color: "#000",
+                                fontFamily: "Ebrima",
+                                fontSize: 19,
+                              }}
+                              selectedValue={productBranchID}
+                              onValueChange={(newValue) =>
+                                setProductBranchID(newValue)
+                              }
+                            >
+                              <Picker.Item label="Select Branch" value="" />
+                              {productBranches.map((apic) => (
+                                <Picker.Item
+                                  label={apic.name}
+                                  key={apic.id}
+                                  value={apic.id}
+                                />
+                              ))}
+                            </Picker>
+                          </View>
+                        </>
+                      )}
+                    </>
+                  )}
+
+                  <Text style={styles.inputText}>
+                    <Text style={{ color: "red" }}>* </Text>Price Per
+                    Unit/Quantity:
+                  </Text>
+                  <TextInput
+                    keyboardType="numeric"
+                    placeholder="Price Per Unit/Quantity"
+                    value={pricePerUnitx}
+                    editable={editablex}
+                    onChangeText={(value) => setPricePerUnit(value)}
+                    style={styles.input}
+                    placeholderTextColor={"#777"}
+                  />
+                  <Text style={styles.inputText}>
+                    <Text style={{ color: "red" }}>* </Text>Quantity:
+                  </Text>
+                  <TextInput
+                    keyboardType="numeric"
+                    placeholder="Quantity"
+                    value={quantityx}
+                    onChangeText={(value) => setQuantity(value)}
+                    style={styles.input}
+                    placeholderTextColor={"#777"}
+                  />
+                  <Text style={styles.inputText}>
+                    <Text style={{ color: "red" }}>* </Text>Amount:
+                  </Text>
+                  <TextInput
+                    keyboardType="numeric"
+                    placeholder="Amount"
+                    value={amountx}
+                    editable={false}
+                    onChangeText={(value) => setAmount(value)}
+                    style={styles.input}
+                    placeholderTextColor={"#777"}
+                  />
+                  <Text style={styles.inputText}>
+                    <Text style={{ color: "red" }}>* </Text>Tax Amount:
+                  </Text>
+                  <TextInput
+                    keyboardType="numeric"
+                    placeholder="Tax Amount"
+                    value={taxAmountx}
+                    onChangeText={(value) => setTaxAmount(value)}
+                    style={styles.input}
+                    placeholderTextColor={"#777"}
+                  />
+                  <Text style={styles.inputText}>
+                    <Text style={{ color: "red" }}>* </Text>Total Amount:
+                  </Text>
+                  <TextInput
+                    keyboardType="numeric"
+                    placeholder="Total Amount"
+                    value={totalAmountx}
+                    editable={false}
+                    onChangeText={(value) => setTotalAmount(value)}
+                    style={styles.input}
+                    placeholderTextColor={"#777"}
+                  />
+
+                  <TouchableOpacity onPress={addSaleItem}>
+                    <View
+                      style={[
+                        styles.loginButton,
+                        { flexDirection: "row", justifyContent: "center" },
+                      ]}
+                    >
+                      <Text style={styles.loginText}>ADD</Text>
+                    </View>
+                  </TouchableOpacity>
+                </ScrollView>
+              </View>
+            </View>
+          </Modal>
+          {/* update modal */}
+
+          <Modal
+            transparent={true}
+            animationType="slide"
+            visible={isSalesModal2Visible}
+          >
+            <View style={{ flex: 1, justifyContent: "center" }}>
+              <View style={styles.modalView}>
+                <View
+                  style={{
+                    alignItems: "flex-start",
+                    backgroundColor: "#fff",
+                    // borderBottomWidth: 1,
+                    borderColor: "#f96d02",
+                    // padding: 2,
+                    marginBottom: 10,
+                  }}
+                >
+                  <Icon
+                    name="highlight-remove"
+                    size={30}
+                    onPress={handleCloseSalesModal2}
+                    color="#f96d02"
+                  />
+                </View>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  <TouchableOpacity onPress={() => removeSaleItem(idx)}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        backgroundColor: "red",
+                        padding: 15,
+                        borderRadius: 5,
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 2,
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 4,
+                        elevation: 5,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          textTransform: "uppercase",
+                          fontWeight: "bold",
+                          fontSize: 20,
+                          color: "#fff",
+                        }}
+                      >
+                        REMOVE ITEM
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <Text style={styles.inputText}>
+                    <Text style={{ color: "red" }}>* </Text>Sale Type:
+                  </Text>
+                  <View style={styles.pickerContainer2}>
+                    <Picker
+                      style={{
+                        color: "#777",
+                        margin: -5,
+                      }}
+                      selectedValue={saleTypex}
+                      onValueChange={(newValue) => handlefetchPS(newValue)}
+                    >
+                      <Picker.Item label="Select Type" value="" />
+                      <Picker.Item value="1" label="Product" />
+                      <Picker.Item value="2" label="Company Service" />
+                      <Picker.Item value="3" label="Custom Sales" />
+                    </Picker>
+                  </View>
+                  {saleTypex !== "" && saleTypex !== "3" && (
+                    <>
+                      {saleTypex === "1" && (
+                        <>
+                          <Text style={styles.inputText}>
+                            <Text style={{ color: "red" }}>* </Text>
+                            Product:
+                          </Text>
+                          <View style={styles.pickerContainer2}>
+                            <Picker
+                              style={{
+                                color: "#777",
+                                margin: -5,
+                              }}
+                              itemStyle={{
+                                backgroundColor: "#F96D02",
+                                color: "#000",
+                                fontFamily: "Ebrima",
+                                fontSize: 19,
+                              }}
+                              selectedValue={productID}
+                              onValueChange={(newValue) =>
+                                handleOnProductChange(newValue, products)
+                              }
+                            >
+                              <Picker.Item label="Select Product" value="" />
+                              {products.map((apic) => (
+                                <Picker.Item
+                                  label={apic.name}
+                                  key={apic.id}
+                                  value={apic.id}
+                                />
+                              ))}
+                            </Picker>
+                          </View>
+                          <Text style={styles.inputText}>
+                            <Text style={{ color: "red" }}>* </Text>
+                            Branch:
+                          </Text>
+                          <View style={styles.pickerContainer2}>
+                            <Picker
+                              style={{
+                                color: "#777",
+                                margin: -5,
+                              }}
+                              itemStyle={{
+                                backgroundColor: "#F96D02",
+                                color: "#000",
+                                fontFamily: "Ebrima",
+                                fontSize: 19,
+                              }}
+                              selectedValue={productBranchID}
+                              onValueChange={(newValue) =>
+                                setProductBranchID(newValue)
+                              }
+                            >
+                              <Picker.Item label="Select Branch" value="" />
+                              {productBranches.map((apic) => (
+                                <Picker.Item
+                                  label={apic.branchName}
+                                  key={apic.id}
+                                  value={apic.id}
+                                />
+                              ))}
+                            </Picker>
+                          </View>
+                        </>
+                      )}
+                      {saleTypex === "2" && (
+                        <>
+                          <Text style={styles.inputText}>
+                            <Text style={{ color: "red" }}>* </Text>
+                            Company Services:
+                          </Text>
+                          <View style={styles.pickerContainer2}>
+                            <Picker
+                              style={{
+                                color: "#777",
+                                margin: -5,
+                              }}
+                              itemStyle={{
+                                backgroundColor: "#F96D02",
+                                color: "#000",
+                                fontFamily: "Ebrima",
+                                fontSize: 19,
+                              }}
+                              selectedValue={productID}
+                              onValueChange={(newValue) =>
+                                handleOnProductChange(newValue, products)
+                              }
+                            >
+                              <Picker.Item label="Select Service" value="" />
+                              {products.map((apic) => (
+                                <Picker.Item
+                                  label={apic.name}
+                                  key={apic.id}
+                                  value={apic.id}
+                                />
+                              ))}
+                            </Picker>
+                          </View>
+                          <Text style={styles.inputText}>
+                            <Text style={{ color: "red" }}>* </Text>
+                            Branch:
+                          </Text>
+                          <View style={styles.pickerContainer2}>
+                            <Picker
+                              style={{
+                                color: "#777",
+                                margin: -5,
+                              }}
+                              itemStyle={{
+                                backgroundColor: "#F96D02",
+                                color: "#000",
+                                fontFamily: "Ebrima",
+                                fontSize: 19,
+                              }}
+                              selectedValue={productBranchID}
+                              onValueChange={(newValue) =>
+                                setProductBranchID(newValue)
+                              }
+                            >
+                              <Picker.Item label="Select Branch" value="" />
+                              {productBranches.map((apic) => (
+                                <Picker.Item
+                                  label={apic.name}
+                                  key={apic.id}
+                                  value={apic.id}
+                                />
+                              ))}
+                            </Picker>
+                          </View>
+                        </>
+                      )}
+                    </>
+                  )}
+
+                  <Text style={styles.inputText}>
+                    <Text style={{ color: "red" }}>* </Text>Price Per
+                    Unit/Quantity:
+                  </Text>
+                  <TextInput
+                    keyboardType="numeric"
+                    placeholder="Price Per Unit/Quantity"
+                    value={pricePerUnitx}
+                    editable={editablex}
+                    onChangeText={(value) => setPricePerUnit(value)}
+                    style={styles.input}
+                    placeholderTextColor={"#777"}
+                  />
+                  <Text style={styles.inputText}>
+                    <Text style={{ color: "red" }}>* </Text>Quantity:
+                  </Text>
+                  <TextInput
+                    keyboardType="numeric"
+                    placeholder="Quantity"
+                    value={quantityx}
+                    onChangeText={(value) => setQuantity(value)}
+                    style={styles.input}
+                    placeholderTextColor={"#777"}
+                  />
+                  <Text style={styles.inputText}>
+                    <Text style={{ color: "red" }}>* </Text>Amount:
+                  </Text>
+                  <TextInput
+                    keyboardType="numeric"
+                    placeholder="Amount"
+                    value={amountx}
+                    editable={false}
+                    onChangeText={(value) => setAmount(value)}
+                    style={styles.input}
+                    placeholderTextColor={"#777"}
+                  />
+                  <Text style={styles.inputText}>
+                    <Text style={{ color: "red" }}>* </Text>Tax Amount:
+                  </Text>
+                  <TextInput
+                    keyboardType="numeric"
+                    placeholder="Tax Amount"
+                    value={taxAmountx}
+                    onChangeText={(value) => setTaxAmount(value)}
+                    style={styles.input}
+                    placeholderTextColor={"#777"}
+                  />
+                  <Text style={styles.inputText}>
+                    <Text style={{ color: "red" }}>* </Text>Total Amount:
+                  </Text>
+                  <TextInput
+                    keyboardType="numeric"
+                    placeholder="Total Amount"
+                    value={totalAmountx}
+                    editable={false}
+                    onChangeText={(value) => setTotalAmount(value)}
+                    style={styles.input}
+                    placeholderTextColor={"#777"}
+                  />
+
+                  <TouchableOpacity onPress={updateSaleItem}>
+                    <View
+                      style={[
+                        styles.loginButton,
+                        { flexDirection: "row", justifyContent: "center" },
+                      ]}
+                    >
+                      <Text style={styles.loginText}>UPDATE</Text>
+                    </View>
+                  </TouchableOpacity>
+                </ScrollView>
+              </View>
+            </View>
+          </Modal>
+          <Modal
+            transparent={true}
+            animationType="slide"
+            visible={isPaymentModalVisible}
+          >
+            <View style={{ flex: 1, justifyContent: "center" }}>
+              <View style={styles.modalView}>
+                <View
+                  style={{
+                    alignItems: "flex-start",
+                    backgroundColor: "#fff",
+                    // borderBottomWidth: 1,
+                    borderColor: "#f96d02",
+                    // padding: 2,
+                    marginBottom: 10,
+                  }}
+                >
+                  <Icon
+                    name="highlight-remove"
+                    size={30}
+                    onPress={handlePaymentModal}
+                    color="#f96d02"
+                  />
+                </View>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  <View
+                  // style={{
+                  //   flex: 1,
+                  //   justifyContent: "space-evenly",
+                  // }}
+                  >
+                    <PayWithFlutterwave
+                      onRedirect={handleOnRedirect}
+                      options={{
+                        tx_ref: generateTransactionRef(10),
+                        authorization: `${FLUTTER_AUTH_KEY}`,
+                        customer: {
+                          email: userDatax.email,
+                        },
+                        amount: subTotalAmountx,
+                        currency: "NGN",
+                        payment_options: "card",
+                      }}
+                      customButton={(props) => (
+                        <TouchableOpacity
+                          style={{ margin: 10 }}
+                          onPress={props.onPress}
+                          isBusy={props.isInitializing}
+                          disabled={props.disabled}
+                        >
+                          <View
+                            style={{
+                              backgroundColor: "#f5f5f5",
+                              padding: 10,
+                              borderRadius: 5,
+                            }}
+                          >
+                            <Text
+                              style={{
+                                color: "#000",
+                                margin: 5,
+                                fontSize: 15,
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Pay with Flutterwave
+                            </Text>
+                            <Image
+                              source={require("../images/flutterwave.png")}
+                              style={{
+                                height: 25,
+                                width: 159,
+                                alignSelf: "flex-end",
+                              }}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      )}
+                    />
+
+                    <TouchableOpacity
+                      style={{ margin: 10 }}
+                      onPress={() => transSlideIn(Easing.ease)}
+                      disabled={disableTrans}
+                    >
+                      <View
+                        style={{
+                          backgroundColor: "#f5f5f5",
+                          padding: 10,
+                          borderRadius: 5,
+                        }}
+                      >
+                        <Animated.View
+                          style={{
+                            minHeight: popAnim,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: "#000",
+                              margin: 5,
+                              fontSize: 15,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Pay with Transfer
+                          </Text>
+                          <MaterialCommunityIcons
+                            style={{ alignSelf: "flex-end" }}
+                            name="bank"
+                            size={36}
+                            color="black"
+                          />
+                          {showTransfer && (
+                            <View>
+                              <View>
+                                <Text style={{ color: "green" }}>
+                                  {subTotalAmountx}
+                                </Text>
+                                <Text style={{ color: "red" }}>{tfRemain}</Text>
+                              </View>
+                              <Text style={styles.inputText}>
+                                <Text style={{ color: "red" }}>* </Text>
+                                Amount:
+                              </Text>
+                              <TextInput
+                                keyboardType="numeric"
+                                placeholder="Amount"
+                                value={transferPaidAmount}
+                                onChangeText={(value) =>
+                                  handleTransCashChange(value, 1)
+                                }
+                                style={styles.input}
+                                placeholderTextColor={"#777"}
+                              />
+                              <View
+                                style={{
+                                  flexDirection: "row",
+                                  justifyContent: "flex-end",
+                                }}
+                              >
+                                <TouchableOpacity
+                                  onPress={() => transSlideOut(Easing.ease)}
+                                >
+                                  <View
+                                    style={{
+                                      padding: 10,
+                                      marginTop: 10,
+                                      backgroundColor: "red",
+                                      marginHorizontal: 10,
+                                      borderRadius: 5,
+                                      width: 80,
+                                    }}
+                                  >
+                                    <Text style={styles.loginText}>CANCEL</Text>
+                                  </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                  disabled={disableTransButton}
+                                  onPress={handleAddSale}
+                                >
+                                  <View
+                                    style={{
+                                      padding: 10,
+                                      marginTop: 10,
+                                      backgroundColor: "#F96D02",
+                                      marginHorizontal: 10,
+                                      borderRadius: 5,
+                                      width: 80,
+                                      flexDirection: "row",
+                                      justifyContent: "center",
+                                    }}
+                                  >
+                                    <Text style={styles.loginText}>PAY</Text>
+                                    <InnerLoader
+                                      animating={loading}
+                                      color="#fff"
+                                      size="small"
+                                    />
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            </View>
+                          )}
+                        </Animated.View>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{ margin: 10 }}
+                      onPress={() => cashSlideIn(Easing.ease)}
+                      disabled={disableCash}
+                    >
+                      <View
+                        style={{
+                          backgroundColor: "#f5f5f5",
+                          padding: 10,
+                          borderRadius: 5,
+                        }}
+                      >
+                        <Animated.View
+                          style={{
+                            minHeight: popAnim2,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: "#000",
+                              margin: 5,
+                              fontSize: 15,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Pay with Cash
+                          </Text>
+                          <MaterialCommunityIcons
+                            style={{ alignSelf: "flex-end" }}
+                            name="cash"
+                            size={36}
+                            color="black"
+                          />
+                          {showCash && (
+                            <View>
+                              <Text style={styles.inputText}>
+                                <Text style={{ color: "red" }}>* </Text>
+                                Amount:
+                              </Text>
+                              <TextInput
+                                keyboardType="numeric"
+                                placeholder="Amount"
+                                value={firstnamex}
+                                onChangeText={(value) => setFirstname(value)}
+                                style={styles.input}
+                                placeholderTextColor={"#777"}
+                              />
+
+                              <View
+                                style={{
+                                  flexDirection: "row",
+                                  justifyContent: "flex-end",
+                                }}
+                              >
+                                <TouchableOpacity
+                                  onPress={() => cashSlideOut(Easing.ease)}
+                                >
+                                  <View
+                                    style={{
+                                      padding: 10,
+                                      marginTop: 10,
+                                      backgroundColor: "red",
+                                      marginHorizontal: 10,
+                                      borderRadius: 5,
+                                      width: 80,
+                                    }}
+                                  >
+                                    <Text style={styles.loginText}>CANCEL</Text>
+                                  </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                  <View
+                                    style={{
+                                      padding: 10,
+                                      marginTop: 10,
+                                      backgroundColor: "#F96D02",
+                                      marginHorizontal: 10,
+                                      borderRadius: 5,
+                                      width: 80,
+                                    }}
+                                  >
+                                    <Text style={styles.loginText}>PAY</Text>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            </View>
+                          )}
+                        </Animated.View>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </ScrollView>
+              </View>
+            </View>
+          </Modal>
+          <View
+            style={{
+              marginTop: 10,
+              paddingTop: 20,
+              marginHorizontal: 5,
+              borderTopWidth: 1,
+              borderColor: "#777",
+            }}
+          >
+            <View
+              style={{
+                marginTop: 10,
+                borderTopWidth: 1,
+                borderColor: "#0f0f0f",
+              }}
+            />
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  borderLeftWidth: 1,
+                  borderColor: "#0f0f0f",
+                }}
+              >
+                <Text
+                  style={[
+                    styles.salesItemTitle,
+                    {
+                      width: "35%",
+                    },
+                  ]}
+                >
+                  Item
                 </Text>
                 <Text
-                  style={{
-                    width: "10%",
-                  }}
+                  style={[
+                    styles.salesItemTitle,
+                    {
+                      width: "10%",
+                    },
+                  ]}
                 >
-                  Qtyoooooooooooooo
+                  Qty
                 </Text>
                 <Text
-                  style={{
-                    width: "10%",
-                  }}
+                  style={[
+                    styles.salesItemTitle,
+                    {
+                      width: "10%",
+                    },
+                  ]}
                 >
-                  Taxoooooooooooooooo
+                  Tax (₦)
                 </Text>
                 <Text
-                  style={{
-                    width: "20%",
-                  }}
+                  style={[
+                    styles.salesItemTitle,
+                    {
+                      width: "15%",
+                    },
+                  ]}
                 >
-                  Priceooooooooooooooooo
+                  Price (₦)
                 </Text>
                 <Text
-                  style={{
-                    width: "20%",
-                  }}
+                  style={[
+                    styles.salesItemTitle,
+                    {
+                      width: "15%",
+                    },
+                  ]}
                 >
-                  Total Priceooooooooooooooooo
+                  Amount (₦)
+                </Text>
+                <Text
+                  style={[
+                    styles.salesItemTitle,
+                    {
+                      width: "15%",
+                    },
+                  ]}
+                >
+                  Total Amount (₦)
                 </Text>
               </View>
             </View>
+          </View>
+          {allSaleItem.map((sItem) => {
+            return (
+              <TouchableOpacity
+                key={sItem.id}
+                onPress={() => handleUpdate(sItem.id)}
+              >
+                <View
+                  style={{
+                    marginHorizontal: 5,
+                  }}
+                >
+                  <View
+                    style={{
+                      borderTopWidth: 1,
+                      borderColor: "#0f0f0f",
+                    }}
+                  />
+                  <View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        borderLeftWidth: 1,
+                        borderColor: "#0f0f0f",
+                      }}
+                    >
+                      <View
+                        style={[
+                          styles.salesItemBody,
+                          {
+                            width: "35%",
+                          },
+                        ]}
+                      >
+                        <Text>
+                          <Text style={{ fontWeight: "500" }}>Type: </Text>
+                          {sItem.saleTypeName}
+                        </Text>
+                        <Text>
+                          <Text style={{ fontWeight: "500" }}>Name: </Text>
+                          {sItem.productName}
+                        </Text>
+                        <Text>
+                          <Text style={{ fontWeight: "500" }}>Branch: </Text>
+                          {sItem.branchName}
+                        </Text>
+                      </View>
+                      <Text
+                        style={[
+                          styles.salesItemBody,
+                          {
+                            width: "10%",
+                          },
+                        ]}
+                      >
+                        {numberWithCommas(sItem.quantity)}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.salesItemBody,
+                          {
+                            width: "10%",
+                          },
+                        ]}
+                      >
+                        {numberWithCommas(sItem.taxAmount)}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.salesItemBody,
+                          {
+                            width: "15%",
+                          },
+                        ]}
+                      >
+                        {numberWithCommas(sItem.pricePerUnit)}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.salesItemBody,
+                          {
+                            width: "15%",
+                          },
+                        ]}
+                      >
+                        {numberWithCommas(sItem.amount)}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.salesItemBody,
+                          {
+                            width: "15%",
+                          },
+                        ]}
+                      >
+                        {numberWithCommas(sItem.totalAmount)}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+          <View
+            style={{
+              marginHorizontal: 5,
+              minHeight: 30,
+              marginBottom: 10,
+            }}
+          >
+            <View
+              style={{
+                borderTopWidth: 1,
+                borderColor: "#0f0f0f",
+              }}
+            />
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  borderLeftWidth: 1,
+                  borderColor: "#0f0f0f",
+                }}
+              >
+                <View
+                  style={[
+                    styles.salesItemBody,
+                    {
+                      width: "70%",
+                    },
+                  ]}
+                />
+                <Text
+                  style={[
+                    styles.salesItemTitle,
+                    {
+                      width: "15%",
+                    },
+                  ]}
+                >
+                  Bonus Amount (₦):
+                </Text>
+                <Text
+                  style={[
+                    styles.salesItemBody,
+                    {
+                      width: "15%",
+                    },
+                  ]}
+                >
+                  {numberWithCommas(bonusAmountx)}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                borderTopWidth: 1,
+                borderColor: "#0f0f0f",
+              }}
+            />
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  borderLeftWidth: 1,
+                  borderColor: "#0f0f0f",
+                }}
+              >
+                <View
+                  style={[
+                    styles.salesItemBody,
+                    {
+                      width: "70%",
+                    },
+                  ]}
+                />
+                <Text
+                  style={[
+                    styles.salesItemTitle,
+                    {
+                      width: "15%",
+                    },
+                  ]}
+                >
+                  Subtotal(₦):
+                </Text>
+                <Text
+                  style={[
+                    styles.salesItemBody,
+                    {
+                      width: "15%",
+                    },
+                  ]}
+                >
+                  {numberWithCommas(subTotalAmountx)}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderColor: "#0f0f0f",
+              }}
+            />
           </View>
           <Button title="print" onPress={generatePdf} />
           {/* <PayWithFlutterwave
@@ -547,29 +2669,30 @@ export default function Sales({ navigation }) {
               </TouchableOpacity>
             )}
           /> */}
-          <TouchableOpacity onPress={clickHandler}>
+          <TouchableOpacity onPress={handlePaymentModal}>
             <View
               style={[
                 styles.loginButton,
                 { flexDirection: "row", justifyContent: "center" },
               ]}
             >
-              <Text style={styles.loginText}>LOGIN</Text>
-              <InnerLoader animating={loading} color="#fff" size="small" />
+              <Text style={styles.loginText}>PAY</Text>
             </View>
           </TouchableOpacity>
         </View>
       </ScrollView>
       {/* <Loader animating={true} /> */}
-      {/* <Toast /> */}
+      {/* <ToastAlert /> */}
       {/* </TouchableWithoutFeedback> */}
-      <Toast
+
+      <ToastAlert
         status={toastObject.status}
         message={toastObject.message}
         open={toastObject.open}
         type={toastObject.type}
         change={toastObject.change}
       />
+      <Loader animating={loading1} color="#fff" size="small" />
     </KeyboardAvoidingView>
   );
 }
@@ -620,8 +2743,9 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingHorizontal: 20,
     borderRadius: 5,
-    // flexDirection: "row",
-    // justifycontent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    // justifyContent: "space-between",
   },
   pickerContainer2: {
     borderWidth: 1,
@@ -698,6 +2822,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 20,
+  },
+  salesItemTitle: {
+    fontWeight: "bold",
+    borderRightWidth: 1,
+    borderColor: "#0f0f0f",
+    paddingHorizontal: 2,
+  },
+  salesItemBody: {
+    fontWeight: "regular",
+    borderRightWidth: 1,
+    borderColor: "#0f0f0f",
+    paddingHorizontal: 2,
+    textAlign: "right",
   },
 });
 // {
