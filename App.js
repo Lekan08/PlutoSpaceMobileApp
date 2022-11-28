@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import NavigationStack from "./navigations/navigation";
+import { RootSiblingParent } from "react-native-root-siblings";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -50,10 +51,12 @@ export default function App() {
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
       {/* <Text>waddup its a new app</Text> */}
-      <NavigationStack />
+      <RootSiblingParent>
+        <NavigationStack />
+      </RootSiblingParent>
     </View>
   );
-  }
+}
 
 const styles = StyleSheet.create({
   container: {

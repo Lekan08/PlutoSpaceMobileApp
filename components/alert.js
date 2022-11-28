@@ -10,8 +10,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AntDesign, Entypo } from "@expo/vector-icons";
+import Toast from "react-native-root-toast";
 
-function Toast({ status, message, type, open, change, onPress }) {
+function ToastAlert({ status, message, type, open, change, onPress }) {
   //   const screenHeight = Dimensions.get("screen").height;
   //   const screenWidth = Dimensions.get("screen").width;
   const windowWidth = Dimensions.get("screen").width;
@@ -82,7 +83,6 @@ function Toast({ status, message, type, open, change, onPress }) {
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
-      popIn();
       setDropdown(open);
       //   slidedown();
       //   setTimeout(() => {
@@ -93,49 +93,39 @@ function Toast({ status, message, type, open, change, onPress }) {
     return () => {
       isMounted = false;
     };
-  }, [change]);
-  console.log(change);
-  useEffect(() => {
-    console.log("is it working now");
-    popIn();
-  }, [open]);
+  }, [open, change]);
 
   return (
     <>
-      {dropdown ? (
-        <Animated.View
-          style={{
-            flex: 1,
-            transform: [
-              { translateX: popAnim, translateY: windowHeight * 0.3 * -1 },
-            ],
-          }}
-        >
-          <View style={styles.toastContainer}>
-            <View style={styles.toastRow}>
-              <AntDesign
-                name={type === "success" ? "checkcircleo" : "closecircleo"}
-                size={24}
-                color={type === "success" ? successColor : failColor}
-              />
-              <View style={styles.toastText}>
-                <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-                  {status}
-                </Text>
-                <Text style={{ fontSize: 12 }}>{message}</Text>
-              </View>
-              <TouchableOpacity onPress={instantPopOut}>
-                <Entypo name="cross" size={24} color="black" />
-              </TouchableOpacity>
-              {onPress && (
-                <TouchableOpacity onPress={onPress}>
-                  <Entypo name="arrow-long-right" size={24} color="black" />
-                </TouchableOpacity>
-              )}
+      <Toast
+        visible={dropdown}
+        position={50}
+        shadow={true}
+        duration={5}
+        animation={true}
+        hideOnPress={true}
+        backgroundColor="transparent"
+        onShown={() => setTimeout(() => setDropdown(false), 5000)}
+      >
+        <View style={styles.toastContainer}>
+          <View style={styles.toastRow}>
+            <AntDesign
+              name={type === "success" ? "checkcircleo" : "closecircleo"}
+              size={24}
+              color={type === "success" ? successColor : failColor}
+            />
+            <View style={styles.toastText}>
+              <Text style={{ fontWeight: "bold", fontSize: 15 }}>{status}</Text>
+              <Text style={{ fontSize: 12 }}>{message}</Text>
             </View>
+            {onPress && (
+              <TouchableOpacity onPress={onPress}>
+                <Entypo name="arrow-long-right" size={24} color="black" />
+              </TouchableOpacity>
+            )}
           </View>
-        </Animated.View>
-      ) : null}
+        </View>
+      </Toast>
     </>
   );
 }
@@ -166,14 +156,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 3.84,
+    // elevation: 1,
     // height: screenHeight,
     // width: screenWidth,
   },
@@ -184,9 +174,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   toastText: {
-    width: "70%",
+    width: "90%",
     padding: 2,
   },
 });
 
-export { Toast, Sweet };
+export { ToastAlert, Sweet };

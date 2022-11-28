@@ -22,15 +22,43 @@ import { PayWithFlutterwave } from "flutterwave-react-native";
 import { REACT_APP_ZAVE_URL, FLUTTER_AUTH_KEY } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Loader, InnerLoader } from "../components/loader";
-import { Toast } from "../components/alert";
+import { ToastAlert } from "../components/alert";
+import { printToFileAsync } from "expo-print";
+import { shareAsync } from "expo-sharing";
+// import GHeaders from "../getHeader";
+// import PHeaders from "../postHeader";
 
 export default function Login({ navigation }) {
   const [usernamex, setUsername] = useState("");
   const [passwordx, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [toastObject, setToastObject] = useState({});
+  // const { allPHeaders: myHeaders } = PHeaders();
+  // const { allGHeaders: miHeaders } = GHeaders();
 
   const [passwordShown, setPasswordShown] = useState(true);
+
+  let [name, setName] = useState("anthony");
+
+  const html = `
+    <html>
+      <body>
+        <h1>Hi ${name}</h1>
+        <p style="color: green;">55 packages are looking for fundingrun for detail2 vulnerabilities (1 high, 1 criticalTo address issues that do not require attention, run:npm audit fiTo address all issues, run:npm audit fix --forcRun  for details.</p>
+        <p style="color: red;">Hello. Bonjour. Hola.</p>
+        <p style="color: coral;">Hello. Bonjour. Hola.</p>
+      </body>
+    </html>
+  `;
+
+  let generatePdf = async () => {
+    const file = await printToFileAsync({
+      html: html,
+      base64: false,
+    });
+
+    await shareAsync(file.uri);
+  };
 
   const handlePress = () => {
     setLoading(true);
@@ -49,35 +77,66 @@ export default function Login({ navigation }) {
       redirect: "follow",
     };
 
-    fetch(`${proREACT_APP_ZAVE_URL}/users/doLogin`, requestOptions)
+    fetch(`${process.env.REACT_APP_ZAVE_URL}/login/dologin`, requestOptions)
       .then(async (res) => {
-        // console.log(res.headers);;;;
-        const aToken = res.headers.get("token-1");
-        AsyncStorage.setItem("rexxdex1", aToken);
+        // console.log(res.headers);;;;  // storing data
+        const storeUser = async (value) => {
+          try {
+            const aToken = value.headers.get("token-1");
+            await AsyncStorage.setItem("rexxdex1", aToken);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        storeUser(res);
+
         return res.json();
       })
-      .then((res) => res.json())
-      .then((result) => {
+      .then(async (result) => {
         setLoading(false);
         console.log(result);
         if (result.status === "SUCCESS") {
+          // PHeaders();
+          // GHeaders();
           // storing data
-          const storeUser = async (value) => {
-            try {
-              await AsyncStorage.setItem("userInfo", JSON.stringify(value));
-            } catch (error) {
-              console.log(error);
-            }
-          };
-          storeUser(result.data);
-          setToastObject({
-            status: result.status,
-            message: result.message,
-            open: true,
-            type: "success",
-            change: Math.floor(Math.random() * 100),
+          await AsyncStorage.getItem("rexxdex1").then((resultt) => {
+            console.log(`enteredd: ${resultt}`);
+            const storeUser = async (value) => {
+              try {
+                await AsyncStorage.setItem(
+                  "username",
+                  JSON.stringify(usernamex)
+                );
+                await AsyncStorage.setItem(
+                  "password",
+                  JSON.stringify(passwordx)
+                );
+                await AsyncStorage.setItem(
+                  "userInfo",
+                  JSON.stringify(value.data)
+                );
+                await AsyncStorage.setItem(
+                  "userOtherDets",
+                  JSON.stringify(value.otherDetailsDTO)
+                );
+                await AsyncStorage.setItem(
+                  "BirthDayStatus",
+                  JSON.stringify(value.wishBirthday)
+                );
+                await navigation.navigate("Home", { replace: true });
+              } catch (error) {
+                console.log(error);
+              }
+            };
+            storeUser(result);
+            // setToastObject({
+            //   status: result.status,
+            //   message: result.message,
+            //   open: true,
+            //   type: "success",
+            //   change: Math.floor(Math.random() * 100),
+            // });
           });
-          navigation.navigate("Home", { replace: true });
         } else {
           // Alert.alert(result.status, result.message);
           setToastObject({
@@ -96,6 +155,7 @@ export default function Login({ navigation }) {
   };
 
   const clickHandler = () => {
+    // navigation.navigate("Home", { replace: true });
     if (
       usernamex.length === 0 ||
       usernamex === "" ||
@@ -169,6 +229,7 @@ export default function Login({ navigation }) {
               value={usernamex}
               onChangeText={(value) => setUsername(value)}
               style={styles.input}
+              textContentType="username"
               placeholderTextColor={"#777"}
             />
 
@@ -184,7 +245,7 @@ export default function Login({ navigation }) {
                 name="password"
                 autoCapitalize="none"
                 autoCorrect={false}
-                textContentType="newPassword"
+                textContentType="password"
                 enablesReturnKeyAutomatically
               />
               <Pressable
@@ -201,6 +262,7 @@ export default function Login({ navigation }) {
                 />
               </Pressable>
             </View>
+            <Button title="print" onPress={generatePdf} />
             {/* <PayWithFlutterwave
             onRedirect={handleOnRedirect}
             options={{
@@ -271,9 +333,9 @@ export default function Login({ navigation }) {
           </View> */}
         </ScrollView>
         {/* <Loader animating={true} /> */}
-        {/* <Toast /> */}
+        {/* <ToastAlert /> */}
       </TouchableWithoutFeedback>
-      <Toast
+      <ToastAlert
         status={toastObject.status}
         message={toastObject.message}
         open={toastObject.open}
