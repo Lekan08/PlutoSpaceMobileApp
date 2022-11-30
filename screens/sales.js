@@ -29,7 +29,10 @@ import { REACT_APP_TARA_URL, FLUTTER_AUTH_KEY } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Loader, InnerLoader } from "../components/loader";
 import { ToastAlert } from "../components/alert";
-import { printToFileAsync } from "expo-print";
+// import { printToFileAsync } from "expo-print";
+import { Asset } from "expo-asset";
+import { printAsync } from "expo-print";
+import { manipulateAsync } from "expo-image-manipulator";
 import { shareAsync } from "expo-sharing";
 import { Picker } from "@react-native-picker/picker";
 import AllCountriesAndStates from "../countries-states-master/countries";
@@ -43,6 +46,9 @@ export default function Sales({ navigation }) {
   //   const { allPHeaders: myHeaders } = PHeaders();
   //   const { allGHeaders: miHeaders } = GHeaders();
   //   const miHeaders = GHeaders();
+
+  const popAnim = useRef(new Animated.Value(45)).current;
+  const popAnim2 = useRef(new Animated.Value(45)).current;
 
   const [commentx, setComment] = useState("");
   const [passwordx, setPassword] = useState("");
@@ -65,7 +71,7 @@ export default function Sales({ navigation }) {
   const [addressx, setAddress] = useState("");
   const [clientsx, setClients] = useState([]);
   const [clientx, setClientx] = useState("");
-  const [userDatax, setUserData] = useState({});
+  const [userDatax, setUserData] = useState({ data: {} });
   const [bonusAmountx, setBonusAmount] = useState(0);
   // const [countryx, setCountryx] = useState("");
 
@@ -82,6 +88,7 @@ export default function Sales({ navigation }) {
   const [totalAmountx, setTotalAmount] = useState("");
   const [allSaleItem, setAllSaleItem] = useState([]);
   const [subTotalAmountx, setSubTotalAmount] = useState(0);
+  const [productNamex, setProductNamex] = useState("");
 
   const [transferPaidAmount, setTransferPaidAmount] = useState("");
   const [cashPaidAmount, setCashPaidAmount] = useState("");
@@ -141,8 +148,32 @@ export default function Sales({ navigation }) {
     setIsSalesModalVisible(() => !isSalesModalVisible);
   const handleSalesModal2 = () =>
     setIsSalesModal2Visible(() => !isSalesModal2Visible);
-  const handlePaymentModal = () =>
+
+  const handlePaymentModal = () => {
     setIsPaymentModalVisible(() => !isPaymentModalVisible);
+    setCashPaidAmount("");
+    setTransferPaidAmount("");
+    setTFRemain("0");
+    setCHRemain("0");
+    setDisableTransButton(true);
+    setDisableCashButton(true);
+
+    setShowTransfer(false);
+    setDisableTrans(false);
+    Animated.timing(popAnim, {
+      toValue: 50,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+
+    setShowCash(false);
+    setDisableCash(false);
+    Animated.timing(popAnim2, {
+      toValue: 50,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+  };
 
   const handleCloseSalesModal2 = () => {
     setSaleType("");
@@ -171,40 +202,261 @@ export default function Sales({ navigation }) {
         val = 0;
       }
       const subVal = sta - val;
-      setTFRemain(subVal);
+      setTFRemain(`${subVal}`);
       if (subVal === 0) {
         setDisableTransButton(false);
       } else {
         setDisableTransButton(true);
       }
+    } else if (num === 2) {
+      setCashPaidAmount(value);
+
+      let sta = parseInt(subTotalAmountx, 10);
+      if (isNaN(sta)) {
+        sta = 0;
+      }
+      let val = parseInt(value, 10);
+      if (isNaN(val)) {
+        val = 0;
+      }
+      const subVal = sta - val;
+      setCHRemain(`${subVal}`);
+      if (subVal === 0) {
+        setDisableCashButton(false);
+      } else {
+        setDisableCashButton(true);
+      }
     }
   };
 
-  const html = `
-    <html>
-      <body>
-        <h1>Hi ${name}</h1>
-        <p style="color: green;">55 packages are looking for fundingrun for detail2 vulnerabilities (1 high, 1 criticalTo address issues that do not require attention, run:npm audit fiTo address all issues, run:npm audit fix --forcRun  for details.</p>
-        <p style="color: red;">Hello. Bonjour. Hola.</p>
-        <p style="color: coral;">Hello. Bonjour. Hola.</p>
-      </body>
-    </html>
-  `;
-
-  let generatePdf = async () => {
-    const file = await printToFileAsync({
-      html: html,
-      base64: false,
-    });
-
-    await shareAsync(file.uri);
-  };
-
   function numberWithCommas(x) {
+    if (x === 0 || x === "0") {
+      return "0";
+    }
     var parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return parts.join(".");
   }
+
+  const generatePdf = async () => {
+    setLoading1(true);
+    const asset = Asset.fromModule(
+      require("../images/house-of-tara-black.jpg")
+    );
+    const image = await manipulateAsync(asset.localUri ?? asset.uri, [], {
+      base64: true,
+    });
+
+    const clientData = clientsx.filter((item) => item.id === clientx);
+    const clientName = `${clientData[0].title} ${clientData[0].fname}`;
+    console.log(userDatax);
+    const cashierName = `${userDatax.otherDetailsDTO.personal.fname}`;
+
+    let salesString = ``;
+    let ttam = 0;
+    let ttxam = 0;
+    allSaleItem.map((stringx) => {
+      const tAm = parseInt(stringx.amount, 10);
+      const txAm = parseInt(stringx.taxAmount, 10);
+      ttam += tAm;
+      ttxam += txAm;
+      const stringg = `
+      <tr style="border-bottom: 1px solid #0f0f0f;">
+    <td style="border-bottom: 1px solid #0f0f0f;">${stringx.productName}</td>
+    <td style="border-bottom: 1px solid #0f0f0f;">${stringx.quantity}</td>
+    <td style="text-align: end; border-bottom: 1px solid #0f0f0f;">₦${numberWithCommas(
+      stringx.pricePerUnit
+    )}.00</td>
+    <td style="text-align: end; border-bottom: 1px solid #0f0f0f;">₦${numberWithCommas(
+      stringx.amount
+    )}.00</td>
+  </tr>
+  
+  `;
+      salesString += stringg;
+    });
+
+    console.log(salesString);
+    const html = `
+  <html>
+
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.3/JsBarcode.all.min.js"></script>
+  
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+  
+    <title>Receipt</title>
+  </head>
+  
+  <body>
+    <div style="display: flex; align-items: center; flex-direction: column;">
+      <div
+        style="background-color: #ffffff; border: 1px #0f0f0f solid; padding-top: 2%; width: 80mm; display: flex; align-items: center; flex-direction: column;">
+        <div><img  src="data:image/jpeg;base64,${
+          image.base64
+        }" height="250px" width="250px" />
+        </div>
+        <h4
+          style="text-transform: uppercase; letter-spacing: 2mm; font-family: Arial; font-weight: 600; font-size: 18px; margin-top: -70px;">
+          international
+        </h4>
+        <h4 style="text-transform: uppercase; font-family: Arial; font-weight: 700; margin-top: -25px;">House of tara intl
+          limited lekki
+        </h4>
+        <h6 style="font-family: Arial;  margin-top: -20px; text-align: center; width: 70%;">13A Road 12, Onikepo Akande
+          Street Off
+          Admiralty Road, Lekki
+          Phase 1, Lagos
+        </h6>
+        <div
+          style="margin-top: -25px; display: flex; flex-direction: row; align-items: center; align-self: flex-start; margin-left: 50px;">
+          <p style="text-transform: capitalize; font-family: Arial; font-weight: 800;  font-size: 13px;">Bill To:
+          </p>
+          <p style="text-transform: uppercase; font-family: Arial; font-weight: 500;  font-size: 13px;">&nbsp;STUDIO
+          </p>
+        </div>
+        <p
+          style="text-transform: capitalize; font-family: Arial; font-weight: 500;  font-size: 13px; margin-left: 100px; align-self: flex-start; margin-top: -12px;">
+          ${clientName}
+        </p>
+        <p
+          style="text-transform: uppercase; font-family: Arial; font-weight: 500;  font-size: 13px; margin-left: 100px; align-self: flex-start; margin-top: -10px;">
+          Lekki<br />
+          Lagos
+        </p>
+        <p
+          style="font-family: Arial; font-weight: bold;  font-size: 13px; margin-left: 20px; align-self: flex-start; margin-top: -10px;">
+          Cashier: ${cashierName}
+        </p>
+        <table style="font-family: Arial; font-size: small; text-align: left;">
+          <tr>
+            <th>Item Name</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Ext Price</th>
+          </tr>
+          <!--  <tr>
+            <td style="border-bottom: 1px solid #0f0f0f;">Make up for making the face up</td>
+            <td style="border-bottom: 1px solid #0f0f0f;">10</td>
+            <td style="text-align: end; border-bottom: 1px solid #0f0f0f;">N120,000.00</td>
+            <td style="text-align: end; border-bottom: 1px solid #0f0f0f;">N120,000.00</td>
+          </tr> -->
+          <!-- <tr>
+            <td></td>
+            <td>Discount</td>
+            <td>N2,000.00</td>
+            <td></td>
+          </tr> -->
+          ${salesString}
+          <tr>
+            <td style="text-align: end; border-bottom: 1px solid #0f0f0f;"></td>
+            <td style="text-align: end; border-bottom: 1px solid #0f0f0f;"></td>
+            <td style="text-align: end; border-bottom: 1px solid #0f0f0f;">Subtotal:</td>
+            <td style="text-align: end; border-bottom: 1px solid #0f0f0f;">₦${numberWithCommas(
+              ttam
+            )}.00</td>
+          </tr>
+          <tr>
+            <td>Local Sales Tax</td>
+            <td></td>
+            <td style="text-align: end;">Tax:</td>
+            <td style="text-align: end;">₦${numberWithCommas(ttxam)}.00</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td style="text-align: end; ">Discounts:</td>
+            <td style="text-align: end;  border-bottom: 1px solid #0f0f0f;">₦${numberWithCommas(
+              bonusAmountx
+            )}.00</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td style="text-align: end; font-size: 12px; font-weight: bold;">RECEIPT TOTAL:</td>
+            <td style="text-align: end;  border-bottom: 1px solid #0f0f0f; font-weight: bold;">₦${numberWithCommas(
+              subTotalAmountx
+            )}.00</td>
+          </tr>
+        </table>
+        <p
+          style=" font-family: Arial; font-weight: 500;  font-size: 12px; margin-left: 50px; align-self: flex-start; margin-top: 20px;">
+          Check: ₦${numberWithCommas(subTotalAmountx)}.00 14/11/22
+        </p>
+        <p
+          style=" font-family: Arial; font-weight: 500;  font-size: 12px; margin-left: 90px; align-self: flex-start; margin-top: 0px;">
+          Total Sales Discount: ₦${numberWithCommas(bonusAmountx)}.00
+        </p>
+        <p style=" font-family: Arial; font-weight: 500;  font-size: 12px; margin-top: 0px;">
+          Charges inclusive of 7.5% VAT
+        </p>
+        <p
+          style=" font-family: Arial; font-weight: 500; text-align: center;  font-size: 12px; margin: 10px; align-self: flex-start; margin-top: 0px;">
+          Thank you for shopping with us, Products purchased in good condition are not returnable
+        </p>
+        <p style=" font-family: Arial; font-weight: 500;  font-size: 12px; margin-top: 0px;">
+          Have a great day !!!
+        </p>
+        <svg style="width: 50%;" id="barcode"></svg>
+  
+      </div>
+    </div>
+  
+    <!-- jQuery first, then Popper.js, then Bootstrap JS
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script> -->
+    <script type="text/javascript">
+      JsBarcode("#barcode", "https://houseoftara.com", {
+        lineColor: "#000000",
+        width: 1,
+        height: 40,
+        displayValue: false
+      });
+  
+    </script>
+  
+  
+  </body>
+  
+  </html>
+  `;
+
+    setLoading1(false);
+    await printAsync({ html, width: 303 });
+    // await shareAsync(file.uri);
+  };
+
+  React.useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e) => {
+        // Prevent default behavior of leaving the screen
+        e.preventDefault();
+
+        // // Prompt the user before leaving the screen
+        // Alert.alert(
+        //   "Discard changes?",
+        //   "You have unsaved changes. Are you sure to discard them and leave the screen?",
+        //   [
+        //     { text: "Don't leave", style: "cancel", onPress: () => {} },
+        //     {
+        //       text: "Discard",
+        //       style: "destructive",
+        //       // If the user confirmed, then we dispatch the action we blocked earlier
+        //       // This will continue the action that had triggered the removal of the screen
+        //       onPress: () => navigation.dispatch(e.data.action),
+        //     },
+        //   ]
+        // );
+      }),
+    [navigation]
+  );
 
   useEffect(() => {
     if (isFocused) {
@@ -216,7 +468,8 @@ export default function Sales({ navigation }) {
         let headers;
         // getting data
         try {
-          const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
+          const userDataa = JSON.parse(await AsyncStorage.getItem("userInfo"));
+          const userData = userDataa.data;
           let GeneToken = await AsyncStorage.getItem("rexxdex1");
           let apiToken = await AsyncStorage.getItem("rexxdex");
           console.log(GeneToken);
@@ -231,7 +484,7 @@ export default function Sales({ navigation }) {
             "Token-1": `${token}`,
           };
           console.log(headers);
-          setUserData(userData);
+          setUserData(userDataa);
           ogrIDx = userData.orgID;
         } catch (error) {
           console.log(error);
@@ -314,7 +567,8 @@ export default function Sales({ navigation }) {
       let requestOptions;
       // getting data
       try {
-        const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
+        const userDataa = JSON.parse(await AsyncStorage.getItem("userInfo"));
+        const userData = userDataa.data;
         let GeneToken = await AsyncStorage.getItem("rexxdex1");
         let apiToken = await AsyncStorage.getItem("rexxdex");
         console.log(GeneToken);
@@ -354,7 +608,7 @@ export default function Sales({ navigation }) {
           redirect: "follow",
         };
         console.log(requestOptions);
-        setUserData(userData);
+        setUserData(userDataa);
       } catch (error) {
         console.log(error);
       }
@@ -462,7 +716,8 @@ export default function Sales({ navigation }) {
       let requestOptions;
       // getting data
       try {
-        const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
+        const userDataa = JSON.parse(await AsyncStorage.getItem("userInfo"));
+        const userData = userDataa.data;
         let GeneToken = await AsyncStorage.getItem("rexxdex1");
         let apiToken = await AsyncStorage.getItem("rexxdex");
         console.log(GeneToken);
@@ -520,7 +775,7 @@ export default function Sales({ navigation }) {
           redirect: "follow",
         };
         console.log(requestOptions);
-        setUserData(userData);
+        setUserData(userDataa);
       } catch (error) {
         console.log(error);
       }
@@ -574,18 +829,15 @@ export default function Sales({ navigation }) {
           }
           if (result.status === "SUCCESS") {
             // storing data
-            setInput(!input);
-            handleModal();
-            setFirstname("");
-            setLastname("");
-            setOthername("");
-            setEmail("");
-            setTitle("");
-            setResidentialCountry("");
-            setResidentialState("");
-            setCity("");
-            setAddress("");
-            storeUser(result.data);
+            // setInput(!input);
+            generatePdf();
+            handlePaymentModal();
+            setIsPaymentModalVisible(false);
+            setClientx("");
+            setBonusAmount("");
+            setComment("");
+            setSubTotalAmount("");
+            setAllSaleItem([]);
             setToastObject({
               status: result.status,
               message: result.message,
@@ -593,7 +845,7 @@ export default function Sales({ navigation }) {
               type: "success",
               change: Math.floor(Math.random() * 100),
             });
-            navigation.navigate("Home", { replace: true });
+            // navigation.navigate("Home", { replace: true });
           } else {
             // Alert.alert(result.status, result.message);
             setToastObject({
@@ -682,7 +934,8 @@ export default function Sales({ navigation }) {
       let headers;
       // getting data
       try {
-        const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
+        const userDataa = JSON.parse(await AsyncStorage.getItem("userInfo"));
+        const userData = userDataa.data;
         let GeneToken = await AsyncStorage.getItem("rexxdex1");
         let apiToken = await AsyncStorage.getItem("rexxdex");
         console.log(GeneToken);
@@ -696,7 +949,7 @@ export default function Sales({ navigation }) {
           "Token-1": `${token}`,
         };
         console.log(headers);
-        setUserData(userData);
+        setUserData(userDataa);
         ogrIDx = userData.orgID;
       } catch (error) {
         console.log(error);
@@ -782,7 +1035,8 @@ export default function Sales({ navigation }) {
     let headers;
     // getting data
     try {
-      const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
+      const userDataa = JSON.parse(await AsyncStorage.getItem("userInfo"));
+      const userData = userDataa.data;
       let GeneToken = await AsyncStorage.getItem("rexxdex1");
       let apiToken = await AsyncStorage.getItem("rexxdex");
       console.log(GeneToken);
@@ -796,7 +1050,7 @@ export default function Sales({ navigation }) {
         "Token-1": `${token}`,
       };
       console.log(headers);
-      setUserData(userData);
+      setUserData(userDataa);
       ogrIDx = userData.orgID;
     } catch (error) {
       console.log(error);
@@ -944,6 +1198,9 @@ export default function Sales({ navigation }) {
     if (filteredProducts.length > 0) {
       productNamee = filteredProducts[0].name;
     }
+    if (saleTypex === "3") {
+      productNamee = productNamex;
+    }
     const saleItemObj = {
       id: `SALE${new Date().getTime() * 8 + 2}`,
       saleType: saleTypex,
@@ -965,7 +1222,7 @@ export default function Sales({ navigation }) {
       }
 
       let subTotalx = parseInt(totalAmountx, 10);
-      setSubTotalAmount(subTotalx + bbamt);
+      setSubTotalAmount(subTotalx - bbamt);
     } else {
       let subTotalx = parseInt(totalAmountx, 10);
       allSaleItem.map((subb) => {
@@ -1010,6 +1267,9 @@ export default function Sales({ navigation }) {
     if (filteredProducts.length > 0) {
       productNamee = filteredProducts[0].name;
     }
+    if (saleTypex === "3") {
+      productNamee = productNamex;
+    }
     const saleItemObj = {
       id: idx,
       saleType: saleTypex,
@@ -1030,7 +1290,7 @@ export default function Sales({ navigation }) {
         bbamt = 0;
       }
       let subTotalx = parseInt(totalAmountx, 10);
-      setSubTotalAmount(subTotalx + bbamt);
+      setSubTotalAmount(subTotalx - bbamt);
     } else {
       let objIndex;
       //Find index of specific object using findIndex method.
@@ -1049,7 +1309,7 @@ export default function Sales({ navigation }) {
       if (isNaN(bbamt)) {
         bbamt = 0;
       }
-      setSubTotalAmount(subTotalx + bbamt);
+      setSubTotalAmount(subTotalx - bbamt);
     }
     setAllSaleItem(newAllSaleItem);
     setSaleType("");
@@ -1074,6 +1334,7 @@ export default function Sales({ navigation }) {
     setSaleType(filteredItems[0].saleType);
     setProductID(filteredItems[0].salesID);
     setProductBranchID(filteredItems[0].branchID);
+    setProductNamex(filteredItems[0].productName);
     setPricePerUnit(filteredItems[0].pricePerUnit);
     setQuantity(filteredItems[0].quantity);
     setAmount(filteredItems[0].amount);
@@ -1095,7 +1356,7 @@ export default function Sales({ navigation }) {
     if (isNaN(bbamt)) {
       bbamt = 0;
     }
-    setSubTotalAmount(subTotalx + bbamt);
+    setSubTotalAmount(subTotalx - bbamt);
 
     setAllSaleItem(newAllSaleItem);
     handleCloseSalesModal2();
@@ -1126,19 +1387,16 @@ export default function Sales({ navigation }) {
       if (isNaN(bbamt)) {
         bbamt = 0;
       }
-      setSubTotalAmount(subTotalx + bbamt);
+      setSubTotalAmount(subTotalx - bbamt);
     }
   };
-
-  const popAnim = useRef(new Animated.Value(45)).current;
-  const popAnim2 = useRef(new Animated.Value(45)).current;
 
   const transSlideIn = (easing) => {
     setShowTransfer(true);
     setDisableTrans(true);
     Animated.timing(popAnim, {
       toValue: 200,
-      duration: 300,
+      duration: 500,
       easing,
       useNativeDriver: false,
     }).start();
@@ -1151,7 +1409,7 @@ export default function Sales({ navigation }) {
     Animated.timing(popAnim, {
       toValue: 50,
       easing,
-      duration: 300,
+      duration: 500,
       useNativeDriver: false,
     }).start();
   };
@@ -1161,7 +1419,7 @@ export default function Sales({ navigation }) {
     setDisableCash(true);
     Animated.timing(popAnim2, {
       toValue: 200,
-      duration: 300,
+      duration: 500,
       easing,
       useNativeDriver: false,
     }).start();
@@ -1173,7 +1431,7 @@ export default function Sales({ navigation }) {
     setDisableCash(false);
     Animated.timing(popAnim2, {
       toValue: 50,
-      duration: 300,
+      duration: 500,
       easing,
       useNativeDriver: false,
     }).start();
@@ -1186,7 +1444,7 @@ export default function Sales({ navigation }) {
       style={styles.container}
     >
       {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-      <ScrollView>
+      <ScrollView style={{ flex: 1 }}>
         <View
           style={{
             backgroundColor: "#fff",
@@ -1698,7 +1956,21 @@ export default function Sales({ navigation }) {
                       )}
                     </>
                   )}
-
+                  {saleTypex === "3" && (
+                    <>
+                      <Text style={styles.inputText}>
+                        <Text style={{ color: "red" }}>* </Text>Name:
+                      </Text>
+                      <TextInput
+                        keyboardType="default"
+                        placeholder="Name"
+                        value={productNamex}
+                        onChangeText={(value) => setProductNamex(value)}
+                        style={styles.input}
+                        placeholderTextColor={"#777"}
+                      />
+                    </>
+                  )}
                   <Text style={styles.inputText}>
                     <Text style={{ color: "red" }}>* </Text>Price Per
                     Unit/Quantity:
@@ -1984,7 +2256,21 @@ export default function Sales({ navigation }) {
                       )}
                     </>
                   )}
-
+                  {saleTypex === "3" && (
+                    <>
+                      <Text style={styles.inputText}>
+                        <Text style={{ color: "red" }}>* </Text>Name:
+                      </Text>
+                      <TextInput
+                        keyboardType="default"
+                        placeholder="Name"
+                        value={productNamex}
+                        onChangeText={(value) => setProductNamex(value)}
+                        style={styles.input}
+                        placeholderTextColor={"#777"}
+                      />
+                    </>
+                  )}
                   <Text style={styles.inputText}>
                     <Text style={{ color: "red" }}>* </Text>Price Per
                     Unit/Quantity:
@@ -2096,7 +2382,7 @@ export default function Sales({ navigation }) {
                         tx_ref: generateTransactionRef(10),
                         authorization: `${FLUTTER_AUTH_KEY}`,
                         customer: {
-                          email: userDatax.email,
+                          email: userDatax.data.email,
                         },
                         amount: subTotalAmountx,
                         currency: "NGN",
@@ -2175,10 +2461,22 @@ export default function Sales({ navigation }) {
                           {showTransfer && (
                             <View>
                               <View>
-                                <Text style={{ color: "green" }}>
-                                  {subTotalAmountx}
-                                </Text>
-                                <Text style={{ color: "red" }}>{tfRemain}</Text>
+                                {subTotalAmountx && (
+                                  <Text style={{ color: "green" }}>
+                                    Subtotal: ₦
+                                    {numberWithCommas(subTotalAmountx)}
+                                    .00
+                                  </Text>
+                                )}
+                                {tfRemain && (
+                                  <Text
+                                    style={{
+                                      color: tfRemain === "0" ? "green" : "red",
+                                    }}
+                                  >
+                                    Balance: ₦{numberWithCommas(tfRemain)}.00
+                                  </Text>
+                                )}
                               </View>
                               <Text style={styles.inputText}>
                                 <Text style={{ color: "red" }}>* </Text>
@@ -2201,7 +2499,10 @@ export default function Sales({ navigation }) {
                                 }}
                               >
                                 <TouchableOpacity
-                                  onPress={() => transSlideOut(Easing.ease)}
+                                  onPress={() => {
+                                    transSlideOut(Easing.ease);
+                                    handleTransCashChange("0", 1);
+                                  }}
                                 >
                                   <View
                                     style={{
@@ -2281,6 +2582,24 @@ export default function Sales({ navigation }) {
                           />
                           {showCash && (
                             <View>
+                              <View>
+                                {subTotalAmountx && (
+                                  <Text style={{ color: "green" }}>
+                                    Subtotal: ₦
+                                    {numberWithCommas(subTotalAmountx)}
+                                    .00
+                                  </Text>
+                                )}
+                                {chRemain && (
+                                  <Text
+                                    style={{
+                                      color: chRemain === "0" ? "green" : "red",
+                                    }}
+                                  >
+                                    Balance: ₦{numberWithCommas(chRemain)}.00
+                                  </Text>
+                                )}
+                              </View>
                               <Text style={styles.inputText}>
                                 <Text style={{ color: "red" }}>* </Text>
                                 Amount:
@@ -2288,8 +2607,10 @@ export default function Sales({ navigation }) {
                               <TextInput
                                 keyboardType="numeric"
                                 placeholder="Amount"
-                                value={firstnamex}
-                                onChangeText={(value) => setFirstname(value)}
+                                value={cashPaidAmount}
+                                onChangeText={(value) =>
+                                  handleTransCashChange(value, 2)
+                                }
                                 style={styles.input}
                                 placeholderTextColor={"#777"}
                               />
@@ -2301,7 +2622,10 @@ export default function Sales({ navigation }) {
                                 }}
                               >
                                 <TouchableOpacity
-                                  onPress={() => cashSlideOut(Easing.ease)}
+                                  onPress={() => {
+                                    cashSlideOut(Easing.ease);
+                                    handleTransCashChange("0", 2);
+                                  }}
                                 >
                                   <View
                                     style={{
@@ -2316,7 +2640,10 @@ export default function Sales({ navigation }) {
                                     <Text style={styles.loginText}>CANCEL</Text>
                                   </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                  disabled={disableCashButton}
+                                  onPress={handleAddSale}
+                                >
                                   <View
                                     style={{
                                       padding: 10,
@@ -2325,9 +2652,16 @@ export default function Sales({ navigation }) {
                                       marginHorizontal: 10,
                                       borderRadius: 5,
                                       width: 80,
+                                      flexDirection: "row",
+                                      justifyContent: "center",
                                     }}
                                   >
                                     <Text style={styles.loginText}>PAY</Text>
+                                    <InnerLoader
+                                      animating={loading}
+                                      color="#fff"
+                                      size="small"
+                                    />
                                   </View>
                                 </TouchableOpacity>
                               </View>
@@ -2632,7 +2966,7 @@ export default function Sales({ navigation }) {
               }}
             />
           </View>
-          <Button title="print" onPress={generatePdf} />
+          {/* <Button title="print" onPress={generatePdf} /> */}
           {/* <PayWithFlutterwave
             onRedirect={handleOnRedirect}
             options={{
@@ -2669,16 +3003,22 @@ export default function Sales({ navigation }) {
               </TouchableOpacity>
             )}
           /> */}
-          <TouchableOpacity onPress={handlePaymentModal}>
-            <View
-              style={[
-                styles.loginButton,
-                { flexDirection: "row", justifyContent: "center" },
-              ]}
-            >
-              <Text style={styles.loginText}>PAY</Text>
-            </View>
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity onPress={handlePaymentModal}>
+              <View
+                style={[
+                  styles.loginButton,
+                  {
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    marginBottom: 5,
+                  },
+                ]}
+              >
+                <Text style={styles.loginText}>PAY</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
       {/* <Loader animating={true} /> */}
@@ -2702,7 +3042,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     // alignItems: "center",
-    paddingTop: 5,
+    // paddingTop: 5,
     // justifyContent: "center",
   },
   buttonContainer: {

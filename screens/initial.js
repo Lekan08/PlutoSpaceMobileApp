@@ -15,7 +15,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
 } from "react-native";
-import { REACT_APP_TARA_URL, FLUTTER_AUTH_KEY } from "@env";
+import { REACT_APP_ZAVE_URL, FLUTTER_AUTH_KEY } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Loader, InnerLoader } from "../components/loader";
 // import GHeaders from "../getHeader";
@@ -27,7 +27,7 @@ export default function Initial({ navigation }) {
   const [loading, setLoading] = useState(true);
   const handlePress = () => {
     if (num === 3) {
-      navigation.navigate("login");
+      navigation.navigate("Login");
     } else {
       async function fetchData() {
         console.log("nowwww");
@@ -66,7 +66,7 @@ export default function Initial({ navigation }) {
           redirect: "follow",
         };
 
-        fetch(`${process.env.REACT_APP_ZAVE_URL}/login/dologin`, requestOptions)
+        fetch(`${REACT_APP_ZAVE_URL}/login/dologin`, requestOptions)
           .then(async (res) => {
             // console.log(res.headers);;;;  // storing data
             const storeUser = async (value) => {
@@ -93,7 +93,7 @@ export default function Initial({ navigation }) {
                   try {
                     await AsyncStorage.setItem(
                       "userInfo",
-                      JSON.stringify(value.data)
+                      JSON.stringify(value)
                     );
                     await AsyncStorage.setItem(
                       "userOtherDets",
