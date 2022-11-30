@@ -33,6 +33,8 @@ import GHeaders from "../getHeaders";
 import PHeaders from "../pHeaders";
 
 // KPURKISH👌👌👌👌
+// KPURKISH👌👌👌👌
+// KPURKISH👌👌👌👌
 import { Loader, InnerLoader } from "../components/loader";
 
 export default function Individual({ navigation }) {
