@@ -21,8 +21,8 @@ import ProductDetails from "../screens/productDetails";
 import Initial from "../screens/initial";
 import Individual from "../screens/individual";
 import seeAllindividuals from "../screens/seeAllindividuals";
-import Myindi from "../screens/Myindi";
-
+import sales from "../screens/sales";
+import editprofile from "../screens/editprofile";
 const Stack = createStackNavigator();
 
 function NavigationStack() {
@@ -41,36 +41,39 @@ function NavigationStack() {
           options={{ title: "Initial" }}
         />
         <Stack.Screen
+          name="seeAllindividuals"
+          component={seeAllindividuals}
+          options={{ title: "seeAllindividuals" }}
+        />
+        <Stack.Screen
+          name="editprofile"
+          component={editprofile}
+          options={{ title: "editprofile" }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{ title: "Profile" }}
+        />
+        <Stack.Screen
           name="Individual"
           component={Individual}
           options={{ title: "Individual" }}
         />
         <Stack.Screen
-          name="seeAllindividuals"
-          component={seeAllindividuals}
-          options={{ title: "seeAllindividuals" }}
+          name="sales"
+          component={sales}
+          options={{ title: "sales" }}
         />
-        {/* <Stack.Screen
-          name="Myindi"
-          component={Myindi}
-          options={{ title: "Myindi" }}
-        /> */}
         <Stack.Screen
           name="Appintro"
           component={Appintro}
           options={{ title: "Appintro" }}
         />
-
         {/* <Stack.Screen
           name="Dashboard2"
           component={Dashboard2}
           options={{ title: "Dashboard2" }}
-        /> */}
-        {/*       
-      <Stack.Screen
-          name="Profile"
-          component={Profile}
-          options={{ title: "Profile" }}
         /> */}
         <Stack.Screen
           name="Login"

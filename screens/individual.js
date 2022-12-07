@@ -14,63 +14,41 @@ import {
   Alert,
   TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView,
 } from "react-native";
-// import SweetAlert from 'react-native-sweet-alert';
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import CalenderPicker from "react-native-calendar-picker";
-import { SelectList } from "react-native-dropdown-select-list";
-
-// import DatePicker from "react-native-datepicker";
+import { ToastAlert } from "../components/alert";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
-// import SelectList from "../components/dropdown";
 import AllCountriesAndStates from "../countries-states-master/countries";
 import {
   REACT_APP_ZAVE_URL,
   REACT_APP_LOUGA_URL,
   FLUTTER_AUTH_KEY,
 } from "@env";
-import GHeaders from "../getHeaders";
-import PHeaders from "../pHeaders";
-
-// KPURKISH👌👌👌👌
-// KPURKISH👌👌👌👌
-// KPURKISH👌👌👌👌
 import { Loader, InnerLoader } from "../components/loader";
-
 export default function Individual({ navigation }) {
   const [firstnamex, setFirstname] = useState("");
   const [lastnamex, setLastname] = useState("");
   const [othernamex, setOthername] = useState("");
   const [titlex, setTitle] = useState("");
-  const [occupationx, setOccupation] = useState("");
-  const [portfoliox, setPortfolio] = useState("");
-  const [marraigestatusx, setMarraigestatus] = useState("");
-  const [facebookx, setFacebook] = useState("");
-  const [instagramx, setInstagram] = useState("");
-  const [twitterx, setTwitter] = useState("");
-  const [linkedInx, setLinkedIn] = useState("");
-  const [websitex, setWebsite] = useState("");
   const [phonenumberx, setPhonenumber] = useState("");
   const [emailx, setEmail] = useState("");
   const [cityx, setCity] = useState("");
   const [addressx, setAddress] = useState("");
-  const [duty, setDutyRelieverx] = useState("");
-  const [user, setUser] = useState([]);
-  const [selected, setSelected] = React.useState("");
-
-  const [loading, setLoading] = useState(false);
-
+  const [Input, setInput] = useState("");
+  const [userx, setUser] = useState([]);
   const { countriesAndStates: AlCountry } = AllCountriesAndStates();
-
+  const [loading, setLoading] = useState(false);
+  const [toastObject, setToastObject] = useState({});
+  const [userDatax, setUserData] = useState({});
+  const [disabledButton, setDisabledButton] = useState(false);
   const data = AlCountry.map((data) => {
     return { key: data.code3, value: data.name };
   });
   const [allStates, setAllStates] = useState([]);
   const [residentialStatex, setResidentialState] = useState("");
   const [residentialCountryx, setResidentialCountry] = useState("");
-  const { allPHeaders: myHeaders } = PHeaders();
-  const { allGHeaders: miHeaders } = GHeaders();
-
   const handleOnChangeRCCountry = (valuex) => {
     console.log(valuex);
     if (valuex) {
@@ -84,122 +62,149 @@ export default function Individual({ navigation }) {
       }
     }
   };
-
   const handleOnChangeRCState = (valuex) => {
     setResidentialState(valuex);
   };
-
+  // And this handle my button that triger the API call
   const handlePress = () => {
-    setLoading(true);
-    const data11 = JSON.parse(AsyncStorage.getItem("user1"));
-    const orgIDs = data11.orgID;
-    const personalIDs = data11.personalID;
-    const dutyx = Number(duty);
-    const raw = JSON.stringify({
-      fname: firstnamex,
-      lname: lastnamex,
-      oname: othernamex,
-      title: titlex,
-      street: addressx,
-      city: cityx,
-      state: residentialStatex,
-      country: residentialCountryx,
-      email: emailx,
-      pno: phonenumberx,
-      createdBy: dutyx,
-      accountOwnerID: personalIDs,
-    });
-    console.log(raw);
-    const myHeaders = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    };
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
+    async function fetchData() {
+      setLoading(true);
+      setDisabledButton(true);
+      console.log("nowwww");
 
-    fetch(`${process.env.REACT_APP_LOUGA_URL}/individual/add`, requestOptions)
-      .then(async (res) => {
-        const aToken = res.headers.get("token-1");
-        AsyncStorage.setItem("rexxdex", aToken);
-        return res.json();
-      })
-      .then((result) => {
-        if (result.message === "Expired Access") {
-          navigate("/authentication/sign-in");
-          window.location.reload();
-        }
-        if (result.message === "Token Does Not Exist") {
-          navigate("/authentication/sign-in");
-          window.location.reload();
-        }
-        if (result.message === "Unauthorized Access") {
-          navigate("/authentication/forbiddenPage");
-          window.location.reload();
-        } else {
-          alert("Please fill the required input(s)");
-        }
-        setOpened(false);
-        MySwal.fire({
-          title: result.status,
-          type: "success",
-          text: result.message,
-        }).then(() => {
-          window.location.reload();
-        });
-      })
+      let requestOptions;
+      // getting data
+      try {
+        const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
+        let GeneToken = await AsyncStorage.getItem("rexxdex1");
+        let apiToken = await AsyncStorage.getItem("rexxdex");
+        console.log(GeneToken);
+        let ogrIDx = userData.orgID;
+        let personalIDx = userData.personalID;
+        const raw = JSON.stringify([
+          {
+            orgID: ogrIDx,
+            fname: firstnamex,
+            lname: lastnamex,
+            oname: othernamex,
+            title: titlex,
+            street: addressx,
+            city: cityx,
+            state: residentialStatex,
+            country: residentialCountryx,
+            email: emailx,
+            pno: phonenumberx,
+            createdBy: personalIDx,
+            accountOwnerID: personalIDx,
+          },
+        ]);
+        console.log(raw);
+        let myHeaders;
+        const token = await AsyncStorage.getItem("rexxdex1");
+        myHeaders = {
+          "Content-Type": "application/json",
+          "Token-1": `${token}`,
+        };
+        requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+        console.log(requestOptions);
+        setUserData(userData);
+      } catch (error) {
+        console.log(error);
+      }
 
-      .catch((error) => {
-        setOpened(false);
-        MySwal.fire({
-          title: error.status,
-          type: "error",
-          text: error.message,
+      await fetch(
+        `${process.env.REACT_APP_LOUGA_URL}/individual/add`,
+        requestOptions
+      )
+        .then(async (res) => {
+          const storeUser = async (value) => {
+            try {
+              const aToken = value.headers.get("token-1");
+              if (
+                aToken === "null" ||
+                aToken === null ||
+                aToken === undefined ||
+                aToken === ""
+              ) {
+              } else {
+                await AsyncStorage.setItem("rexxdex1", aToken);
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          };
+          storeUser(res);
+          const resultres = await res.text();
+          if (
+            resultres === null ||
+            resultres === undefined ||
+            resultres === ""
+          ) {
+            return {};
+          }
+          return JSON.parse(resultres);
+        })
+        .then((result) => {
+          console.log(result);
+          setLoading(false);
+          setDisabledButton(false);
+          if (result.message === "Expired Access") {
+            navigation.navigate("initial");
+          }
+          if (result.message === "Token Does Not Exist") {
+            navigation.navigate("initial");
+          }
+          if (result.message === "Unauthorized Access") {
+            navigation.navigate("initial");
+          }
+          if (result.status === "SUCCESS") {
+            // storing data
+            setInput(!Input);
+            setFirstname("");
+            setLastname("");
+            setOthername("");
+            setEmail("");
+            setTitle("");
+            setResidentialCountry("");
+            setResidentialState("");
+            setCity("");
+            setAddress("");
+            storeUser(result.data);
+            setToastObject({
+              status: result.status,
+              message: result.message,
+              open: true,
+              type: "success",
+              change: Math.floor(Math.random() * 100),
+            });
+            navigation.navigate("Profile");
+          } else {
+            setToastObject({
+              status: result.status,
+              message: result.message,
+              open: true,
+              type: "error",
+              change: Math.floor(Math.random() * 100),
+            });
+          }
+        })
+        .catch((error) => {
+          setLoading(false);
+          setDisabledButton(false);
+          console.log(error);
         });
-      });
+      return () => {
+        isMounted = false;
+      };
+    }
+    fetchData();
   };
-
-  useEffect(() => {
-    const headers = miHeaders;
-
-    const data11 = JSON.parse(AsyncStorage.getItem("user1"));
-
-    const orgIDs = data11.orgID;
-    let isMounted = true;
-    setOpened(true);
-    fetch(`${process.env.REACT_APP_ZAVE_URL}/user/getAllUserInfo/${orgIDs}`, {
-      headers,
-    })
-      .then(async (res) => {
-        const aToken = res.headers.get("token-1");
-        AsyncStorage.setItem("rexxdex", aToken);
-        return res.json();
-      })
-      .then((result) => {
-        if (result.message === "Expired Access") {
-          navigate("/authentication/sign-in");
-          window.location.reload();
-        }
-        if (result.message === "Token Does Not Exist") {
-          navigate("/authentication/sign-in");
-          window.location.reload();
-        }
-        if (result.message === "Unauthorized Access") {
-          navigate("/authentication/forbiddenPage");
-          window.location.reload();
-        }
-        if (isMounted) {
-          setUser(result);
-          setOpened(false);
-        }
-      });
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  // This validates my form
   const clickHandler = () => {
     if (
       firstnamex.length === 0 ||
@@ -212,8 +217,6 @@ export default function Individual({ navigation }) {
       titlex === "" ||
       phonenumberx.length === 0 ||
       phonenumberx === "" ||
-      marraigestatusx.length === 0 ||
-      marraigestatusx === "" ||
       emailx.length === 0 ||
       emailx === "" ||
       cityx.length === 0 ||
@@ -221,13 +224,17 @@ export default function Individual({ navigation }) {
       addressx.length === 0 ||
       addressx === ""
     ) {
-      Alert.alert("EMPTY_TEXTFIELDS", "Fill empty textfields");
+      setToastObject({
+        status: "EMPTY_TEXTFIELDS",
+        message: "Fill empty textfields",
+        open: true,
+        type: "error",
+        change: Math.floor(Math.random() * 100),
+      });
     } else {
       handlePress();
     }
   };
-
-  // KPURKISH👌👌👌👌👌👌
   // TitleData
   const titlez = [
     { value: "Bishop", key: 1 },
@@ -245,297 +252,204 @@ export default function Individual({ navigation }) {
     { value: "Professor", key: 13 },
     { value: "Pope", key: 14 },
     { value: "Vice", key: 15 },
-    { value: "Others", key: 16 },
+    { value: "Mr", key: 16 },
+    { value: "Mrs", key: 17 },
+    { value: "Others", key: 18 },
   ];
-
-  // const maptitlez = titlez.map((item) => {
-  //   return item.name;
-  // });
-  // console.log(titlez);
-  // console.log(maptitlez);
-
   return (
-    // <Sandbox />
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
-          <View>
-            <Image source={require("../images/house_of_tara_logo.png")} />
-          </View>
-          <View style={{ borderRadius: 5 }}>
-            <Text
-              style={{
-                fontSize: 30,
-                fontWeight: "900",
-                color: "#F96D02",
-                paddingHorizontal: 0,
-                paddingTop: 40,
-                fontFamily: "serif",
-                width: 300,
-              }}
-            >
-              Create Individual Client
-            </Text>
-          </View>
-          <View style={{ paddingTop: 40 }}>
-            <Text style={styles.inputText}>First Name:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="First Name"
-              value={firstnamex}
-              onChangeText={(value) => setFirstname(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <Text style={styles.inputText}>Last Name:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Last Name"
-              value={lastnamex}
-              onChangeText={(value) => setLastname(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <Text style={styles.inputText}>Other Name:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Optional"
-              value={othernamex}
-              onChangeText={(value) => setOthername(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <Text style={styles.inputText}>Title:</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.container}>
+            <View style={{ marginRight: 60 }}>
+              <Image source={require("../images/house_of_tara_logo.png")} />
+            </View>
+            <View style={{ borderRadius: 5 }}>
+              <Text
                 style={{
+                  fontSize: 30,
+                  fontWeight: "900",
                   color: "#F96D02",
+                  paddingHorizontal: 0,
+                  paddingTop: 20,
+                  fontFamily: "serif",
+                  width: 300,
                 }}
-                itemStyle={{
-                  backgroundColor: "#F96D02",
-                  color: "#000",
-                  fontFamily: "Ebrima",
-                  fontSize: 19,
-                }}
-                selectedValue={titlex}
-                onValueChange={(newValue) => setTitle(newValue)}
               >
-                <Picker.Item label="Select Title" value="" />
-
-                {titlez.map((apic) => (
-                  <Picker.Item
-                    label={apic.name}
-                    key={apic.key}
-                    value={apic.key}
-                  />
-                ))}
-              </Picker>
-              <SelectList
-                setSelected={(val) => setSelected(val)}
-                data={titlez}
-                save="value"
+                Create Individual Client
+              </Text>
+            </View>
+            <View style={{ paddingTop: 10 }}>
+              <Text style={styles.inputText}>First Name:</Text>
+              <TextInput
+                keyboardType="default"
+                placeholder="First Name"
+                value={firstnamex}
+                onChangeText={(value) => setFirstname(value)}
+                style={styles.input}
+                placeholderTextColor={"#777"}
               />
-            </View>
-            {/* <Text style={styles.inputText}>Occupation:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Occupation"
-              value={occupationx}
-              onChangeText={(value) => setOccupation(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            /> */}
-            {/* <Text style={styles.inputText}>Portfolio:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Portfolio"
-              value={portfoliox}
-              onChangeText={(value) => setPortfolio(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <Text style={styles.inputText}>Marraige Status:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Optional"
-              value={marraigestatusx}
-              onChangeText={(value) => setMarraigestatus(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            /> */}
-            {/* <Text style={styles.inputText}>Facebook Handle:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Optional"
-              value={facebookx}
-              onChangeText={(value) => setFacebook(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <Text style={styles.inputText}>Instagram Handle:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Optional"
-              value={instagramx}
-              onChangeText={(value) => setInstagram(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <Text style={styles.inputText}>Twitter Handle:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Optional"
-              value={twitterx}
-              onChangeText={(value) => setTwitter(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <Text style={styles.inputText}>linkedIn:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Optional"
-              value={linkedInx}
-              onChangeText={(value) => setLinkedIn(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            /> */}
-            {/* <Text style={styles.inputText}>Website:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Optional"
-              value={websitex}
-              onChangeText={(value) => setWebsite(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            /> */}
-            <Text style={styles.inputText}>Email:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Email"
-              value={emailx}
-              onChangeText={(value) => setEmail(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <Text style={styles.inputText}>Phone Number:</Text>
-            <TextInput
-              keyboardType="numeric"
-              placeholder="Phone Number"
-              value={phonenumberx}
-              onChangeText={(value) => setPhonenumber(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <Text style={styles.inputText}>Created By::</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                style={{
-                  color: "#F96D02",
-                }}
-                itemStyle={{
-                  backgroundColor: "#F96D02",
-                  color: "#000",
-                  fontFamily: "Ebrima",
-                  fontSize: 19,
-                }}
-                selectedValue={duty}
-                onValueChange={(newValue) => setDutyRelieverx(newValue)}
-              >
-                <Picker.Item label="Select Title" value="" />
-                {user.map((api) => (
-                  <Picker.Item
-                    // label={apic.name}
-                    key={api.personal.id}
-                    value={api.personal.id}
-                  >
-                    {api.personal.fname} {api.personal.lname}
-                  </Picker.Item>
-                ))}
-              </Picker>
-            </View>
-            <Text style={styles.inputText}>Country:</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                style={{
-                  color: "#F96D02",
-                }}
-                itemStyle={{
-                  backgroundColor: "#F96D02",
-                  color: "#000",
-                  fontFamily: "Ebrima",
-                  fontSize: 19,
-                }}
-                selectedValue={residentialCountryx}
-                onValueChange={(newValue) => handleOnChangeRCCountry(newValue)}
-              >
-                <Picker.Item label="Select Country" value="" />
-                {AlCountry.map((apic) => (
-                  <Picker.Item
-                    label={apic.name}
-                    key={apic.code3}
-                    value={apic.name}
-                  />
-                ))}
-              </Picker>
-            </View>
-            <Text style={styles.inputText}>State:</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                style={{ color: "#F96D02" }}
-                selectedValue={residentialStatex}
-                onValueChange={(newValue) => handleOnChangeRCState(newValue)}
-              >
-                <Picker.Item label=" Select State" value="" />
-                {allStates.map((apic) => (
-                  <Picker.Item
-                    label={apic.name}
-                    key={apic.code}
-                    value={apic.name}
-                  />
-                ))}
-              </Picker>
-            </View>
-            <Text style={styles.inputText}>City:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="City"
-              value={cityx}
-              onChangeText={(value) => setCity(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <Text style={styles.inputText}>House Address:</Text>
-            <TextInput
-              keyboardType="default"
-              placeholder="Address"
-              multiline
-              value={addressx}
-              onChangeText={(value) => setAddress(value)}
-              style={styles.input}
-              placeholderTextColor={"#777"}
-            />
-            <TouchableOpacity onPress={clickHandler}>
-              <View
-                style={[
-                  styles.loginButton,
-                  { flexDirection: "row", justifyContent: "center" },
-                ]}
-              >
-                <Text style={styles.loginText}>Save</Text>
-                <InnerLoader animating={loading} color="#fff" size="small" />
+              <Text style={styles.inputText}>Last Name:</Text>
+              <TextInput
+                keyboardType="default"
+                placeholder="Last Name"
+                value={lastnamex}
+                onChangeText={(value) => setLastname(value)}
+                style={styles.input}
+                placeholderTextColor={"#777"}
+              />
+              <Text style={styles.inputText}>Other Name:</Text>
+              <TextInput
+                keyboardType="default"
+                placeholder="Optional"
+                value={othernamex}
+                onChangeText={(value) => setOthername(value)}
+                style={styles.input}
+                placeholderTextColor={"#777"}
+              />
+              <Text style={styles.inputText}>Title:</Text>
+              <View style={styles.pickerContainer}>
+                <Picker
+                  style={{
+                    color: "#F96D02",
+                  }}
+                  itemStyle={{
+                    backgroundColor: "#F96D02",
+                    color: "#000",
+                    fontFamily: "Ebrima",
+                    fontSize: 19,
+                  }}
+                  selectedValue={titlex}
+                  onValueChange={(newValue) => setTitle(newValue)}
+                >
+                  <Picker.Item label="Select Title" value="" />
+
+                  {titlez.map((apic) => (
+                    <Picker.Item
+                      label={apic.value}
+                      key={apic.key}
+                      value={apic.value}
+                    />
+                  ))}
+                </Picker>
               </View>
-            </TouchableOpacity>
+              <Text style={styles.inputText}>Email:</Text>
+              <TextInput
+                keyboardType="default"
+                placeholder="Email"
+                value={emailx}
+                onChangeText={(value) => setEmail(value)}
+                style={styles.input}
+                placeholderTextColor={"#777"}
+              />
+              <Text style={styles.inputText}>Phone Number:</Text>
+              <TextInput
+                keyboardType="numeric"
+                placeholder="Phone Number"
+                value={phonenumberx}
+                onChangeText={(value) => setPhonenumber(value)}
+                style={styles.input}
+                placeholderTextColor={"#777"}
+              />
+              <Text style={styles.inputText}>Country:</Text>
+              <View style={styles.pickerContainer}>
+                <Picker
+                  style={{
+                    color: "#F96D02",
+                  }}
+                  itemStyle={{
+                    backgroundColor: "#F96D02",
+                    color: "#000",
+                    fontFamily: "Ebrima",
+                    fontSize: 19,
+                  }}
+                  selectedValue={residentialCountryx}
+                  onValueChange={(newValue) =>
+                    handleOnChangeRCCountry(newValue)
+                  }
+                >
+                  <Picker.Item label="Select Country" value="" />
+                  {AlCountry.map((apic) => (
+                    <Picker.Item
+                      label={apic.name}
+                      key={apic.code3}
+                      value={apic.name}
+                    />
+                  ))}
+                </Picker>
+              </View>
+              <Text style={styles.inputText}>State:</Text>
+              <View style={styles.pickerContainer}>
+                <Picker
+                  style={{ color: "#F96D02" }}
+                  selectedValue={residentialStatex}
+                  onValueChange={(newValue) => handleOnChangeRCState(newValue)}
+                >
+                  <Picker.Item label=" Select State" value="" />
+                  {allStates.map((apic) => (
+                    <Picker.Item
+                      label={apic.name}
+                      key={apic.code}
+                      value={apic.name}
+                    />
+                  ))}
+                </Picker>
+              </View>
+              <Text style={styles.inputText}>City:</Text>
+              <TextInput
+                keyboardType="default"
+                placeholder="City"
+                value={cityx}
+                onChangeText={(value) => setCity(value)}
+                style={styles.input}
+                placeholderTextColor={"#777"}
+              />
+              <Text style={styles.inputText}>House Address:</Text>
+              <TextInput
+                keyboardType="default"
+                placeholder="Address"
+                multiline
+                value={addressx}
+                onChangeText={(value) => setAddress(value)}
+                style={styles.input}
+                placeholderTextColor={"#777"}
+              />
+              <TouchableOpacity
+                disabled={disabledButton}
+                onPress={clickHandler}
+              >
+                <View
+                  style={[
+                    styles.loginButton,
+                    { flexDirection: "row", justifyContent: "center" },
+                  ]}
+                >
+                  <Text style={styles.loginText}>Save</Text>
+                  <InnerLoader animating={loading} color="#fff" size="small" />
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </ScrollView>
-    </TouchableWithoutFeedback>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+      <ToastAlert
+        status={toastObject.status}
+        message={toastObject.message}
+        open={toastObject.open}
+        type={toastObject.type}
+        change={toastObject.change}
+      />
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#282A3A",
+    backgroundColor: "#0F0F0F",
     alignItems: "center",
     paddingTop: 60,
     justifyContent: "center",
@@ -553,7 +467,7 @@ const styles = StyleSheet.create({
     width: 300,
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 50,
+    borderRadius: 20,
   },
   inputContainer: {
     borderWidth: 1,
@@ -563,7 +477,7 @@ const styles = StyleSheet.create({
     width: 300,
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 50,
+    borderRadius: 20,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -578,14 +492,14 @@ const styles = StyleSheet.create({
     width: 300,
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 50,
+    borderRadius: 20,
   },
   loginButton: {
     padding: 15,
     marginTop: 30,
     backgroundColor: "#F96D02",
     marginHorizontal: 10,
-    borderRadius: 20,
+    borderRadius: 10,
   },
   loginText: {
     textAlign: "center",

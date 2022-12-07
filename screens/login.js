@@ -66,6 +66,7 @@ export default function Login({ navigation }) {
       username: usernamex.toLowerCase(),
       password: passwordx,
     });
+    console.log(raw);
     const myHeaders = {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -211,7 +212,6 @@ export default function Login({ navigation }) {
                 color: "#F96D02",
                 paddingHorizontal: 0,
                 paddingTop: 40,
-                // fontFamily: "serif",
                 width: 300,
               }}
             >
@@ -349,7 +349,7 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#282A3A",
+    backgroundColor: "#0F0F0F",
     alignItems: "center",
     paddingTop: 60,
     justifyContent: "center",

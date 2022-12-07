@@ -3,18 +3,18 @@ import {
   View,
   Text,
   StyleSheet,
+  Image,
   Button,
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { globalStyles } from "../styles/global";
-
+import { Con, Col, Row } from "../components/grid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ScrollView } from "react-native-gesture-handler";
-
 export default function Profile({ navigation }) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
   const [categories, setcategories] = useState("");
   const [country, setcountry] = useState("");
@@ -28,8 +28,8 @@ export default function Profile({ navigation }) {
       const getUser = async () => {
         try {
           const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
-          setFirstName(`${userData.firstname}`);
-          setLastName(`${userData.lastname}`);
+          setFname(`${userData.fname}`);
+          setLname(`${userData.lname}`);
           setEmail(`${userData.email}`);
           setcategories(`${userData.categories}`);
           setcountry(`${userData.country}`);
@@ -47,110 +47,279 @@ export default function Profile({ navigation }) {
       isMounted = false;
     };
   }, []);
+
   return (
-    <View style={globalStyles.container}>
+    <View style={globalStyles.dashContainer}>
       <View
         style={{
-          backgroundColor: "#BAD1C2",
-          height: "50%",
-          width: "100%",
-          borderRadius: 20,
+          height: "60%",
+          maxHeight: "60%",
+          backgroundColor: "#F96D02",
         }}
       >
         <Text
           style={{
-            color: "#0F0F0F",
-            fontWeight: "700",
-            fontSize: 20,
-            paddingTop: 25,
-            marginLeft: 20,
+            fontSize: 25,
+            fontWeight: "bold",
+            marginTop: 20,
+            color: "#ffff",
+            textAlign: "center",
           }}
         >
-          Firstname: {firstName} 
+          Hii 👋 {fname} {lname}
         </Text>
-
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            marginTop: 50,
+          }}
+        >
+          <View
+            style={{
+              height: 145,
+              width: 145,
+              borderWidth: 5,
+              justifyContent: "center",
+              alignItems: "center",
+              alignContent: "center",
+              borderRadius: 80,
+            }}
+          >
+            <Image
+              source={require("../images/Ahhh.png")}
+              style={{ width: 220, borderRadius: 100, height: 220 }}
+            />
+          </View>
+        </View>
         <Text
           style={{
-            color: "#0F0F0F",
-            fontWeight: "700",
             fontSize: 20,
-            paddingTop: 25,
+            marginTop: 60,
             marginLeft: 20,
+            color: "#ffff",
+            textAlign: "center",
           }}
         >
-          Lastname: {lastName}
+          {email}
         </Text>
-
         <Text
           style={{
-            color: "#0F0F0F",
-            fontWeight: "700",
-            fontSize: 20,
-            paddingTop: 25,
+            fontSize: 28,
+            fontWeight: "bold",
             marginLeft: 20,
+            color: "#ffff",
+            textAlign: "center",
           }}
         >
-          Email: {email}
-        </Text>
-
-        <Text
-          style={{
-            color: "#0F0F0F",
-            fontWeight: "700",
-            fontSize: 20,
-            paddingTop: 25,
-            marginLeft: 20,
-          }}
-        >
-          Category: {categories}
-        </Text>
-
-        <Text
-          style={{
-            color: "#0F0F0F",
-            fontWeight: "700",
-            fontSize: 20,
-            paddingTop: 25,
-            marginLeft: 20,
-          }}
-        >
-          Address:{address}, {city}, {state}, {country}
+          {address}, {city}, {state}, {country}
         </Text>
       </View>
-
-      <TouchableOpacity
-        style={{ width: 315, paddingTop: 10 }}
-        onPress={() => navigation.navigate("EditProfile")}
+      <View
+        style={{
+          height: "50%",
+          maxHeight: "50%",
+          backgroundColor: "#ffff",
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
-        <View style={styles.loginButton}>
-          <Text style={styles.loginText}>Edit Profile</Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={{ width: 315, paddingTop: 2 }}
-        onPress={() => navigation.navigate("changePassword")}
-      >
-        <View style={styles.loginButton}>
-          <Text style={styles.loginText}>Change Password</Text>
-        </View>
-      </TouchableOpacity>
+        <Con>
+          <Row>
+            <Col numRows={2}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("editprofile")}
+              >
+                <View
+                  style={{
+                    flexDirection: "column",
+                    backgroundColor: "#F96D02",
+                    borderRadius: 10,
+                    alignItems: "center",
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    marginTop: 5,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      lineHeight: 22,
+                      color: "#fff",
+                      marginBottom: 5,
+                    }}
+                  >
+                    Edit Profile
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor: "#ffff",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: 40,
+                      width: 40,
+                      borderRadius: 50,
+                    }}
+                  >
+                    <Icon name="account-plus" size={28} color="#0f0f0f" />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Col>
+            <Col numRows={2}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("changePassword")}
+              >
+                <View
+                  style={{
+                    flexDirection: "column",
+                    backgroundColor: "#F96D02",
+                    borderRadius: 10,
+                    alignItems: "center",
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    marginTop: 5,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      lineHeight: 22,
+                      color: "#fff",
+                      marginBottom: 5,
+                    }}
+                  >
+                    Change Password 🗝️
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor: "#ffff",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: 40,
+                      width: 40,
+                      borderRadius: 50,
+                    }}
+                  >
+                    <Icon
+                      name="form-textbox-password"
+                      size={28}
+                      color="#0f0f0f"
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Col>
+          </Row>
+          <Row>
+            <Col numRows={2}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Individual")}
+              >
+                <View
+                  style={{
+                    flexDirection: "column",
+                    backgroundColor: "#F96D02",
+                    borderRadius: 10,
+                    alignItems: "center",
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    marginTop: 5,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      lineHeight: 22,
+                      color: "#fff",
+                      marginBottom: 5,
+                    }}
+                  >
+                    Create Client
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor: "#ffff",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: 40,
+                      width: 40,
+                      borderRadius: 50,
+                    }}
+                  >
+                    <Icon name="archive-plus" size={28} color="#0f0f0f" />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Col>
+            <Col numRows={2}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("seeAllindividuals")}
+              >
+                <View
+                  style={{
+                    flexDirection: "column",
+                    backgroundColor: "#F96D02",
+                    borderRadius: 10,
+                    alignItems: "center",
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    marginTop: 5,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      lineHeight: 22,
+                      color: "#fff",
+                      marginBottom: 5,
+                    }}
+                  >
+                    See All Client
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor: "#ffff",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: 40,
+                      width: 40,
+                      borderRadius: 50,
+                    }}
+                  >
+                    <Icon name="account-multiple" size={28} color="#0f0f0f" />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Col>
+          </Row>
+        </Con>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  loginButton: {
-    padding: 15,
-    marginTop: 30,
-    backgroundColor: "#54B435",
-    marginHorizontal: 10,
-    borderRadius: 50,
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    paddingTop: 40,
+    backgroundColor: "#ffff",
   },
-  loginText: {
-    textAlign: "center",
-    color: "#0F0F0F",
-    fontWeight: "600",
-    fontSize: 15,
+  item: {
+    padding: 16,
+    marginTop: 16,
+    borderColor: "#bbb",
+    borderWidth: 1,
+    borderStyle: "",
+    borderRadius: 10,
+  },
+  icon: {
+    flex: 1,
   },
 });

@@ -1,6 +1,23 @@
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Button,
+  TextInput,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+  Form,
+  Pressable,
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 
-const App = () => {
+export default function Nawaa({ navigation }) {
   const [selected, setSelected] = React.useState("");
 
   const data = [
@@ -16,8 +33,8 @@ const App = () => {
   return (
     <SelectList
       setSelected={(val) => setSelected(val)}
-      data={titlez}
+      data={data}
       save="value"
     />
   );
-};
+}

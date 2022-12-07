@@ -27,7 +27,7 @@ export default function Initial({ navigation }) {
   const [loading, setLoading] = useState(true);
   const handlePress = () => {
     if (num === 3) {
-      navigation.navigate("login");
+      navigation.navigate("Login");
     } else {
       async function fetchData() {
         console.log("nowwww");

@@ -13,6 +13,9 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+// KPURKISH👌👌👌👌
+// KPURKISH👌👌👌👌
+// KPURKISH👌👌👌👌
 export default function EditProfile({ navigation }) {
   //Getting user info
   const [firstName, setFirstName] = useState("");
@@ -112,20 +115,21 @@ export default function EditProfile({ navigation }) {
     else handlePress();
   };
   return (
-    <View>
+    <View style={styles.container}>
       <ScrollView>
-        {/* <Image source={require("../images/house_of_tara_logo.png")} /> */}
+        <Image source={require("../images/house_of_tara_logo.png")} />
 
-        <View>
+        <View style={{ paddingBottom: 20, marginTop: 10 }}>
           <Text
             style={{
               fontSize: 40,
               fontWeight: "900",
-              color: "#ffffff",
-              paddingHorizontal: 0,
+              color: "#F96D02",
+              paddingHorizontal: 5,
               paddingTop: 40,
               fontFamily: "serif",
               width: 300,
+              marginLeft: 50,
             }}
           >
             Edit Profile
@@ -203,6 +207,14 @@ export default function EditProfile({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#0f0f0f",
+    alignItems: "center",
+    paddingTop: 60,
+    justifyContent: "center",
+    paddingBottom: 60,
+  },
   input: {
     borderWidth: 1,
     borderColor: "#777",
@@ -213,17 +225,18 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignSelf: "center",
     paddingHorizontal: 20,
-    borderRadius: 50,
+    borderRadius: 10,
   },
   changePassButton: {
     padding: 15,
     marginTop: 30,
-    backgroundColor: "#F96D02",
-    marginHorizontal: 10,
-    borderRadius: 50,
+    backgroundColor: "#7FB77E",
+    marginHorizontal: 40,
+    borderRadius: 15,
   },
   inputText: {
     textAlign: "center",
-    color: "#fff",
+    color: "#F96D02",
+    fontSize: 15,
   },
 });
