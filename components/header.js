@@ -12,12 +12,12 @@ export default function Header({ title, navigation }) {
       <View>
         <Text style={styles.headerText}>{title}</Text>
       </View>
-      <MaterialIcons
+      {/* <MaterialIcons
         name="shopping-cart"
         size={28}
         onPress={redirectCart}
         style={styles.icon}
-      />
+      /> */}
     </View>
   );
 }

@@ -38,7 +38,7 @@ export default function Dashboard({ navigation }) {
 
   // const url = "https://tarastoreservice.plutospace.space";
   const [userName, setUserName] = useState("");
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({});
   const [categories, setCategories] = useState("");
   const [cater, setCater] = useState(true);
   const [bGCol, setBGCol] = useState("");
@@ -49,8 +49,10 @@ export default function Dashboard({ navigation }) {
       const getUser = async () => {
         try {
           const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
-          setUserName(`${userData.firstname} ${userData.lastname}`);
-          setCategories(userData.categories[0]);
+          setUserName(
+            `${userData.otherDetailsDTO.personal.fname} ${userData.otherDetailsDTO.personal.lname}`
+          );
+          // setCategories(userData.categories[0]);
           setUserData(userData);
         } catch (error) {
           console.log(error);
@@ -63,24 +65,34 @@ export default function Dashboard({ navigation }) {
     };
   }, []);
 
-  useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
-      if (cater === true) {
-        setCategories("DISTRIBUTOR");
-        setBGCol("#f96d02");
-      } else if (cater === false) {
-        setCategories("RETAILER");
-        setBGCol("#425F57");
-      }
-    }
-    return () => {
-      isMounted = false;
-    };
-  }, [cater]);
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   if (isMounted) {
+  //     if (cater === true) {
+  //       setCategories("DISTRIBUTOR");
+  //       setBGCol("#f96d02");
+  //     } else if (cater === false) {
+  //       setCategories("RETAILER");
+  //       setBGCol("#425F57");
+  //     }
+  //   }
+  //   return () => {
+  //     isMounted = false;
+  //   };
+  // }, [cater]);
 
   const clickHandler = () => {
     setCater(!cater);
+  };
+  const LogOut = async () => {
+    try {
+      await AsyncStorage.clear();
+      navigation.navigate("Login");
+    } catch (e) {
+      // clear error
+    }
+
+    console.log("Done.");
   };
 
   return (
@@ -89,7 +101,7 @@ export default function Dashboard({ navigation }) {
         style={{
           height: "50%",
           maxHeight: "50%",
-          backgroundColor: bGCol,
+          backgroundColor: "#F96D02",
           borderBottomLeftRadius: 30,
           borderBottomRightRadius: 30,
         }}
@@ -106,7 +118,7 @@ export default function Dashboard({ navigation }) {
               flexDirection: "row",
             }}
           >
-            <TouchableOpacity onPress={clickHandler}>
+            {/* <TouchableOpacity onPress={clickHandler}>
               <View
                 style={{
                   padding: 10,
@@ -132,7 +144,7 @@ export default function Dashboard({ navigation }) {
                   Switch Repository
                 </Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <View
             style={{
@@ -154,12 +166,12 @@ export default function Dashboard({ navigation }) {
           </View>
         </View>
 
-        <View
+        {/* <View
           style={{
             marginBottom: -20,
           }}
-        />
-        <Text
+        /> */}
+        {/* <Text
           style={{
             fontSize: 16,
             fontWeight: "bold",
@@ -169,13 +181,12 @@ export default function Dashboard({ navigation }) {
           }}
         >
           {categories}
-        </Text>
-        <View></View>
-        <View
+        </Text> */}
+        {/* <View
           style={{
             marginBottom: -10,
           }}
-        />
+        /> */}
         <Text
           style={{
             fontSize: 40,
@@ -184,57 +195,58 @@ export default function Dashboard({ navigation }) {
             color: "#ffff",
           }}
         >
-          Hello {userName}
+          Welcome
         </Text>
-        <View>
-          <Text
+        <Text
+          style={{
+            fontSize: 40,
+            fontWeight: "bold",
+            marginLeft: 20,
+            color: "#ffff",
+          }}
+        >
+          {userName}
+        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            flex: 1,
+            alignItems: "flex-end",
+          }}
+        >
+          <View
             style={{
-              fontSize: 20,
-              marginButtom: 30,
-              marginLeft: 20,
-              color: "#ffff",
+              borderBottomColor: "#FFFFFF",
+              borderColor: "#FFFFFF",
+              borderBottomWidth: 5,
             }}
-          >
-            Today sales
-          </Text>
-          <Text
-            style={{
-              fontSize: 40,
-              fontWeight: "bold",
-              marginLeft: 20,
-              color: "#ffff",
-            }}
-          >
-            ₦1,500.04
-          </Text>
-        </View>
-        <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          />
+          <TouchableOpacity onPress={() => LogOut}>
             <View
               style={{
                 // padding: 2,
                 paddingHorizontal: 10,
                 paddingVertical: 5,
-                backgroundColor: "#f96d02",
-                borderWidth: 1,
-                borderColor: "#fff",
+                // backgroundColor: "#FFFFFF",
+                // elevation: 5,
                 justifyContent: "center",
                 alignItems: "center",
-                borderRadius: 5,
-                marginRight: 20,
-                marginBottom: 5,
+                // borderRadius: 5,
+                // marginRight: 20,
+                marginBottom: 10,
               }}
             >
               <Text
                 style={{
-                  fontSize: 15,
-                  fontWeight: "600",
-                  lineHeight: 22,
-                  color: "#fff",
+                  fontSize: 20,
+                  letterSpacing: 2,
+                  fontWeight: "bold",
+                  color: "#FFFFFF",
                   marginBottom: 5,
                 }}
               >
-                Logout
+                LOGOUT
               </Text>
             </View>
           </TouchableOpacity>
@@ -244,7 +256,7 @@ export default function Dashboard({ navigation }) {
         style={{
           height: "50%",
           maxHeight: "50%",
-          backgroundColor: "#0f0f0f",
+          backgroundColor: "#FFFFFF",
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
@@ -254,12 +266,13 @@ export default function Dashboard({ navigation }) {
         <Con>
           <Row>
             <Col numRows={2}>
-              <TouchableOpacity onPress={() => navigation.navigate("Products")}>
+              <TouchableOpacity onPress={() => navigation.navigate("Sales")}>
                 <View
                   style={{
                     flexDirection: "column",
-                    backgroundColor: "#333",
+                    backgroundColor: "#FFFFFF",
                     borderRadius: 10,
+                    elevation: 5,
                     // justifyContent: "center",
                     alignItems: "center",
                     paddingVertical: 10,
@@ -272,34 +285,37 @@ export default function Dashboard({ navigation }) {
                       fontSize: 15,
                       fontWeight: "600",
                       lineHeight: 22,
-                      color: "#fff",
+                      color: "#0F0F0F",
                       marginBottom: 5,
                     }}
                   >
-                    Products
+                    Sales
                   </Text>
                   <View
                     style={{
                       backgroundColor: "#ffff",
                       justifyContent: "center",
                       alignItems: "center",
-                      height: 40,
-                      width: 40,
+                      // height: 40,
+                      // width: 40,
                       borderRadius: 50,
                     }}
                   >
-                    <Icon name="view-grid-outline" size={28} color="#0f0f0f" />
+                    <Icon name="sale" size={28} color="#0F0F0F" />
                   </View>
                 </View>
               </TouchableOpacity>
             </Col>
             <Col numRows={2}>
-              <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Individual")}
+              >
                 <View
                   style={{
                     flexDirection: "column",
-                    backgroundColor: "#333",
+                    backgroundColor: "#FFFFFF",
                     borderRadius: 10,
+                    elevation: 5,
                     // justifyContent: "center",
                     alignItems: "center",
                     paddingVertical: 10,
@@ -312,23 +328,23 @@ export default function Dashboard({ navigation }) {
                       fontSize: 15,
                       fontWeight: "600",
                       lineHeight: 22,
-                      color: "#fff",
+                      color: "#0F0F0F",
                       marginBottom: 5,
                     }}
                   >
-                    Profile
+                    Individual
                   </Text>
                   <View
                     style={{
                       backgroundColor: "#ffff",
                       justifyContent: "center",
                       alignItems: "center",
-                      height: 40,
-                      width: 40,
+                      // height: 40,
+                      // width: 40,
                       borderRadius: 50,
                     }}
                   >
-                    <Icon name="account" size={28} color="#0f0f0f" />
+                    <Icon name="account-outline" size={28} color="#0F0F0F" />
                   </View>
                 </View>
               </TouchableOpacity>
@@ -342,8 +358,9 @@ export default function Dashboard({ navigation }) {
                 <View
                   style={{
                     flexDirection: "column",
-                    backgroundColor: "#333",
+                    backgroundColor: "#FFFFFF",
                     borderRadius: 10,
+                    elevation: 5,
                     // justifyContent: "center",
                     alignItems: "center",
                     paddingVertical: 10,
@@ -357,7 +374,7 @@ export default function Dashboard({ navigation }) {
                       fontWeight: "600",
                       // alignSelf: "center",
                       lineHeight: 22,
-                      color: "#fff",
+                      color: "#0F0F0F",
                       marginBottom: 5,
                     }}
                   >
@@ -368,23 +385,24 @@ export default function Dashboard({ navigation }) {
                       backgroundColor: "#ffff",
                       justifyContent: "center",
                       alignItems: "center",
-                      height: 40,
-                      width: 40,
+                      // height: 40,
+                      // width: 40,
                       borderRadius: 50,
                     }}
                   >
-                    <Icon name="history" size={28} color="#0f0f0f" />
+                    <Icon name="history" size={28} color="#0F0F0F" />
                   </View>
                 </View>
               </TouchableOpacity>
             </Col>
-            <Col numRows={2}>
+            {/* <Col numRows={2}>
               <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
                 <View
                   style={{
                     flexDirection: "column",
-                    backgroundColor: "#333",
+                    backgroundColor: "#FFFFFF",
                     borderRadius: 10,
+                    elevation: 5,
                     // justifyContent: "center",
                     alignItems: "center",
                     paddingVertical: 10,
@@ -398,7 +416,7 @@ export default function Dashboard({ navigation }) {
                       fontWeight: "600",
                       // alignSelf: "center",
                       lineHeight: 22,
-                      color: "#fff",
+                      color: "#0F0F0F",
                       marginBottom: 5,
                     }}
                   >
@@ -409,16 +427,16 @@ export default function Dashboard({ navigation }) {
                       backgroundColor: "#ffff",
                       justifyContent: "center",
                       alignItems: "center",
-                      height: 40,
-                      width: 40,
+                      // height: 40,
+                      // width: 40,
                       borderRadius: 50,
                     }}
                   >
-                    <Icon name="cart" size={28} color="#0f0f0f" />
+                    <Icon name="cart" size={28} color="#0F0F0F" />
                   </View>
                 </View>
               </TouchableOpacity>
-            </Col>
+            </Col> */}
           </Row>
         </Con>
         {/* </ScrollView> */}
@@ -457,7 +475,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     paddingTop: 40,
-    backgroundColor: "#0F0F0F",
+    backgroundColor: "#FFFFFF",
   },
   // dashboard: {
   //   backgroundColor: '#F96D02',

@@ -78,7 +78,7 @@ export default function Login({ navigation }) {
       redirect: "follow",
     };
 
-    fetch(`${process.env.REACT_APP_ZAVE_URL}/login/dologin`, requestOptions)
+    fetch(`${REACT_APP_ZAVE_URL}/login/dologin`, requestOptions)
       .then(async (res) => {
         // console.log(res.headers);;;;  // storing data
         const storeUser = async (value) => {
@@ -112,10 +112,7 @@ export default function Login({ navigation }) {
                   "password",
                   JSON.stringify(passwordx)
                 );
-                await AsyncStorage.setItem(
-                  "userInfo",
-                  JSON.stringify(value.data)
-                );
+                await AsyncStorage.setItem("userInfo", JSON.stringify(value));
                 await AsyncStorage.setItem(
                   "userOtherDets",
                   JSON.stringify(value.otherDetailsDTO)
@@ -262,7 +259,7 @@ export default function Login({ navigation }) {
                 />
               </Pressable>
             </View>
-            <Button title="print" onPress={generatePdf} />
+            {/* <Button title="print" onPress={generatePdf} /> */}
             {/* <PayWithFlutterwave
             onRedirect={handleOnRedirect}
             options={{

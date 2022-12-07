@@ -8,7 +8,7 @@ export const globalStyles = StyleSheet.create({
   },
   dashContainer: {
     flex: 1,
-    backgroundColor: "#0F0F0F",
+    backgroundColor: "#FFFFFF",
   },
   titleText: {
     // fontFamily: "nunito-bold",
