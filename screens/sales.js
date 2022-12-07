@@ -93,6 +93,7 @@ export default function Sales({ navigation }) {
   const [productNamex, setProductNamex] = useState("");
 
   const [flutterPaidAmount, setFlutterPaidAmount] = useState("");
+  const [flutterPaidAmount2, setFlutterPaidAmount2] = useState("");
   const [transferPaidAmount, setTransferPaidAmount] = useState("");
   const [cashPaidAmount, setCashPaidAmount] = useState("");
   const [combinedValue, setCombinedValue] = useState("");
@@ -209,7 +210,8 @@ export default function Sales({ navigation }) {
 
   const handleTransCashChange = (value, num) => {
     if (num === 1) {
-      setFlutterPaidAmount(value);
+      setFlutterPaidAmount2(value);
+      // setFlutterPaidAmount(value);
 
       let val = parseInt(value, 10);
       if (isNaN(val)) {
@@ -326,8 +328,14 @@ export default function Sales({ navigation }) {
     let ttam = 0;
     let ttxam = 0;
     allSaleItem.map((stringx) => {
-      const tAm = parseInt(stringx.amount, 10);
-      const txAm = parseInt(stringx.taxAmount, 10);
+      let tAm = parseInt(stringx.amount, 10);
+      let txAm = parseInt(stringx.taxAmount, 10);
+      if (isNaN(tAm)) {
+        tAm = 0;
+      }
+      if (isNaN(txAm)) {
+        txAm = 0;
+      }
       ttam += tAm;
       ttxam += txAm;
       const stringg = `
@@ -853,9 +861,11 @@ export default function Sales({ navigation }) {
         //     await AsyncStorage.setItem("rexxdex1", apiToken);
         //   }
         let ogrIDx = userData.orgID;
+        let taxesx = 0;
         let personalIDx = userData.personalID;
         let itemss = [];
         allSaleItem.map((item) => {
+          taxesx += parseInt(item.taxAmount, 10);
           const obj = {
             saleType: item.saleType,
             salesID: item.salesID,
@@ -883,7 +893,7 @@ export default function Sales({ navigation }) {
           items: itemss,
           bonusAmount: bonusAmountx,
           subTotalAmount: subTotalAmountx,
-          totalAmount: subTotalx - bonusx,
+          totalAmount: subTotalx - taxesx + bonusx,
           createdBy: personalIDx,
           comment: commentx,
           receiptStatus: 1,
@@ -964,6 +974,8 @@ export default function Sales({ navigation }) {
             setBonusAmount("");
             setComment("");
             setSubTotalAmount("");
+            setCombinedValue("");
+            setProductNamex("");
             setAllSaleItem([]);
             setToastObject({
               status: result.status,
@@ -1056,6 +1068,7 @@ export default function Sales({ navigation }) {
       if (vall === 0) {
         handleAddSale();
       } else {
+        setFlutterPaidAmount(flutterPaidAmount2);
         let tfr = parseInt(transferPaidAmount, 10);
         if (isNaN(tfr)) {
           tfr = 0;
@@ -1064,7 +1077,7 @@ export default function Sales({ navigation }) {
         if (isNaN(chr)) {
           chr = 0;
         }
-        let fwr = parseInt(flutterPaidAmount, 10);
+        let fwr = parseInt(flutterPaidAmount2, 10);
         if (isNaN(fwr)) {
           fwr = 0;
         }
@@ -1431,7 +1444,7 @@ export default function Sales({ navigation }) {
       if (isNaN(bbamt)) {
         bbamt = 0;
       }
-      setSubTotalAmount(subTotalx + bbamt);
+      setSubTotalAmount(subTotalx - bbamt);
     }
     setAllSaleItem([...allSaleItem, saleItemObj]);
     setSaleType("");
@@ -2737,7 +2750,7 @@ export default function Sales({ navigation }) {
                               <TextInput
                                 keyboardType="numeric"
                                 placeholder="Amount"
-                                value={flutterPaidAmount}
+                                value={flutterPaidAmount2}
                                 onChangeText={(value) =>
                                   handleTransCashChange(value, 1)
                                 }
@@ -2777,7 +2790,7 @@ export default function Sales({ navigation }) {
                                     customer: {
                                       email: userDatax.data.email,
                                     },
-                                    amount: flutterPaidAmount,
+                                    amount: flutterPaidAmount2,
                                     currency: "NGN",
                                     payment_options: "card",
                                   }}
@@ -3600,7 +3613,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
-    height: "90%",
+    height: "85%",
     minHeight: 200,
     maxHeight: 900,
     shadowColor: "#000",

@@ -16,7 +16,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
 } from "react-native";
-import CalenderPicker from "react-native-calendar-picker";
 import { ToastAlert } from "../components/alert";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
@@ -181,7 +180,6 @@ export default function Individual({ navigation }) {
             setResidentialState("");
             setCity("");
             setAddress("");
-            storeUser(result.data);
             setToastObject({
               status: result.status,
               message: result.message,

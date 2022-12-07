@@ -409,7 +409,7 @@ function History({ navigation }) {
     const cashierName = `${userDatax.otherDetailsDTO.personal.fname}`;
     const allSaleItem = filteredItems[0].items;
     const bonusAmountx = filteredItems[0].bonusAmount;
-    const subTotalAmountx = filteredItems[0].totalAmount;
+    const subTotalAmountx = filteredItems[0].subTotalAmount;
 
     let salesString = ``;
     let ttam = 0;
@@ -686,7 +686,7 @@ function History({ navigation }) {
                               color: "#F96D02",
                             }}
                           >
-                            {item.individual.title}
+                            {item.individual.title}&nbsp;
                           </Text>
                           {item.individual.fname} {item.individual.lname}
                         </Text>
@@ -725,7 +725,7 @@ function History({ navigation }) {
                           >
                             Subtotal:
                           </Text>
-                          &nbsp;₦{numberWithCommas(item.totalAmount)}
+                          &nbsp;₦{numberWithCommas(item.subTotalAmount)}
                         </Text>
                         <TouchableOpacity
                           onPress={() => generatePdf(sales, item.id)}
@@ -896,7 +896,7 @@ function History({ navigation }) {
                   >
                     Item Total:
                   </Text>
-                  ₦&nbsp;{numberWithCommas(itemObj.subTotalAmount)}
+                  ₦&nbsp;{numberWithCommas(itemObj.totalAmount)}
                 </Text>
                 <Text
                   style={{
@@ -951,9 +951,9 @@ function History({ navigation }) {
                       paddingHorizontal: 0,
                     }}
                   >
-                    Item Total:
+                    Subtotal:
                   </Text>
-                  ₦&nbsp;{numberWithCommas(itemObj.totalAmount)}
+                  ₦&nbsp;{numberWithCommas(itemObj.subTotalAmount)}
                 </Text>
               </View>
             </ScrollView>
