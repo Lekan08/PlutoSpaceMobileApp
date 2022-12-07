@@ -66,6 +66,7 @@ export default function Individual({ navigation }) {
     setResidentialState(valuex);
   };
   // And this handle my button that triger the API call
+
   const handlePress = () => {
     async function fetchData() {
       setLoading(true);
@@ -75,10 +76,15 @@ export default function Individual({ navigation }) {
       let requestOptions;
       // getting data
       try {
-        const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
+        const userDataa = JSON.parse(await AsyncStorage.getItem("userInfo"));
+        const userData = userDataa.data;
         let GeneToken = await AsyncStorage.getItem("rexxdex1");
         let apiToken = await AsyncStorage.getItem("rexxdex");
         console.log(GeneToken);
+
+        //   if (apiToken !== "null" && apiToken !== null) {
+        //     await AsyncStorage.setItem("rexxdex1", apiToken);
+        //   }
         let ogrIDx = userData.orgID;
         let personalIDx = userData.personalID;
         const raw = JSON.stringify([
@@ -93,7 +99,6 @@ export default function Individual({ navigation }) {
             state: residentialStatex,
             country: residentialCountryx,
             email: emailx,
-            pno: phonenumberx,
             createdBy: personalIDx,
             accountOwnerID: personalIDx,
           },
@@ -112,7 +117,7 @@ export default function Individual({ navigation }) {
           redirect: "follow",
         };
         console.log(requestOptions);
-        setUserData(userData);
+        setUserData(userDataa);
       } catch (error) {
         console.log(error);
       }
@@ -131,6 +136,7 @@ export default function Individual({ navigation }) {
                 aToken === undefined ||
                 aToken === ""
               ) {
+                // sup[Danga]
               } else {
                 await AsyncStorage.setItem("rexxdex1", aToken);
               }
@@ -164,7 +170,8 @@ export default function Individual({ navigation }) {
           }
           if (result.status === "SUCCESS") {
             // storing data
-            setInput(!Input);
+            setInput(!input);
+            handleModal();
             setFirstname("");
             setLastname("");
             setOthername("");
@@ -182,8 +189,9 @@ export default function Individual({ navigation }) {
               type: "success",
               change: Math.floor(Math.random() * 100),
             });
-            navigation.navigate("Profile");
+            navigation.navigate("Home", { replace: true });
           } else {
+            // Alert.alert(result.status, result.message);
             setToastObject({
               status: result.status,
               message: result.message,
@@ -264,7 +272,7 @@ export default function Individual({ navigation }) {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
-            <View style={{ marginRight: 60 }}>
+            <View>
               <Image source={require("../images/house_of_tara_logo.png")} />
             </View>
             <View style={{ borderRadius: 5 }}>
@@ -274,7 +282,7 @@ export default function Individual({ navigation }) {
                   fontWeight: "900",
                   color: "#F96D02",
                   paddingHorizontal: 0,
-                  paddingTop: 20,
+                  paddingTop: 40,
                   fontFamily: "serif",
                   width: 300,
                 }}
@@ -282,8 +290,8 @@ export default function Individual({ navigation }) {
                 Create Individual Client
               </Text>
             </View>
-            <View style={{ paddingTop: 10 }}>
-              <Text style={styles.inputText}>First Name:</Text>
+            <View style={{ paddingTop: 40 }}>
+              <Text style={styles.inputText}>First Name</Text>
               <TextInput
                 keyboardType="default"
                 placeholder="First Name"
@@ -292,7 +300,7 @@ export default function Individual({ navigation }) {
                 style={styles.input}
                 placeholderTextColor={"#777"}
               />
-              <Text style={styles.inputText}>Last Name:</Text>
+              <Text style={styles.inputText}>Last Name</Text>
               <TextInput
                 keyboardType="default"
                 placeholder="Last Name"
@@ -301,7 +309,7 @@ export default function Individual({ navigation }) {
                 style={styles.input}
                 placeholderTextColor={"#777"}
               />
-              <Text style={styles.inputText}>Other Name:</Text>
+              <Text style={styles.inputText}>Other Name</Text>
               <TextInput
                 keyboardType="default"
                 placeholder="Optional"
@@ -310,14 +318,14 @@ export default function Individual({ navigation }) {
                 style={styles.input}
                 placeholderTextColor={"#777"}
               />
-              <Text style={styles.inputText}>Title:</Text>
+              <Text style={styles.inputText}>Title</Text>
               <View style={styles.pickerContainer}>
                 <Picker
                   style={{
-                    color: "#F96D02",
+                    color: "#0f0f0f",
                   }}
                   itemStyle={{
-                    backgroundColor: "#F96D02",
+                    backgroundColor: "#0f0f0f",
                     color: "#000",
                     fontFamily: "Ebrima",
                     fontSize: 19,
@@ -336,7 +344,7 @@ export default function Individual({ navigation }) {
                   ))}
                 </Picker>
               </View>
-              <Text style={styles.inputText}>Email:</Text>
+              <Text style={styles.inputText}>Email</Text>
               <TextInput
                 keyboardType="default"
                 placeholder="Email"
@@ -345,7 +353,7 @@ export default function Individual({ navigation }) {
                 style={styles.input}
                 placeholderTextColor={"#777"}
               />
-              <Text style={styles.inputText}>Phone Number:</Text>
+              <Text style={styles.inputText}>Phone Number</Text>
               <TextInput
                 keyboardType="numeric"
                 placeholder="Phone Number"
@@ -354,14 +362,14 @@ export default function Individual({ navigation }) {
                 style={styles.input}
                 placeholderTextColor={"#777"}
               />
-              <Text style={styles.inputText}>Country:</Text>
+              <Text style={styles.inputText}>Country</Text>
               <View style={styles.pickerContainer}>
                 <Picker
                   style={{
-                    color: "#F96D02",
+                    color: "#0f0f0f",
                   }}
                   itemStyle={{
-                    backgroundColor: "#F96D02",
+                    backgroundColor: "#0f0f0f",
                     color: "#000",
                     fontFamily: "Ebrima",
                     fontSize: 19,
@@ -381,10 +389,10 @@ export default function Individual({ navigation }) {
                   ))}
                 </Picker>
               </View>
-              <Text style={styles.inputText}>State:</Text>
+              <Text style={styles.inputText}>State</Text>
               <View style={styles.pickerContainer}>
                 <Picker
-                  style={{ color: "#F96D02" }}
+                  style={{ color: "#0f0f0f" }}
                   selectedValue={residentialStatex}
                   onValueChange={(newValue) => handleOnChangeRCState(newValue)}
                 >
@@ -398,7 +406,7 @@ export default function Individual({ navigation }) {
                   ))}
                 </Picker>
               </View>
-              <Text style={styles.inputText}>City:</Text>
+              <Text style={styles.inputText}>City</Text>
               <TextInput
                 keyboardType="default"
                 placeholder="City"
@@ -407,7 +415,7 @@ export default function Individual({ navigation }) {
                 style={styles.input}
                 placeholderTextColor={"#777"}
               />
-              <Text style={styles.inputText}>House Address:</Text>
+              <Text style={styles.inputText}>House Address</Text>
               <TextInput
                 keyboardType="default"
                 placeholder="Address"
@@ -449,7 +457,7 @@ export default function Individual({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0F0F0F",
+    backgroundColor: "#ffff",
     alignItems: "center",
     paddingTop: 60,
     justifyContent: "center",
@@ -461,21 +469,22 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#777",
+    borderColor: "#0f0f0f",
     padding: 15,
     margin: 5,
+    fontSize: 18,
     width: 300,
-    color: "#fff",
+    color: "#0f0f0f",
     paddingHorizontal: 20,
     borderRadius: 20,
   },
   inputContainer: {
     borderWidth: 1,
-    borderColor: "#777",
+    borderColor: "#0f0f0f",
     padding: 15,
     margin: 5,
     width: 300,
-    color: "#fff",
+    color: "#0f0f0f",
     paddingHorizontal: 20,
     borderRadius: 20,
     flexDirection: "row",
@@ -483,14 +492,14 @@ const styles = StyleSheet.create({
   },
   inputField: {
     width: "90%",
-    color: "#fff",
+    color: "#0f0f0f",
   },
   pickerContainer: {
     borderWidth: 1,
-    borderColor: "#777",
+    borderColor: "#0f0f0f",
     margin: 5,
     width: 300,
-    color: "#fff",
+    color: "#0f0f0f",
     paddingHorizontal: 20,
     borderRadius: 20,
   },
@@ -507,8 +516,10 @@ const styles = StyleSheet.create({
   },
   inputText: {
     marginTop: 10,
-    alignSelf: "center",
+    // alignSelf: "center",
     color: "#F96D02",
+    fontWeight: "bold",
+    marginLeft: 40,
   },
   item: {
     padding: 30,

@@ -13,19 +13,21 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-// KPURKISH👌👌👌👌
-// KPURKISH👌👌👌👌
-// KPURKISH👌👌👌👌
+import { Loader, InnerLoader } from "../components/loader";
+import { ToastAlert } from "../components/alert";
 export default function EditProfile({ navigation }) {
   //Getting user info
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [otherName, setOthername] = useState("");
   const [email, setEmail] = useState("");
-  const [categories, setcategories] = useState("");
-  const [country, setcountry] = useState("");
-  const [state, setstate] = useState("");
-  const [city, setcity] = useState("");
-  const [address, setaddress] = useState("");
+  const [categories, setCategories] = useState("");
+  const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [address, setAddress] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [toastObject, setToastObject] = useState({});
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
@@ -36,11 +38,11 @@ export default function EditProfile({ navigation }) {
           setFirstName(`${userData.firstname}`);
           setLastName(`${userData.lastname}`);
           setEmail(`${userData.email}`);
-          setcategories(`${userData.categories}`);
-          setcountry(`${userData.country}`);
-          setstate(`${userData.state}`);
-          setcity(`${userData.city}`);
-          setaddress(`${userData.address}`);
+          setCategories(`${userData.categories}`);
+          setCountry(`${userData.country}`);
+          setState(`${userData.state}`);
+          setCity(`${userData.city}`);
+          setAddress(`${userData.address}`);
           console.log(userData);
         } catch (error) {
           console.log(error);
@@ -52,73 +54,34 @@ export default function EditProfile({ navigation }) {
       isMounted = false;
     };
   }, []);
-  //Getting user info
-
-  const handlePress = () => {
-    const raw = JSON.stringify({
-      username: usernamex,
-      password: currentPasswordx,
-      newPassword: newPasswordx,
-    });
-    const myHeaders = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    };
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
-
-    const url = "https://tarastoreservice.plutospace.space";
-
-    fetch(`${url}/users/changePass`, requestOptions)
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.status === "SUCCESS") {
-          Alert.alert(result.status, result.message, [
-            {
-              text: "Continue",
-              onPress: () => {
-                navigation.navigate("Home", { replace: true });
-              },
-            },
-          ]);
-        } else {
-          Alert.alert(result.status, result.message);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   const clickHandler = () => {
     if (
-      firstnamex.length === 0 ||
-      firstnamex === "" ||
-      lastnamex.length === 0 ||
-      lastnamex === "" ||
-      emailx.length === 0 ||
-      emailx === "" ||
-      cityx.length === 0 ||
-      cityx === "" ||
-      addressx.length === 0 ||
-      addressx === ""
+      firstName.length === 0 ||
+      firstName === "" ||
+      lastName.length === 0 ||
+      lastName === "" ||
+      email.length === 0 ||
+      email === "" ||
+      city.length === 0 ||
+      city === "" ||
+      address.length === 0 ||
+      address === ""
     ) {
-      Alert.alert("Please fill all empty textfields");
+      setToastObject({
+        status: "EMPTY_TEXTFIELDS",
+        message: "Fill empty textfields",
+        open: true,
+        type: "error",
+        change: Math.floor(Math.random() * 100),
+      });
+      // Alert.alert("Please fill all empty textfields");
     }
-    // if(newPasswordx !== newRPasswordx){
-    //     Alert.Alert("passwords don't match")
-    // }
-    else handlePress();
+    // else handlePress();
   };
   return (
     <View style={styles.container}>
       <ScrollView>
         <Image source={require("../images/house_of_tara_logo.png")} />
-
         <View style={{ paddingBottom: 20, marginTop: 10 }}>
           <Text
             style={{
@@ -135,81 +98,110 @@ export default function EditProfile({ navigation }) {
             Edit Profile
           </Text>
         </View>
-        <Text style={styles.inputText}>First Name</Text>
-        <TextInput
-          placeholder="××××××"
-          keyboardType="default"
-          value={firstName}
-          onChangeText={(value) => getUsername(value)}
-          style={styles.input}
-          secureTextEntry={true}
-          placeholderTextColor={"#777"}
-        />
-        <Text style={styles.inputText}>Last Name:</Text>
-        <TextInput
-          placeholder="××××××"
-          keyboardType="default"
-          value={lastName}
-          onChangeText={(value) => getUsername(value)}
-          style={styles.input}
-          secureTextEntry={true}
-          placeholderTextColor={"#777"}
-        />
-        <Text style={styles.inputText}>Email:</Text>
-        <TextInput
-          placeholder="××××××××××××"
-          keyboardType="default"
-          value={lastName}
-          onChangeText={(value) => getUsername(value)}
-          style={styles.input}
-          secureTextEntry={true}
-          placeholderTextColor={"#777"}
-        />
-        <Text style={styles.inputText}>Country:</Text>
-        <TextInput
-          placeholder="×××××××"
-          keyboardType="default"
-          value={lastName}
-          onChangeText={(value) => getUsername(value)}
-          style={styles.input}
-          secureTextEntry={true}
-          placeholderTextColor={"#777"}
-        />
-        <Text style={styles.inputText}>State:</Text>
-        <TextInput
-          placeholder="××××××××"
-          keyboardType="default"
-          value={lastName}
-          onChangeText={(value) => getUsername(value)}
-          style={styles.input}
-          secureTextEntry={true}
-          placeholderTextColor={"#777"}
-        />
-        <Text style={styles.inputText}>City:</Text>
-        <TextInput
-          placeholder="×××××××××"
-          keyboardType="default"
-          value={lastName}
-          onChangeText={(value) => getUsername(value)}
-          style={styles.input}
-          secureTextEntry={true}
-          placeholderTextColor={"#777"}
-        />
 
+        <View style={{ paddingTop: 40 }}>
+          <Text style={styles.inputText}>First Name</Text>
+          <TextInput
+            keyboardType="default"
+            placeholder="First Name"
+            value={firstName}
+            onChangeText={(value) => setFirstName(value)}
+            style={styles.input}
+            placeholderTextColor={"#777"}
+          />
+          <Text style={styles.inputText}>Last Name</Text>
+          <TextInput
+            keyboardType="default"
+            placeholder="Last Name"
+            value={lastName}
+            onChangeText={(value) => setLastName(value)}
+            style={styles.input}
+            placeholderTextColor={"#777"}
+          />
+          <Text style={styles.inputText}>Other Name</Text>
+          <TextInput
+            keyboardType="default"
+            placeholder="Optional"
+            value={otherName}
+            onChangeText={(value) => setOthername(value)}
+            style={styles.input}
+            placeholderTextColor={"#777"}
+          />
+          <Text style={styles.inputText}>Email</Text>
+          <TextInput
+            keyboardType="default"
+            placeholder="Email"
+            value={email}
+            onChangeText={(value) => setEmail(value)}
+            style={styles.input}
+            placeholderTextColor={"#777"}
+          />
+          <Text style={styles.inputText}>City</Text>
+          <TextInput
+            keyboardType="default"
+            placeholder="City"
+            value={city}
+            onChangeText={(value) => setCity(value)}
+            style={styles.input}
+            placeholderTextColor={"#777"}
+          />
+          <Text style={styles.inputText}>State</Text>
+          <TextInput
+            keyboardType="default"
+            placeholder="City"
+            value={state}
+            onChangeText={(value) => setState(value)}
+            style={styles.input}
+            placeholderTextColor={"#777"}
+          />
+          <Text style={styles.inputText}>Country</Text>
+          <TextInput
+            keyboardType="default"
+            placeholder="City"
+            value={country}
+            onChangeText={(value) => setCountry(value)}
+            style={styles.input}
+            placeholderTextColor={"#777"}
+          />
+          <Text style={styles.inputText}>House Address</Text>
+          <TextInput
+            keyboardType="default"
+            placeholder="Address"
+            multiline
+            value={address}
+            onChangeText={(value) => setAddress(value)}
+            style={styles.input}
+            placeholderTextColor={"#777"}
+          />
+        </View>
         <TouchableOpacity onPress={clickHandler}>
           <View style={styles.changePassButton}>
-            <Text style={styles.inputText}>Save</Text>
+            <Text
+              style={{
+                color: "#ffff",
+                textAlign: "center",
+                fontSize: 15,
+              }}
+            >
+              Save
+            </Text>
           </View>
         </TouchableOpacity>
       </ScrollView>
+      <ToastAlert
+        status={toastObject.status}
+        message={toastObject.message}
+        open={toastObject.open}
+        type={toastObject.type}
+        change={toastObject.change}
+      />
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0f0f0f",
+    backgroundColor: "#ffff",
     alignItems: "center",
     paddingTop: 60,
     justifyContent: "center",
@@ -221,7 +213,7 @@ const styles = StyleSheet.create({
     padding: 8,
     margin: 5,
     width: 300,
-    color: "#fff",
+    color: "#0f0f0f",
     marginTop: 10,
     alignSelf: "center",
     paddingHorizontal: 20,
@@ -230,13 +222,15 @@ const styles = StyleSheet.create({
   changePassButton: {
     padding: 15,
     marginTop: 30,
-    backgroundColor: "#7FB77E",
+    backgroundColor: "#F96D02",
     marginHorizontal: 40,
     borderRadius: 15,
   },
   inputText: {
-    textAlign: "center",
+    // textAlign: "left",
+    marginLeft: 60,
     color: "#F96D02",
     fontSize: 15,
+    fontWeight: "bold",
   },
 });

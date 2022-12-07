@@ -58,18 +58,23 @@ export default function SeeAllindividuals({ navigation }) {
         let headers;
         // getting data
         try {
-          const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
+          const userDataa = JSON.parse(await AsyncStorage.getItem("userInfo"));
+          const userData = userDataa.data;
           let GeneToken = await AsyncStorage.getItem("rexxdex1");
           let apiToken = await AsyncStorage.getItem("rexxdex");
           console.log(GeneToken);
           console.log(apiToken);
+
+          //   if (apiToken !== "null" && apiToken !== null) {
+          //     await AsyncStorage.setItem("rexxdex1", apiToken);
+          //   }
           const token = await AsyncStorage.getItem("rexxdex1");
           headers = {
             "Content-Type": "application/json",
             "Token-1": `${token}`,
           };
           console.log(headers);
-          setUserData(userData);
+          setUserData(userDataa);
           ogrIDx = userData.orgID;
         } catch (error) {
           console.log(error);
@@ -269,18 +274,20 @@ export default function SeeAllindividuals({ navigation }) {
           />
         }
       >
-        {clientsx.map((apic) => (
-          <View
-            style={{
-              backgroundColor: "#F96D02",
-              height: 60,
-              width: "100%",
-              borderRadius: 5,
-              marginTop: 20,
-              justifyContent: "center",
-            }}
-          >
-            {/* <Text
+        <View style={{ alignItems: "center" }}>
+          {clientsx.map((apic) => (
+            <View
+              style={{
+                backgroundColor: "#ffffffff",
+                elevation: 5,
+                height: 60,
+                width: "97%",
+                borderRadius: 5,
+                marginTop: 20,
+                justifyContent: "center",
+              }}
+            >
+              {/* <Text
               style={{
                 textTransform: "uppercase",
                 color: "#ffffff",
@@ -302,74 +309,81 @@ export default function SeeAllindividuals({ navigation }) {
               </Text>
               {apic.title}
             </Text> */}
-            <View
-              style={{
-                // marginTop: 10,
-                marginLeft: 10,
-                flexDirection: "row",
-                alignItems: "center",
-                // justifyContent: "space-between",
-              }}
-            >
-              <View>
-                <Image
-                  source={require("../images/dummy.jpg")}
-                  style={{
-                    width: 35.5,
-                    borderRadius: 100,
-                    height: 35.5,
-                    padding: 9,
-                    margin: 6,
-                  }}
-                />
-              </View>
-              <View>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: "bold",
-                    marginLeft: 15,
-                    // marginTop: 10,
-                    // color: "#ffff",
-                    // textAlign: "center",
-                    // alignContent: "center",
-                    // alignSelf: "flex-start",
-                    textTransform: "uppercase",
-                    // alignItems: "center",
-                    // justifyContent: "center",
-                    // marginStart: 30,
-                  }}
-                >
-                  {apic.title} {apic.fname} {apic.lname}
-                </Text>
-              </View>
-              <View style={{ flexDirection: "column", flex: 1 }}>
-                <View style={{ alignSelf: "flex-end", flexDirection: "row" }}>
-                  <Icon
-                    name="delete"
-                    size={25.5}
-                    // onPress={(e) => handleMyModal(apic)}
-                    onPress={() => clickHandler(apic.id)}
+              <View
+                style={{
+                  // marginTop: 10,
+                  marginLeft: 10,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  // justifyContent: "space-between",
+                }}
+              >
+                <View>
+                  <Image
+                    source={require("../images/dummy.jpg")}
                     style={{
-                      color: "#0f0f0f",
-                      marginRight: 15,
-                      // alignSelf: "flex-end",
-                      // marginTop: 7,
+                      width: 35.5,
+                      borderRadius: 100,
+                      height: 35.5,
+                      padding: 9,
+                      margin: 6,
                     }}
                   />
-                  <Icon
-                    name="edit"
-                    size={25.5}
-                    onPress={(e) => handleModal(apic.object)}
-                    // onPress={handleModal}
+                </View>
+                <View>
+                  <Text
                     style={{
-                      color: "#0f0f0f",
-                      marginRight: 15,
-                      // alignSelf: "flex-end",
-                      // marginTop: 7,
+                      fontSize: 18,
+                      fontWeight: "bold",
+                      marginLeft: 10,
+                      // marginTop: 10,
+                      // color: "#ffff",
+                      // textAlign: "center",
+                      // alignContent: "center",
+                      // alignSelf: "flex-start",
+                      textTransform: "uppercase",
+                      // alignItems: "center",
+                      // justifyContent: "center",
+                      // marginStart: 30,
                     }}
-                  />
-                  {/* <Icon
+                  >
+                    <Text
+                      style={{
+                        color: "#F96D02",
+                      }}
+                    >
+                      {apic.title}:
+                    </Text>
+                    {apic.fname} {apic.lname}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: "column", flex: 1 }}>
+                  <View style={{ alignSelf: "flex-end", flexDirection: "row" }}>
+                    <Icon
+                      name="delete"
+                      size={25.5}
+                      // onPress={(e) => handleMyModal(apic)}
+                      onPress={() => clickHandler(apic.id)}
+                      style={{
+                        color: "#0f0f0f",
+                        marginRight: 15,
+                        // alignSelf: "flex-end",
+                        // marginTop: 7,
+                      }}
+                    />
+                    <Icon
+                      name="edit"
+                      size={25.5}
+                      onPress={(e) => handleModal(apic.object)}
+                      // onPress={handleModal}
+                      style={{
+                        color: "#0f0f0f",
+                        marginRight: 15,
+                        // alignSelf: "flex-end",
+                        // marginTop: 7,
+                      }}
+                    />
+                    {/* <Icon
                     name="add"
                     size={25.5}
                     // onPress={(e) => handleMyModal(apic)}
@@ -380,11 +394,12 @@ export default function SeeAllindividuals({ navigation }) {
                       // marginTop: 7,
                     }}
                   /> */}
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-        ))}
+          ))}
+        </View>
       </ScrollView>
       <Modal transparent={true} animationType="slide" visible={isModalVisible}>
         <View style={{ flex: 1, justifyContent: "center" }}>
@@ -519,7 +534,7 @@ export default function SeeAllindividuals({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0f0f0f",
+    backgroundColor: "#ffff",
     paddingTop: 60,
     paddingBottom: 20,
   },
