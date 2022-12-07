@@ -47,8 +47,9 @@ export default function Sales({ navigation }) {
   //   const { allGHeaders: miHeaders } = GHeaders();
   //   const miHeaders = GHeaders();
 
-  const popAnim = useRef(new Animated.Value(45)).current;
-  const popAnim2 = useRef(new Animated.Value(45)).current;
+  const popAnim0 = useRef(new Animated.Value(50)).current;
+  const popAnim = useRef(new Animated.Value(50)).current;
+  const popAnim2 = useRef(new Animated.Value(50)).current;
 
   const [commentx, setComment] = useState("");
   const [passwordx, setPassword] = useState("");
@@ -79,6 +80,7 @@ export default function Sales({ navigation }) {
   const [products, setProducts] = useState([]);
   const [productID, setProductID] = useState("");
   const [productBranches, setProductBranches] = useState([]);
+  const [branches, setBranches] = useState([]);
   const [productBranchID, setProductBranchID] = useState("");
   const [saleTypex, setSaleType] = useState("");
   const [pricePerUnitx, setPricePerUnit] = useState("");
@@ -90,8 +92,11 @@ export default function Sales({ navigation }) {
   const [subTotalAmountx, setSubTotalAmount] = useState(0);
   const [productNamex, setProductNamex] = useState("");
 
+  const [flutterPaidAmount, setFlutterPaidAmount] = useState("");
   const [transferPaidAmount, setTransferPaidAmount] = useState("");
   const [cashPaidAmount, setCashPaidAmount] = useState("");
+  const [combinedValue, setCombinedValue] = useState("");
+  const [fwRemain, setFWRemain] = useState("");
   const [tfRemain, setTFRemain] = useState("");
   const [chRemain, setCHRemain] = useState("");
 
@@ -131,10 +136,13 @@ export default function Sales({ navigation }) {
   let [name, setName] = useState("anthony");
 
   const [editablex, setEditable] = React.useState(false);
+  const [disableFlutter, setDisableFlutter] = React.useState(false);
   const [disableTrans, setDisableTrans] = React.useState(false);
   const [disableCash, setDisableCash] = React.useState(false);
+  const [disableFlutterButton, setDisableFlutterButton] = React.useState(false);
   const [disableTransButton, setDisableTransButton] = React.useState(false);
   const [disableCashButton, setDisableCashButton] = React.useState(false);
+  const [showFlutter, setShowFlutter] = React.useState(false);
   const [showTransfer, setShowTransfer] = React.useState(false);
   const [showCash, setShowCash] = React.useState(false);
   const [isModalVisible, setIsModalVisible] = React.useState(false);
@@ -153,10 +161,20 @@ export default function Sales({ navigation }) {
     setIsPaymentModalVisible(() => !isPaymentModalVisible);
     setCashPaidAmount("");
     setTransferPaidAmount("");
+    setFlutterPaidAmount("");
+    setFWRemain("0");
     setTFRemain("0");
     setCHRemain("0");
     setDisableTransButton(true);
     setDisableCashButton(true);
+
+    setShowFlutter(false);
+    setDisableFlutter(false);
+    Animated.timing(popAnim0, {
+      toValue: 50,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
 
     setShowTransfer(false);
     setDisableTrans(false);
@@ -191,37 +209,70 @@ export default function Sales({ navigation }) {
 
   const handleTransCashChange = (value, num) => {
     if (num === 1) {
-      setTransferPaidAmount(value);
+      setFlutterPaidAmount(value);
 
-      let sta = parseInt(subTotalAmountx, 10);
-      if (isNaN(sta)) {
-        sta = 0;
-      }
       let val = parseInt(value, 10);
       if (isNaN(val)) {
         val = 0;
       }
-      const subVal = sta - val;
-      setTFRemain(`${subVal}`);
-      if (subVal === 0) {
+      // let tfr = parseInt(setTransferPaidAmount, 10);
+      // if (isNaN(tfr)) {
+      //   tfr = 0;
+      // }
+      // let chr = parseInt(setCashPaidAmount, 10);
+      // if (isNaN(chr)) {
+      //   chr = 0;
+      // }
+      // const subVal = tfr + chr;
+      // setCombinedValue(subVal);
+      setFWRemain(`${val}`);
+      if (val > 0) {
+        setDisableFlutterButton(false);
+      } else {
+        setDisableFlutterButton(true);
+      }
+    } else if (num === 2) {
+      setTransferPaidAmount(value);
+
+      let val = parseInt(value, 10);
+      if (isNaN(val)) {
+        val = 0;
+      }
+      // let fwr = parseInt(setFlutterPaidAmount, 10);
+      // if (isNaN(fwr)) {
+      //   fwr = 0;
+      // }
+      // let chr = parseInt(setCashPaidAmount, 10);
+      // if (isNaN(chr)) {
+      //   chr = 0;
+      // }
+      // const subVal = fwr + chr;
+      // setCombinedValue(subVal);
+      setTFRemain(`${val}`);
+      if (val > 0) {
         setDisableTransButton(false);
       } else {
         setDisableTransButton(true);
       }
-    } else if (num === 2) {
+    } else if (num === 3) {
       setCashPaidAmount(value);
 
-      let sta = parseInt(subTotalAmountx, 10);
-      if (isNaN(sta)) {
-        sta = 0;
-      }
       let val = parseInt(value, 10);
       if (isNaN(val)) {
         val = 0;
       }
-      const subVal = sta - val;
-      setCHRemain(`${subVal}`);
-      if (subVal === 0) {
+      // let tfr = parseInt(setTransferPaidAmount, 10);
+      // if (isNaN(tfr)) {
+      //   tfr = 0;
+      // }
+      // let fwr = parseInt(setFlutterPaidAmount, 10);
+      // if (isNaN(fwr)) {
+      //   fwr = 0;
+      // }
+      // const subVal = tfr + fwr;
+      // setCombinedValue(subVal);
+      setCHRemain(`${val}`);
+      if (val > 0) {
         setDisableCashButton(false);
       } else {
         setDisableCashButton(true);
@@ -237,6 +288,25 @@ export default function Sales({ navigation }) {
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return parts.join(".");
   }
+
+  const titlez = [
+    { value: "Bishop", key: 1 },
+    { value: "Chancellor", key: 2 },
+    { value: "Comrade", key: 3 },
+    { value: "Doctor", key: 4 },
+    { value: "Engineer", key: 5 },
+    { value: "Excellency", key: 6 },
+    { value: "Honorable", key: 7 },
+    { value: "Imam", key: 8 },
+    { value: "Master", key: 9 },
+    { value: "Miss", key: 10 },
+    { value: "Reverend", key: 11 },
+    { value: "Pastor", key: 12 },
+    { value: "Professor", key: 13 },
+    { value: "Pope", key: 14 },
+    { value: "Vice", key: 15 },
+    { value: "Others", key: 16 },
+  ];
 
   const generatePdf = async () => {
     setLoading1(true);
@@ -550,6 +620,63 @@ export default function Sales({ navigation }) {
               }
             }
           });
+        setLoading1(true);
+        await fetch(`${process.env.REACT_APP_KUBU_URL}/branch/gets/${ogrIDx}`, {
+          headers,
+        })
+          .then(async (res) => {
+            const storeUser = async (value) => {
+              try {
+                const aToken = value.headers.get("token-1");
+
+                if (
+                  aToken === "null" ||
+                  aToken === null ||
+                  aToken === undefined ||
+                  aToken === ""
+                ) {
+                  // sup[Danga]
+                } else {
+                  await AsyncStorage.setItem("rexxdex1", aToken);
+                }
+              } catch (error) {
+                console.log(error);
+              }
+            };
+            storeUser(res);
+            const resultres = await res.text();
+            if (
+              resultres === null ||
+              resultres === undefined ||
+              resultres === ""
+            ) {
+              return {};
+            }
+            return JSON.parse(resultres);
+          })
+          .then((result) => {
+            setLoading1(false);
+            console.log(result);
+            if (result.message === "Expired Access") {
+              navigation.navigate("initial");
+            }
+            if (result.message === "Token Does Not Exist") {
+              navigation.navigate("initial");
+            }
+            if (result.message === "Unauthorized Access") {
+              navigation.navigate("initial");
+            }
+            if (isMounted) {
+              console.log(result.length);
+              if (result.length) {
+                if (result.length !== 0) {
+                  setBranches(result);
+                } else {
+                  setBranches([]);
+                }
+              }
+            }
+          });
         return () => {
           isMounted = false;
         };
@@ -759,7 +886,7 @@ export default function Sales({ navigation }) {
           totalAmount: subTotalx - bonusx,
           createdBy: personalIDx,
           comment: commentx,
-          receiptStatus: 0,
+          receiptStatus: 1,
         });
         console.log(raw);
         let myHeaders;
@@ -871,10 +998,79 @@ export default function Sales({ navigation }) {
     // }
   };
 
+  const handleAddPayment = () => {
+    let tfr = parseInt(transferPaidAmount, 10);
+    if (isNaN(tfr)) {
+      tfr = 0;
+    }
+    let chr = parseInt(cashPaidAmount, 10);
+    if (isNaN(chr)) {
+      chr = 0;
+    }
+    let fwr = parseInt(flutterPaidAmount, 10);
+    if (isNaN(fwr)) {
+      fwr = 0;
+    }
+    const subVal = fwr + tfr + chr;
+    setCombinedValue(subVal);
+  };
+
+  const handleCheckTotalPayment = () => {
+    let sta = parseInt(subTotalAmountx, 10);
+    if (isNaN(sta)) {
+      sta = 0;
+    }
+    let cov = parseInt(combinedValue, 10);
+    if (isNaN(cov)) {
+      cov = 0;
+    }
+    if (sta === 0) {
+      return;
+    }
+    const vall = sta - cov;
+    if (vall === 0) {
+      handleAddSale();
+    } else {
+      setToastObject({
+        status: "INSUFFICIENT_PAYMENT",
+        message: "Please pay the complete amount",
+        open: true,
+        type: "failure",
+        change: Math.floor(Math.random() * 100),
+      });
+    }
+  };
+
   const handleOnRedirect = (data) => {
     console.log(data);
     if (data.status === "successful") {
-      handleAddSale();
+      let sta = parseInt(subTotalAmountx, 10);
+      if (isNaN(sta)) {
+        sta = 0;
+      }
+      let cov = parseInt(combinedValue, 10);
+      if (isNaN(cov)) {
+        cov = 0;
+      }
+      const vall = sta - cov;
+      if (vall === 0) {
+        handleAddSale();
+      } else {
+        let tfr = parseInt(transferPaidAmount, 10);
+        if (isNaN(tfr)) {
+          tfr = 0;
+        }
+        let chr = parseInt(cashPaidAmount, 10);
+        if (isNaN(chr)) {
+          chr = 0;
+        }
+        let fwr = parseInt(flutterPaidAmount, 10);
+        if (isNaN(fwr)) {
+          fwr = 0;
+        }
+        const subVal = fwr + tfr + chr;
+        setCombinedValue(subVal);
+      }
     }
   };
 
@@ -1198,14 +1394,16 @@ export default function Sales({ navigation }) {
     if (filteredProducts.length > 0) {
       productNamee = filteredProducts[0].name;
     }
+    let sItem = productID;
     if (saleTypex === "3") {
       productNamee = productNamex;
+      sItem = productNamex;
     }
     const saleItemObj = {
       id: `SALE${new Date().getTime() * 8 + 2}`,
       saleType: saleTypex,
       saleTypeName: filteredSaleType[0].name,
-      salesID: productID,
+      salesID: sItem,
       productName: productNamee,
       branchID: productBranchID,
       branchName: branchNamee,
@@ -1357,7 +1555,7 @@ export default function Sales({ navigation }) {
       bbamt = 0;
     }
     setSubTotalAmount(subTotalx - bbamt);
-
+    setProductNamex("");
     setAllSaleItem(newAllSaleItem);
     handleCloseSalesModal2();
   };
@@ -1389,6 +1587,29 @@ export default function Sales({ navigation }) {
       }
       setSubTotalAmount(subTotalx - bbamt);
     }
+  };
+
+  const flutterSlideIn = (easing) => {
+    setShowFlutter(true);
+    setDisableFlutter(true);
+    Animated.timing(popAnim0, {
+      toValue: 200,
+      duration: 500,
+      easing,
+      useNativeDriver: false,
+    }).start();
+    // }).start();
+  };
+
+  const flutterSlideOut = (easing) => {
+    setShowFlutter(false);
+    setDisableFlutter(false);
+    Animated.timing(popAnim0, {
+      toValue: 50,
+      easing,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
   };
 
   const transSlideIn = (easing) => {
@@ -1620,9 +1841,13 @@ export default function Sales({ navigation }) {
                       onValueChange={(newValue) => setTitle(newValue)}
                     >
                       <Picker.Item label="Select Title" value="" />
-                      <Picker.Item label="Mr" value="Mr" />
-                      <Picker.Item label="Mrs" value="Mrs" />
-                      <Picker.Item label="Miss" value="Miss" />
+                      {titlez.map((tit) => (
+                        <Picker.Item
+                          label={tit.value}
+                          value={tit.value}
+                          key={tit.key}
+                        />
+                      ))}
                     </Picker>
                   </View>
                   <Text style={styles.inputText}>Email:</Text>
@@ -1969,6 +2194,37 @@ export default function Sales({ navigation }) {
                         style={styles.input}
                         placeholderTextColor={"#777"}
                       />
+                      <Text style={styles.inputText}>
+                        <Text style={{ color: "red" }}>* </Text>
+                        Branch:
+                      </Text>
+                      <View style={styles.pickerContainer2}>
+                        <Picker
+                          style={{
+                            color: "#777",
+                            margin: -5,
+                          }}
+                          itemStyle={{
+                            backgroundColor: "#F96D02",
+                            color: "#000",
+                            fontFamily: "Ebrima",
+                            fontSize: 19,
+                          }}
+                          selectedValue={productBranchID}
+                          onValueChange={(newValue) =>
+                            setProductBranchID(newValue)
+                          }
+                        >
+                          <Picker.Item label="Select Branch" value="" />
+                          {branches.map((apic) => (
+                            <Picker.Item
+                              label={apic.name}
+                              key={apic.id}
+                              value={apic.id}
+                            />
+                          ))}
+                        </Picker>
+                      </View>
                     </>
                   )}
                   <Text style={styles.inputText}>
@@ -2269,6 +2525,37 @@ export default function Sales({ navigation }) {
                         style={styles.input}
                         placeholderTextColor={"#777"}
                       />
+                      <Text style={styles.inputText}>
+                        <Text style={{ color: "red" }}>* </Text>
+                        Branch:
+                      </Text>
+                      <View style={styles.pickerContainer2}>
+                        <Picker
+                          style={{
+                            color: "#777",
+                            margin: -5,
+                          }}
+                          itemStyle={{
+                            backgroundColor: "#F96D02",
+                            color: "#000",
+                            fontFamily: "Ebrima",
+                            fontSize: 19,
+                          }}
+                          selectedValue={productBranchID}
+                          onValueChange={(newValue) =>
+                            setProductBranchID(newValue)
+                          }
+                        >
+                          <Picker.Item label="Select Branch" value="" />
+                          {branches.map((apic) => (
+                            <Picker.Item
+                              label={apic.name}
+                              key={apic.id}
+                              value={apic.id}
+                            />
+                          ))}
+                        </Picker>
+                      </View>
                     </>
                   )}
                   <Text style={styles.inputText}>
@@ -2350,8 +2637,8 @@ export default function Sales({ navigation }) {
             animationType="slide"
             visible={isPaymentModalVisible}
           >
-            <View style={{ flex: 1, justifyContent: "center" }}>
-              <View style={styles.modalView}>
+            <View style={{ flex: 1, justifyContent: "flex-end" }}>
+              <View style={styles.modalViewHF}>
                 <View
                   style={{
                     alignItems: "flex-start",
@@ -2376,54 +2663,156 @@ export default function Sales({ navigation }) {
                   //   justifyContent: "space-evenly",
                   // }}
                   >
-                    <PayWithFlutterwave
-                      onRedirect={handleOnRedirect}
-                      options={{
-                        tx_ref: generateTransactionRef(10),
-                        authorization: `${FLUTTER_AUTH_KEY}`,
-                        customer: {
-                          email: userDatax.data.email,
-                        },
-                        amount: subTotalAmountx,
-                        currency: "NGN",
-                        payment_options: "card",
-                      }}
-                      customButton={(props) => (
-                        <TouchableOpacity
-                          style={{ margin: 10 }}
-                          onPress={props.onPress}
-                          isBusy={props.isInitializing}
-                          disabled={props.disabled}
+                    <TouchableOpacity
+                      style={{ margin: 10 }}
+                      onPress={() => flutterSlideIn(Easing.ease)}
+                      disabled={disableFlutter}
+                    >
+                      <View
+                        style={{
+                          backgroundColor: "#f5f5f5",
+                          padding: 10,
+                          borderRadius: 5,
+                        }}
+                      >
+                        <Animated.View
+                          style={{
+                            minHeight: popAnim0,
+                          }}
                         >
-                          <View
+                          <Text
                             style={{
-                              backgroundColor: "#f5f5f5",
-                              padding: 10,
-                              borderRadius: 5,
+                              color: "#000",
+                              margin: 5,
+                              fontSize: 15,
+                              fontWeight: "bold",
                             }}
                           >
-                            <Text
-                              style={{
-                                color: "#000",
-                                margin: 5,
-                                fontSize: 15,
-                                fontWeight: "bold",
-                              }}
-                            >
-                              Pay with Flutterwave
-                            </Text>
-                            <Image
-                              source={require("../images/flutterwave.png")}
-                              style={{
-                                height: 25,
-                                width: 159,
-                                alignSelf: "flex-end",
-                              }}
-                            />
-                          </View>
-                        </TouchableOpacity>
-                      )}
-                    />
+                            Pay with Flutterwave
+                          </Text>
+                          <Image
+                            source={require("../images/flutterwave.png")}
+                            style={{
+                              height: 25,
+                              width: 159,
+                              alignSelf: "flex-end",
+                            }}
+                          />
+                          {showFlutter && (
+                            <View>
+                              <View>
+                                {subTotalAmountx && (
+                                  <Text style={{ color: "green" }}>
+                                    Total Amount: ₦
+                                    {numberWithCommas(subTotalAmountx)}
+                                    .00
+                                  </Text>
+                                )}
+                                {combinedValue && (
+                                  <Text
+                                    style={{
+                                      color: "#0F0F0F",
+                                    }}
+                                  >
+                                    Paid Amount: ₦
+                                    {numberWithCommas(combinedValue)}
+                                    .00
+                                  </Text>
+                                )}
+                                {fwRemain && (
+                                  <Text
+                                    style={{
+                                      color: "red",
+                                    }}
+                                  >
+                                    Paying amount: ₦{numberWithCommas(fwRemain)}
+                                    .00
+                                  </Text>
+                                )}
+                              </View>
+                              <Text style={styles.inputText}>
+                                <Text style={{ color: "red" }}>* </Text>
+                                Amount:
+                              </Text>
+                              <TextInput
+                                keyboardType="numeric"
+                                placeholder="Amount"
+                                value={flutterPaidAmount}
+                                onChangeText={(value) =>
+                                  handleTransCashChange(value, 1)
+                                }
+                                style={styles.input}
+                                placeholderTextColor={"#777"}
+                              />
+                              <View
+                                style={{
+                                  flexDirection: "row",
+                                  justifyContent: "flex-end",
+                                }}
+                              >
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    flutterSlideOut(Easing.ease);
+                                    // handleTransCashChange("0", 1);
+                                  }}
+                                >
+                                  <View
+                                    style={{
+                                      padding: 10,
+                                      marginTop: 10,
+                                      backgroundColor: "red",
+                                      marginHorizontal: 10,
+                                      borderRadius: 5,
+                                      width: 80,
+                                    }}
+                                  >
+                                    <Text style={styles.loginText}>CLOSE</Text>
+                                  </View>
+                                </TouchableOpacity>
+                                <PayWithFlutterwave
+                                  onRedirect={handleOnRedirect}
+                                  options={{
+                                    tx_ref: generateTransactionRef(10),
+                                    authorization: `${FLUTTER_AUTH_KEY}`,
+                                    customer: {
+                                      email: userDatax.data.email,
+                                    },
+                                    amount: flutterPaidAmount,
+                                    currency: "NGN",
+                                    payment_options: "card",
+                                  }}
+                                  customButton={(props) => (
+                                    <TouchableOpacity
+                                      // style={{ margin: 10 }}
+                                      onPress={props.onPress}
+                                      isBusy={props.isInitializing}
+                                      disabled={disableFlutterButton}
+                                    >
+                                      <View
+                                        style={{
+                                          padding: 10,
+                                          marginTop: 10,
+                                          backgroundColor: "#F96D02",
+                                          marginHorizontal: 10,
+                                          borderRadius: 5,
+                                          width: 80,
+                                          flexDirection: "row",
+                                          justifyContent: "center",
+                                        }}
+                                      >
+                                        <Text style={styles.loginText}>
+                                          PAY
+                                        </Text>
+                                      </View>
+                                    </TouchableOpacity>
+                                  )}
+                                />
+                              </View>
+                            </View>
+                          )}
+                        </Animated.View>
+                      </View>
+                    </TouchableOpacity>
 
                     <TouchableOpacity
                       style={{ margin: 10 }}
@@ -2463,18 +2852,30 @@ export default function Sales({ navigation }) {
                               <View>
                                 {subTotalAmountx && (
                                   <Text style={{ color: "green" }}>
-                                    Subtotal: ₦
+                                    Total Amount: ₦
                                     {numberWithCommas(subTotalAmountx)}
+                                    .00
+                                  </Text>
+                                )}
+                                {combinedValue && (
+                                  <Text
+                                    style={{
+                                      color: "#0F0F0F",
+                                    }}
+                                  >
+                                    Paid Amount: ₦
+                                    {numberWithCommas(combinedValue)}
                                     .00
                                   </Text>
                                 )}
                                 {tfRemain && (
                                   <Text
                                     style={{
-                                      color: tfRemain === "0" ? "green" : "red",
+                                      color: "red",
                                     }}
                                   >
-                                    Balance: ₦{numberWithCommas(tfRemain)}.00
+                                    Paying Amount: ₦{numberWithCommas(tfRemain)}
+                                    .00
                                   </Text>
                                 )}
                               </View>
@@ -2487,7 +2888,7 @@ export default function Sales({ navigation }) {
                                 placeholder="Amount"
                                 value={transferPaidAmount}
                                 onChangeText={(value) =>
-                                  handleTransCashChange(value, 1)
+                                  handleTransCashChange(value, 2)
                                 }
                                 style={styles.input}
                                 placeholderTextColor={"#777"}
@@ -2501,7 +2902,7 @@ export default function Sales({ navigation }) {
                                 <TouchableOpacity
                                   onPress={() => {
                                     transSlideOut(Easing.ease);
-                                    handleTransCashChange("0", 1);
+                                    // handleTransCashChange("0", 2);
                                   }}
                                 >
                                   <View
@@ -2514,12 +2915,12 @@ export default function Sales({ navigation }) {
                                       width: 80,
                                     }}
                                   >
-                                    <Text style={styles.loginText}>CANCEL</Text>
+                                    <Text style={styles.loginText}>CLOSE</Text>
                                   </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                   disabled={disableTransButton}
-                                  onPress={handleAddSale}
+                                  onPress={handleAddPayment}
                                 >
                                   <View
                                     style={{
@@ -2534,11 +2935,6 @@ export default function Sales({ navigation }) {
                                     }}
                                   >
                                     <Text style={styles.loginText}>PAY</Text>
-                                    <InnerLoader
-                                      animating={loading}
-                                      color="#fff"
-                                      size="small"
-                                    />
                                   </View>
                                 </TouchableOpacity>
                               </View>
@@ -2585,18 +2981,30 @@ export default function Sales({ navigation }) {
                               <View>
                                 {subTotalAmountx && (
                                   <Text style={{ color: "green" }}>
-                                    Subtotal: ₦
+                                    Total Amount: ₦
                                     {numberWithCommas(subTotalAmountx)}
+                                    .00
+                                  </Text>
+                                )}
+                                {combinedValue && (
+                                  <Text
+                                    style={{
+                                      color: "#0F0F0F",
+                                    }}
+                                  >
+                                    Paid Amount: ₦
+                                    {numberWithCommas(combinedValue)}
                                     .00
                                   </Text>
                                 )}
                                 {chRemain && (
                                   <Text
                                     style={{
-                                      color: chRemain === "0" ? "green" : "red",
+                                      color: "red",
                                     }}
                                   >
-                                    Balance: ₦{numberWithCommas(chRemain)}.00
+                                    Paying Amount: ₦{numberWithCommas(chRemain)}
+                                    .00
                                   </Text>
                                 )}
                               </View>
@@ -2609,7 +3017,7 @@ export default function Sales({ navigation }) {
                                 placeholder="Amount"
                                 value={cashPaidAmount}
                                 onChangeText={(value) =>
-                                  handleTransCashChange(value, 2)
+                                  handleTransCashChange(value, 3)
                                 }
                                 style={styles.input}
                                 placeholderTextColor={"#777"}
@@ -2624,7 +3032,7 @@ export default function Sales({ navigation }) {
                                 <TouchableOpacity
                                   onPress={() => {
                                     cashSlideOut(Easing.ease);
-                                    handleTransCashChange("0", 2);
+                                    // handleTransCashChange("0", 3);
                                   }}
                                 >
                                   <View
@@ -2637,12 +3045,12 @@ export default function Sales({ navigation }) {
                                       width: 80,
                                     }}
                                   >
-                                    <Text style={styles.loginText}>CANCEL</Text>
+                                    <Text style={styles.loginText}>CLOSE</Text>
                                   </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                   disabled={disableCashButton}
-                                  onPress={handleAddSale}
+                                  onPress={handleAddPayment}
                                 >
                                   <View
                                     style={{
@@ -2657,11 +3065,6 @@ export default function Sales({ navigation }) {
                                     }}
                                   >
                                     <Text style={styles.loginText}>PAY</Text>
-                                    <InnerLoader
-                                      animating={loading}
-                                      color="#fff"
-                                      size="small"
-                                    />
                                   </View>
                                 </TouchableOpacity>
                               </View>
@@ -2672,6 +3075,30 @@ export default function Sales({ navigation }) {
                     </TouchableOpacity>
                   </View>
                 </ScrollView>
+                <TouchableOpacity
+                  // style={{ margin: 10 }}
+                  onPress={handleCheckTotalPayment}
+                >
+                  <View
+                    style={{
+                      padding: 15,
+                      marginTop: 10,
+                      backgroundColor: "#F96D02",
+                      marginHorizontal: 10,
+                      borderRadius: 5,
+                      // width: 80,
+                      flexDirection: "row",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text style={[styles.loginText, {}]}>COMPLETE PAYMENT</Text>
+                    <InnerLoader
+                      animating={loading}
+                      color="#fff"
+                      size="small"
+                    />
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
           </Modal>
@@ -3004,7 +3431,10 @@ export default function Sales({ navigation }) {
             )}
           /> */}
           <View>
-            <TouchableOpacity onPress={handlePaymentModal}>
+            <TouchableOpacity
+              onPress={handlePaymentModal}
+              disabled={subTotalAmountx === 0 && true}
+            >
               <View
                 style={[
                   styles.loginButton,
@@ -3154,6 +3584,25 @@ const styles = StyleSheet.create({
     height: "70%",
     minHeight: 200,
     maxHeight: 700,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 20,
+  },
+  modalViewHF: {
+    backgroundColor: "#fff",
+    // marginHorizontal: 10,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    height: "90%",
+    minHeight: 200,
+    maxHeight: 900,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
