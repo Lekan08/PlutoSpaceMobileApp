@@ -1,16 +1,16 @@
 {
     "build": {
-      "tara": {
+      "hot": {
         "android": {
           "buildType": "apk"
         }
       },
-      "tara2": {
+      "hot2": {
         "android": {
           "gradleCommand": ":app:assembleRelease"
         }
       },
-      "tara3": {
+      "hot3": {
         "developmentClient": true
       },
       "production": {}
