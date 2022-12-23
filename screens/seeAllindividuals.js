@@ -24,23 +24,43 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Loader, InnerLoader } from "../components/loader";
 import { useIsFocused } from "@react-navigation/native";
 export default function SeeAllindividuals({ navigation }) {
+  // omo📊👌👌
+  // const [firstnamex, setFirstname] = useState("");
+  // const [lastnamex, setLastname] = useState("");
+  // const [othernamex, setOthername] = useState("");
+  // const [titlex, setTitle] = useState("");
+  // const [emailx, setEmail] = useState("");
+  // const [cityx, setCity] = useState("");
+  // const [addressx, setAddress] = useState("");
+  // omo📊👌👌
   const isFocused = useIsFocused();
   const [loading1, setLoading1] = useState(false);
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState(false);
   const [clientsx, setClients] = useState([]);
   const [clientx, setClientx] = useState("");
+  const [modalLName, setModalLName] = useState("");
+  const [modalFName, setModalFName] = useState("");
+  const [modalEmail, setModalEmail] = useState("");
+  const [modalCity, setModalCity] = useState("");
+  const [modalCountry, setModalCoumtry] = useState("");
   const [userDatax, setUserData] = useState({});
   const [items, setItems] = useState([]);
   const [isModalVisible, setIsModalVisible] = React.useState(false);
-  const handleModal = () => setIsModalVisible(() => !isModalVisible);
-  const handleSalesModal = () =>
-    setIsSalesModalVisible(() => !isSalesModalVisible);
-  const handleSalesModal2 = () =>
-    setIsSalesModal2Visible(() => !isSalesModal2Visible);
-  const handlePaymentModal = () =>
-    setIsPaymentModalVisible(() => !isPaymentModalVisible);
+  const handleModal = (id) => {
+    console.log(id);
+    const filteredData = clientsx.filter((client) => client.id === id);
 
+    console.log(filteredData);
+    if (filteredData.length !== 0) {
+      setModalLName(filteredData[0].lname);
+      setModalFName(filteredData[0].fname);
+      setModalEmail(filteredData[0].email);
+      setModalCity(filteredData[0].city);
+      setModalCoumtry(filteredData[0].country);
+    }
+    setIsModalVisible(() => !isModalVisible);
+  };
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
@@ -52,7 +72,7 @@ export default function SeeAllindividuals({ navigation }) {
     if (isFocused) {
       setLoading1(true);
       async function fetchData() {
-        console.log("nowwww");
+        // console.log("nowwww");
 
         let ogrIDx;
         let headers;
@@ -119,7 +139,7 @@ export default function SeeAllindividuals({ navigation }) {
           })
           .then((result) => {
             setLoading1(false);
-            console.log(result);
+            // console.log(result);
             if (result.message === "Expired Access") {
               navigation.navigate("initial");
             }
@@ -147,14 +167,14 @@ export default function SeeAllindividuals({ navigation }) {
       fetchData();
     }
   }, [isFocused, input]);
-  const bigZZ = clientsx.map((read) => {
-    console.log(read);
-    read.fname;
-  });
+  // const bigZZ = clientsx.map((read) => {
+  //   console.log(read);
+  //   read.fname;
+  // });
 
   const handleDeleteIndividual = (id) => {
-    console.log(id);
-    console.log("zombie");
+    // console.log(id);
+    // console.log("zombie");
     async function fetchData() {
       let requestOptions;
       // getting data
@@ -162,7 +182,7 @@ export default function SeeAllindividuals({ navigation }) {
         const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
         let GeneToken = await AsyncStorage.getItem("rexxdex1");
         let apiToken = await AsyncStorage.getItem("rexxdex");
-        console.log(GeneToken);
+        // console.log(GeneToken);
 
         //   if (apiToken !== "null" && apiToken !== null) {
         //     await AsyncStorage.setItem("rexxdex1", apiToken);
@@ -183,7 +203,7 @@ export default function SeeAllindividuals({ navigation }) {
           method: "DELETE",
           headers: headers,
         };
-        console.log(requestOptions);
+        // console.log(requestOptions);
         setUserData(userData);
       } catch (error) {
         console.log(error);
@@ -207,7 +227,7 @@ export default function SeeAllindividuals({ navigation }) {
               await AsyncStorage.setItem("rexxdex1", aToken);
             }
           } catch (error) {
-            console.log(error);
+            // console.log(error);
           }
         };
         storeUser(res);
@@ -225,8 +245,8 @@ export default function SeeAllindividuals({ navigation }) {
   };
 
   const clickHandler = (id) => {
-    console.log(id);
-    console.log("WEREEEY");
+    // console.log(id);
+    // console.log("WEREEEY");
     Alert.alert(
       "WARNING!!",
       "Are you sure you want to delete the Client from list?",
@@ -243,7 +263,7 @@ export default function SeeAllindividuals({ navigation }) {
       { cancelable: false }
     );
   };
-  console.log(bigZZ);
+  // console.log(bigZZ);
   return (
     <View style={styles.container}>
       <View>
@@ -261,7 +281,7 @@ export default function SeeAllindividuals({ navigation }) {
             marginStart: 40,
           }}
         >
-          ALL INDIVIDUAL CLIENTS
+          ALL CLIENTS
         </Text>
       </View>
       <ScrollView
@@ -335,7 +355,7 @@ export default function SeeAllindividuals({ navigation }) {
                     style={{
                       fontSize: 18,
                       fontWeight: "bold",
-                      marginLeft: 10,
+                      marginLeft: 0,
                       // marginTop: 10,
                       // color: "#ffff",
                       // textAlign: "center",
@@ -366,19 +386,19 @@ export default function SeeAllindividuals({ navigation }) {
                       onPress={() => clickHandler(apic.id)}
                       style={{
                         color: "#0f0f0f",
-                        marginRight: 15,
+                        marginRight: 5,
                         // alignSelf: "flex-end",
                         // marginTop: 7,
                       }}
                     />
                     <Icon
-                      name="edit"
+                      name="arrow-drop-down"
                       size={25.5}
-                      onPress={(e) => handleModal(apic.object)}
+                      onPress={() => handleModal(apic.id)}
                       // onPress={handleModal}
                       style={{
                         color: "#0f0f0f",
-                        marginRight: 15,
+                        marginRight: 5,
                         // alignSelf: "flex-end",
                         // marginTop: 7,
                       }}
@@ -447,67 +467,66 @@ export default function SeeAllindividuals({ navigation }) {
                     color: "#fff",
                   }}
                 >
-                  Add Client
+                  CLIENT DETAILS
                 </Text>
               </View>
               <Text style={styles.inputText}>
-                <Text style={{ color: "red" }}>* </Text>
-                First Name:
+                <Text style={{ color: "red" }}>* </Text>First Name:
+                {/* {apic.fname} */}
               </Text>
               <TextInput
                 keyboardType="default"
                 placeholder="First Name"
-                // value={firstnamex}
+                value={modalFName}
                 // onChangeText={(value) => setFirstname(value)}
                 style={styles.input}
                 placeholderTextColor={"#777"}
               />
               <Text style={styles.inputText}>
                 <Text style={{ color: "red" }}>* </Text>Last Name:
+                {/* {apic.lname}  */}
               </Text>
               <TextInput
                 keyboardType="default"
                 placeholder="Last Name"
-                // value={lastnamex}
+                value={modalLName}
                 // onChangeText={(value) => setLastname(value)}
                 style={styles.input}
                 placeholderTextColor={"#777"}
               />
               <Text style={styles.inputText}>
-                <Text style={{ color: "red" }}>* </Text>Other Name:
+                Email:
+                {/* {apic.email}  */}
               </Text>
               <TextInput
                 keyboardType="default"
-                placeholder="Other Name"
-                // value={othernamex}
-                // onChangeText={(value) => setOthername(value)}
-                style={styles.input}
-                placeholderTextColor={"#777"}
-              />
-              <Text style={styles.inputText}>Email:</Text>
-              <TextInput
-                keyboardType="default"
                 placeholder="Email"
-                // value={emailx}
+                value={modalEmail}
                 // onChangeText={(value) => setEmail(value)}
                 style={styles.input}
                 placeholderTextColor={"#777"}
               />
-              <Text style={styles.inputText}>City:</Text>
+              <Text style={styles.inputText}>
+                City:
+                {/* {apic.city}  */}
+              </Text>
               <TextInput
                 keyboardType="default"
                 placeholder="City"
-                // value={cityx}
+                value={modalCity}
                 // onChangeText={(value) => setCity(value)}
                 style={styles.input}
                 placeholderTextColor={"#777"}
               />
-              <Text style={styles.inputText}>House Address:</Text>
+              <Text style={styles.inputText}>
+                Country:
+                {/* {apic.address}  */}
+              </Text>
               <TextInput
                 keyboardType="default"
                 placeholder="Address"
                 multiline
-                // value={addressx}
+                value={modalCountry}
                 // onChangeText={(value) => setAddress(value)}
                 style={styles.input}
                 placeholderTextColor={"#777"}

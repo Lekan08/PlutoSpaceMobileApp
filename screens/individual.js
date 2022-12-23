@@ -282,15 +282,15 @@ export default function Individual({ navigation }) {
                   fontWeight: "900",
                   color: "#F96D02",
                   paddingHorizontal: 0,
-                  paddingTop: 40,
+                  paddingTop: 20,
                   fontFamily: "serif",
                   width: 300,
                 }}
               >
-                Create Individual Client
+                Create Client
               </Text>
             </View>
-            <View style={{ paddingTop: 40 }}>
+            <View style={{ paddingTop: 10 }}>
               <Text style={styles.inputText}>First Name</Text>
               <TextInput
                 keyboardType="default"
