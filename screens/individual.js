@@ -26,12 +26,14 @@ import {
   FLUTTER_AUTH_KEY,
 } from "@env";
 import { Loader, InnerLoader } from "../components/loader";
+
 export default function Individual({ navigation }) {
   const [firstnamex, setFirstname] = useState("");
   const [lastnamex, setLastname] = useState("");
   const [othernamex, setOthername] = useState("");
   const [titlex, setTitle] = useState("");
   const [phonenumberx, setPhonenumber] = useState("");
+  const [loading1, setLoading1] = useState(false);
   const [emailx, setEmail] = useState("");
   const [cityx, setCity] = useState("");
   const [addressx, setAddress] = useState("");
@@ -168,14 +170,14 @@ export default function Individual({ navigation }) {
             navigation.navigate("initial");
           }
           if (result.status === "SUCCESS") {
-            // storing data
-            setInput(!input);
-            handleModal();
             setFirstname("");
             setLastname("");
             setOthername("");
             setEmail("");
             setTitle("");
+            setPhonenumber("");
+            setResidentialCountry("");
+            setResidentialState("");
             setResidentialCountry("");
             setResidentialState("");
             setCity("");
@@ -186,8 +188,9 @@ export default function Individual({ navigation }) {
               open: true,
               type: "success",
               change: Math.floor(Math.random() * 100),
+              onPress: () => navigation.goBack(),
             });
-            navigation.navigate("Home", { replace: true });
+            // navigation.navigate("Profile", { replace: true });
           } else {
             // Alert.alert(result.status, result.message);
             setToastObject({
@@ -217,8 +220,6 @@ export default function Individual({ navigation }) {
       firstnamex === "" ||
       lastnamex.length === 0 ||
       lastnamex === "" ||
-      othernamex.length === 0 ||
-      othernamex === "" ||
       titlex.length === 0 ||
       titlex === "" ||
       phonenumberx.length === 0 ||
@@ -269,26 +270,35 @@ export default function Individual({ navigation }) {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.container}>
-            <View>
+          <View
+            style={{
+              elevation: 5,
+              backgroundColor: "#ffffff",
+              marginVertical: 10,
+              paddingVertical: 10,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 30,
+                fontWeight: "bold",
+                color: "#F96D02",
+                paddingHorizontal: 10,
+                // paddingTop: 10,
+                fontFamily: "serif",
+                // width: 300,
+                // textAlign: "center",
+              }}
+            >
+              CREATE CLIENT
+            </Text>
+          </View>
+          <View style={styles.subContainer}>
+            {/* <View>
               <Image source={require("../images/house_of_tara_logo.png")} />
-            </View>
-            <View style={{ borderRadius: 5 }}>
-              <Text
-                style={{
-                  fontSize: 30,
-                  fontWeight: "900",
-                  color: "#F96D02",
-                  paddingHorizontal: 0,
-                  paddingTop: 40,
-                  fontFamily: "serif",
-                  width: 300,
-                }}
-              >
-                Create Individual Client
-              </Text>
-            </View>
-            <View style={{ paddingTop: 40 }}>
+            </View> */}
+
+            <View style={{ paddingTop: 10 }}>
               <Text style={styles.inputText}>First Name</Text>
               <TextInput
                 keyboardType="default"
@@ -310,7 +320,7 @@ export default function Individual({ navigation }) {
               <Text style={styles.inputText}>Other Name</Text>
               <TextInput
                 keyboardType="default"
-                placeholder="Optional"
+                placeholder="(Optional)"
                 value={othernamex}
                 onChangeText={(value) => setOthername(value)}
                 style={styles.input}
@@ -441,12 +451,15 @@ export default function Individual({ navigation }) {
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>
+
+      <Loader animating={loading1} color="#fff" size="small" />
       <ToastAlert
         status={toastObject.status}
         message={toastObject.message}
         open={toastObject.open}
         type={toastObject.type}
         change={toastObject.change}
+        onPress={toastObject.onPress}
       />
     </KeyboardAvoidingView>
   );
@@ -456,10 +469,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffff",
+    paddingTop: 10,
+  },
+  subContainer: {
+    flex: 1,
+    backgroundColor: "#ffff",
     alignItems: "center",
-    paddingTop: 60,
+    paddingTop: 10,
     justifyContent: "center",
-    paddingBottom: 60,
+    marginBottom: 10,
   },
   buttonContainer: {
     marginTop: 20,
@@ -474,7 +492,7 @@ const styles = StyleSheet.create({
     width: 300,
     color: "#0f0f0f",
     paddingHorizontal: 20,
-    borderRadius: 20,
+    borderRadius: 5,
   },
   inputContainer: {
     borderWidth: 1,
@@ -484,7 +502,7 @@ const styles = StyleSheet.create({
     width: 300,
     color: "#0f0f0f",
     paddingHorizontal: 20,
-    borderRadius: 20,
+    borderRadius: 5,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -499,7 +517,7 @@ const styles = StyleSheet.create({
     width: 300,
     color: "#0f0f0f",
     paddingHorizontal: 20,
-    borderRadius: 20,
+    borderRadius: 5,
   },
   loginButton: {
     padding: 15,
@@ -510,14 +528,15 @@ const styles = StyleSheet.create({
   },
   loginText: {
     textAlign: "center",
+    fontWeight: "bold",
     color: "#fff",
   },
   inputText: {
     marginTop: 10,
-    // alignSelf: "center",
-    color: "#F96D02",
+    alignSelf: "center",
+    color: "#0F0F0F",
     fontWeight: "bold",
-    marginLeft: 40,
+    // marginLeft: 40,
   },
   item: {
     padding: 30,

@@ -14,46 +14,88 @@ import {
   Keyboard,
 } from "react-native";
 import { Loader, InnerLoader } from "../components/loader";
+import { REACT_APP_TARA_URL, FLUTTER_AUTH_KEY } from "@env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import AllCountriesAndStates from "../countries-states-master/countries";
 import { ToastAlert } from "../components/alert";
+import { Picker } from "@react-native-picker/picker";
+import { useIsFocused } from "@react-navigation/native";
+
 export default function EditProfile({ navigation }) {
   //Getting user info
+
+  const [disabledButton, setDisabledButton] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [otherName, setOthername] = useState("");
   const [email, setEmail] = useState("");
   const [categories, setCategories] = useState("");
-  const [country, setCountry] = useState("");
-  const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
+  const { countriesAndStates: AlCountry } = AllCountriesAndStates();
+  const [allStates, setAllStates] = useState([]);
+  const [residentialStatex, setResidentialState] = useState("");
+  const [residentialCountryx, setResidentialCountry] = useState("");
+  const handleOnChangeRCCountry = (valuex) => {
+    console.log(valuex);
+    if (valuex) {
+      const filteredItems = AlCountry.filter((item) => item.name === valuex);
+      console.log(filteredItems);
+      if (filteredItems[0].states || filteredItems[0].states.length !== 0) {
+        setAllStates(filteredItems[0].states);
+        setResidentialCountry(valuex);
+      } else {
+        setAllStates([]);
+      }
+    }
+  };
+  const handleOnChangeRCState = (valuex) => {
+    setResidentialState(valuex);
+  };
   const [loading, setLoading] = useState(false);
   const [toastObject, setToastObject] = useState({});
+
+  const isFocused = useIsFocused();
+
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
-      // getting data
-      const getUser = async () => {
-        try {
-          const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
-          setFirstName(`${userData.firstname}`);
-          setLastName(`${userData.lastname}`);
-          setEmail(`${userData.email}`);
-          setCategories(`${userData.categories}`);
-          setCountry(`${userData.country}`);
-          setState(`${userData.state}`);
-          setCity(`${userData.city}`);
-          setAddress(`${userData.address}`);
-          console.log(userData);
-        } catch (error) {
-          console.log(error);
-        }
+    if (isFocused) {
+      let isMounted = true;
+      if (isMounted) {
+        // getting data
+        const getUser = async () => {
+          try {
+            const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
+            setFirstName(`${userData.otherDetailsDTO.personal.fname}`);
+            setLastName(`${userData.otherDetailsDTO.personal.lname}`);
+            setOthername(`${userData.otherDetailsDTO.personal.oname}`);
+            setEmail(`${userData.otherDetailsDTO.personal.email}`);
+            setResidentialCountry(
+              `${userData.otherDetailsDTO.personal.residentialCountry}`
+            );
+            const countryxx = `${userData.otherDetailsDTO.personal.residentialCountry}`;
+            const filteredItems = AlCountry.filter(
+              (item) => item.name === countryxx
+            );
+            setAllStates(filteredItems[0].states);
+            setResidentialState(
+              `${userData.otherDetailsDTO.personal.residentialState}`
+            );
+            setCity(`${userData.otherDetailsDTO.personal.residentialCity}`);
+            setAddress(
+              `${userData.otherDetailsDTO.personal.residentialStreet}`
+            );
+            console.log(userData);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        getUser();
+      }
+      return () => {
+        isMounted = false;
       };
-      getUser();
     }
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  }, [isFocused]);
   const clickHandler = () => {
     if (
       firstName.length === 0 ||
@@ -78,115 +120,146 @@ export default function EditProfile({ navigation }) {
     }
     // else handlePress();
   };
+
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <Image source={require("../images/house_of_tara_logo.png")} />
-        <View style={{ paddingBottom: 20, marginTop: 10 }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* <Image source={require("../images/house_of_tara_logo.png")} /> */}
+        <View
+          style={{
+            elevation: 5,
+            backgroundColor: "#ffffff",
+            marginVertical: 10,
+            paddingVertical: 10,
+          }}
+        >
           <Text
             style={{
-              fontSize: 40,
-              fontWeight: "900",
+              fontSize: 30,
+              fontWeight: "bold",
               color: "#F96D02",
-              paddingHorizontal: 5,
-              paddingTop: 40,
+              paddingHorizontal: 10,
+              // paddingTop: 10,
               fontFamily: "serif",
-              width: 300,
-              marginLeft: 50,
+              // width: 300,
+              // textAlign: "center",
             }}
           >
-            Edit Profile
+            EDIT PROFILE
           </Text>
         </View>
-
-        <View style={{ paddingTop: 40 }}>
-          <Text style={styles.inputText}>First Name</Text>
-          <TextInput
-            keyboardType="default"
-            placeholder="First Name"
-            value={firstName}
-            onChangeText={(value) => setFirstName(value)}
-            style={styles.input}
-            placeholderTextColor={"#777"}
-          />
-          <Text style={styles.inputText}>Last Name</Text>
-          <TextInput
-            keyboardType="default"
-            placeholder="Last Name"
-            value={lastName}
-            onChangeText={(value) => setLastName(value)}
-            style={styles.input}
-            placeholderTextColor={"#777"}
-          />
-          <Text style={styles.inputText}>Other Name</Text>
-          <TextInput
-            keyboardType="default"
-            placeholder="Optional"
-            value={otherName}
-            onChangeText={(value) => setOthername(value)}
-            style={styles.input}
-            placeholderTextColor={"#777"}
-          />
-          <Text style={styles.inputText}>Email</Text>
-          <TextInput
-            keyboardType="default"
-            placeholder="Email"
-            value={email}
-            onChangeText={(value) => setEmail(value)}
-            style={styles.input}
-            placeholderTextColor={"#777"}
-          />
-          <Text style={styles.inputText}>City</Text>
-          <TextInput
-            keyboardType="default"
-            placeholder="City"
-            value={city}
-            onChangeText={(value) => setCity(value)}
-            style={styles.input}
-            placeholderTextColor={"#777"}
-          />
-          <Text style={styles.inputText}>State</Text>
-          <TextInput
-            keyboardType="default"
-            placeholder="City"
-            value={state}
-            onChangeText={(value) => setState(value)}
-            style={styles.input}
-            placeholderTextColor={"#777"}
-          />
-          <Text style={styles.inputText}>Country</Text>
-          <TextInput
-            keyboardType="default"
-            placeholder="City"
-            value={country}
-            onChangeText={(value) => setCountry(value)}
-            style={styles.input}
-            placeholderTextColor={"#777"}
-          />
-          <Text style={styles.inputText}>House Address</Text>
-          <TextInput
-            keyboardType="default"
-            placeholder="Address"
-            multiline
-            value={address}
-            onChangeText={(value) => setAddress(value)}
-            style={styles.input}
-            placeholderTextColor={"#777"}
-          />
-        </View>
-        <TouchableOpacity onPress={clickHandler}>
-          <View style={styles.changePassButton}>
-            <Text
-              style={{
-                color: "#ffff",
-                textAlign: "center",
-                fontSize: 15,
-              }}
-            >
-              Save
-            </Text>
+        <View style={styles.subContainer}>
+          <View style={{ paddingTop: 10 }}>
+            <Text style={styles.inputText}>First Name</Text>
+            <TextInput
+              keyboardType="default"
+              placeholder="First Name"
+              value={firstName}
+              onChangeText={(value) => setFirstName(value)}
+              style={styles.input}
+              placeholderTextColor={"#777"}
+            />
+            <Text style={styles.inputText}>Last Name</Text>
+            <TextInput
+              keyboardType="default"
+              placeholder="Last Name"
+              value={lastName}
+              onChangeText={(value) => setLastName(value)}
+              style={styles.input}
+              placeholderTextColor={"#777"}
+            />
+            <Text style={styles.inputText}>Other Name</Text>
+            <TextInput
+              keyboardType="default"
+              placeholder="Optional"
+              value={otherName}
+              onChangeText={(value) => setOthername(value)}
+              style={styles.input}
+              placeholderTextColor={"#777"}
+            />
+            <Text style={styles.inputText}>Email</Text>
+            <TextInput
+              keyboardType="default"
+              placeholder="Email"
+              value={email}
+              onChangeText={(value) => setEmail(value)}
+              style={styles.input}
+              placeholderTextColor={"#777"}
+            />
+            <Text style={styles.inputText}>Country</Text>
+            <View style={styles.pickerContainer}>
+              <Picker
+                style={{
+                  color: "#0f0f0f",
+                }}
+                itemStyle={{
+                  backgroundColor: "#0f0f0f",
+                  color: "#000",
+                  fontFamily: "Ebrima",
+                  fontSize: 19,
+                }}
+                selectedValue={residentialCountryx}
+                onValueChange={(newValue) => handleOnChangeRCCountry(newValue)}
+              >
+                <Picker.Item label="Select Country" value="" />
+                {AlCountry.map((apic) => (
+                  <Picker.Item
+                    label={apic.name}
+                    key={apic.code3}
+                    value={apic.name}
+                  />
+                ))}
+              </Picker>
+            </View>
+            <Text style={styles.inputText}>State</Text>
+            <View style={styles.pickerContainer}>
+              <Picker
+                style={{ color: "#0f0f0f" }}
+                selectedValue={residentialStatex}
+                onValueChange={(newValue) => handleOnChangeRCState(newValue)}
+              >
+                <Picker.Item label=" Select State" value="" />
+                {allStates.map((apic) => (
+                  <Picker.Item
+                    label={apic.name}
+                    key={apic.code}
+                    value={apic.name}
+                  />
+                ))}
+              </Picker>
+            </View>
+            <Text style={styles.inputText}>City</Text>
+            <TextInput
+              keyboardType="default"
+              placeholder="City"
+              value={city}
+              onChangeText={(value) => setCity(value)}
+              style={styles.input}
+              placeholderTextColor={"#777"}
+            />
+            <Text style={styles.inputText}>House Address</Text>
+            <TextInput
+              keyboardType="default"
+              placeholder="Address"
+              multiline
+              value={address}
+              onChangeText={(value) => setAddress(value)}
+              style={styles.input}
+              placeholderTextColor={"#777"}
+            />
+            <TouchableOpacity disabled={disabledButton} onPress={clickHandler}>
+              <View
+                style={[
+                  styles.loginButton,
+                  { flexDirection: "row", justifyContent: "center" },
+                ]}
+              >
+                <Text style={styles.loginText}>Save</Text>
+                <InnerLoader animating={loading} color="#fff" size="small" />
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
+        </View>
       </ScrollView>
       <ToastAlert
         status={toastObject.status}
@@ -202,35 +275,90 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffff",
+    paddingTop: 10,
+  },
+  subContainer: {
+    flex: 1,
+    backgroundColor: "#ffff",
     alignItems: "center",
-    paddingTop: 60,
+    paddingTop: 10,
     justifyContent: "center",
-    paddingBottom: 60,
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    marginTop: 20,
+    padding: 20,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#777",
-    padding: 8,
+    borderColor: "#0f0f0f",
+    padding: 15,
+    margin: 5,
+    fontSize: 18,
+    width: 300,
+    color: "#0f0f0f",
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  inputContainer: {
+    borderWidth: 1,
+    borderColor: "#0f0f0f",
+    padding: 15,
     margin: 5,
     width: 300,
     color: "#0f0f0f",
-    marginTop: 10,
-    alignSelf: "center",
     paddingHorizontal: 20,
-    borderRadius: 10,
+    borderRadius: 5,
+    flexDirection: "row",
+    alignItems: "center",
   },
-  changePassButton: {
+  inputField: {
+    width: "90%",
+    color: "#0f0f0f",
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: "#0f0f0f",
+    margin: 5,
+    width: 300,
+    color: "#0f0f0f",
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  loginButton: {
     padding: 15,
     marginTop: 30,
     backgroundColor: "#F96D02",
-    marginHorizontal: 40,
-    borderRadius: 15,
+    marginHorizontal: 10,
+    borderRadius: 10,
+  },
+  loginText: {
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#fff",
   },
   inputText: {
-    // textAlign: "left",
-    marginLeft: 60,
-    color: "#F96D02",
-    fontSize: 15,
+    marginTop: 10,
+    alignSelf: "center",
+    color: "#0F0F0F",
     fontWeight: "bold",
+    // marginLeft: 40,
+  },
+  item: {
+    padding: 30,
+    marginTop: 24,
+    backgroundColor: "#F96D02",
+    fontSize: 24,
+    marginHorizontal: 10,
+  },
+  link: {
+    marginTop: 10,
+    color: "#F96D02",
+  },
+  itemStyle: {
+    backgroundColor: "#F96D02",
+    color: "#000",
+    fontFamily: "Ebrima",
+    fontSize: 19,
   },
 });

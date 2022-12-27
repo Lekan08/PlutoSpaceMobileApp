@@ -97,35 +97,45 @@ function ToastAlert({ status, message, type, open, change, onPress }) {
 
   return (
     <>
-      <Toast
-        visible={dropdown}
-        position={50}
-        shadow={true}
-        duration={5}
-        animation={true}
-        hideOnPress={true}
-        backgroundColor="transparent"
-        onShown={() => setTimeout(() => setDropdown(false), 5000)}
-      >
-        <View style={styles.toastContainer}>
-          <View style={styles.toastRow}>
-            <AntDesign
-              name={type === "success" ? "checkcircleo" : "closecircleo"}
-              size={24}
-              color={type === "success" ? successColor : failColor}
-            />
-            <View style={styles.toastText}>
-              <Text style={{ fontWeight: "bold", fontSize: 15 }}>{status}</Text>
-              <Text style={{ fontSize: 12 }}>{message}</Text>
+      {dropdown && (
+        <View style={styles.container}>
+          <Toast
+            visible={dropdown}
+            position={50}
+            shadow={true}
+            duration={5}
+            animation={true}
+            hideOnPress={true}
+            backgroundColor="transparent"
+            onShown={() => setTimeout(() => setDropdown(false), 5000)}
+          >
+            <View style={styles.toastContainer}>
+              <View style={styles.toastRow}>
+                <AntDesign
+                  name={type === "success" ? "checkcircleo" : "closecircleo"}
+                  size={24}
+                  color={type === "success" ? successColor : failColor}
+                />
+                <View style={styles.toastText}>
+                  <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+                    {status}
+                  </Text>
+                  <Text style={{ fontSize: 12 }}>{message}</Text>
+                </View>
+                {onPress && (
+                  <TouchableOpacity
+                    style={{ flexDirection: "column", alignItems: "center" }}
+                    onPress={onPress}
+                  >
+                    <Text style={{ fontWeight: "bold" }}>Go Back</Text>
+                    <Entypo name="arrow-long-right" size={20} color="black" />
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
-            {onPress && (
-              <TouchableOpacity onPress={onPress}>
-                <Entypo name="arrow-long-right" size={24} color="black" />
-              </TouchableOpacity>
-            )}
-          </View>
+          </Toast>
         </View>
-      </Toast>
+      )}
     </>
   );
 }
@@ -146,6 +156,17 @@ function Sweet({ status, message, color }) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "transparent",
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   toastContainer: {
     justifyContent: "center",
     alignItems: "flex-start",

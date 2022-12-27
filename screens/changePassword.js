@@ -150,23 +150,30 @@ export default function ChangePassword({ navigation }) {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <ScrollView>
-        <View style={{ marginLeft: 50, marginTop: 50 }}>
+        {/* <View style={{ marginLeft: 50, marginTop: 50 }}>
           <Image source={require("../images/house_of_tara_logo.png")} />
-        </View>
+        </View> */}
 
-        <View>
+        <View
+          style={{
+            elevation: 5,
+            backgroundColor: "#ffffff",
+            marginVertical: 10,
+            paddingVertical: 10,
+          }}
+        >
           <Text
             style={{
-              fontSize: 40,
-              fontWeight: "900",
+              fontSize: 30,
+              fontWeight: "bold",
               color: "#F96D02",
               paddingHorizontal: 10,
-              paddingTop: 40,
+              // paddingTop: 10,
               fontFamily: "serif",
-              width: 300,
-              textAlign: "center",
+              // width: 300,
+              // textAlign: "center",
             }}
           >
             Change Password
@@ -237,6 +244,10 @@ export default function ChangePassword({ navigation }) {
   );
 }
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
   input: {
     borderWidth: 1,
     borderColor: "#777",
@@ -247,18 +258,19 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignSelf: "center",
     paddingHorizontal: 20,
-    borderRadius: 14,
+    borderRadius: 5,
   },
   changePassButton: {
     padding: 15,
     marginTop: 30,
     backgroundColor: "#F96D02",
     marginHorizontal: 60,
-    borderRadius: 14,
+    borderRadius: 10,
   },
   inputText: {
     textAlign: "center",
-    color: "#F96D02",
+    color: "#0F0F0F",
+    fontWeight: "bold",
     paddingTop: 10,
   },
 });

@@ -23,6 +23,7 @@ import { REACT_APP_TARA_URL, FLUTTER_AUTH_KEY } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Loader, InnerLoader } from "../components/loader";
 import { useIsFocused } from "@react-navigation/native";
+import { ToastAlert } from "../components/alert";
 export default function SeeAllindividuals({ navigation }) {
   const isFocused = useIsFocused();
   const [loading1, setLoading1] = useState(false);
@@ -31,6 +32,7 @@ export default function SeeAllindividuals({ navigation }) {
   const [clientsx, setClients] = useState([]);
   const [clientx, setClientx] = useState("");
   const [userDatax, setUserData] = useState({});
+  const [toastObject, setToastObject] = useState({});
   const [items, setItems] = useState([]);
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const handleModal = () => setIsModalVisible(() => !isModalVisible);
@@ -156,6 +158,7 @@ export default function SeeAllindividuals({ navigation }) {
     console.log(id);
     console.log("zombie");
     async function fetchData() {
+      setLoading1(true);
       let requestOptions;
       // getting data
       try {
@@ -192,31 +195,77 @@ export default function SeeAllindividuals({ navigation }) {
       await fetch(
         `${process.env.REACT_APP_LOUGA_URL}/individual/delete/${id}`,
         requestOptions
-      ).then(async (res) => {
-        const storeUser = async (value) => {
-          try {
-            const aToken = value.headers.get("token-1");
-            if (
-              aToken === "null" ||
-              aToken === null ||
-              aToken === undefined ||
-              aToken === ""
-            ) {
-              // sup[Danga]
-            } else {
-              await AsyncStorage.setItem("rexxdex1", aToken);
+      )
+        .then(async (res) => {
+          const storeUser = async (value) => {
+            try {
+              const aToken = value.headers.get("token-1");
+              if (
+                aToken === "null" ||
+                aToken === null ||
+                aToken === undefined ||
+                aToken === ""
+              ) {
+                // sup[Danga]
+              } else {
+                await AsyncStorage.setItem("rexxdex1", aToken);
+              }
+            } catch (error) {
+              console.log(error);
             }
-          } catch (error) {
-            console.log(error);
+          };
+          storeUser(res);
+          const resultres = await res.text();
+          if (
+            resultres === null ||
+            resultres === undefined ||
+            resultres === ""
+          ) {
+            return {};
           }
-        };
-        storeUser(res);
-        const resultres = await res.text();
-        if (resultres === null || resultres === undefined || resultres === "") {
-          return {};
-        }
-        return JSON.parse(resultres);
-      });
+          return JSON.parse(resultres);
+        })
+        .then((result) => {
+          console.log(result);
+          setLoading1(false);
+          if (result.message === "Expired Access") {
+            navigation.navigate("initial");
+          }
+          if (result.message === "Token Does Not Exist") {
+            navigation.navigate("initial");
+          }
+          if (result.message === "Unauthorized Access") {
+            navigation.navigate("initial");
+          }
+          if (result.status === "SUCCESS") {
+            // storing data
+            setToastObject({
+              status: result.status,
+              message: result.message,
+              open: true,
+              type: "success",
+              change: Math.floor(Math.random() * 100),
+            });
+            let newClients = allSaleItem.filter((item) => item.id !== id);
+            setClients(newClients);
+            // setInput(!input);
+            // navigation.navigate("Home", { replace: true });
+          } else {
+            // Alert.alert(result.status, result.message);
+            setLoading1(false);
+            setToastObject({
+              status: result.status,
+              message: result.message,
+              open: true,
+              type: "error",
+              change: Math.floor(Math.random() * 100),
+            });
+          }
+        })
+        .catch((error) => {
+          setLoading1(false);
+          console.log(error);
+        });
       return () => {
         isMounted = false;
       };
@@ -229,7 +278,7 @@ export default function SeeAllindividuals({ navigation }) {
     console.log("WEREEEY");
     Alert.alert(
       "WARNING!!",
-      "Are you sure you want to delete the Client from list?",
+      "Are you sure you want to delete the Client from the list?",
       [
         {
           text: "Cancel",
@@ -246,19 +295,26 @@ export default function SeeAllindividuals({ navigation }) {
   console.log(bigZZ);
   return (
     <View style={styles.container}>
-      <View>
+      <View
+        style={{
+          elevation: 5,
+          backgroundColor: "#ffffff",
+          marginVertical: 10,
+          padding: 10,
+        }}
+      >
         <Text
           style={{
             fontSize: 30,
-            fontWeight: "900",
+            fontWeight: "bold",
             color: "#F96D02",
             fontFamily: "serif",
-            width: 300,
-            alignSelf: "center",
-            alignItems: "center",
-            alignContent: "center",
-            justifyContent: "center",
-            marginStart: 40,
+            // width: 300,
+            // alignSelf: "center",
+            // alignItems: "center",
+            // alignContent: "center",
+            // justifyContent: "center",
+            // marginStart: 40,
           }}
         >
           ALL INDIVIDUAL CLIENTS
@@ -266,6 +322,7 @@ export default function SeeAllindividuals({ navigation }) {
       </View>
       <ScrollView
         style={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -283,7 +340,7 @@ export default function SeeAllindividuals({ navigation }) {
                 height: 60,
                 width: "97%",
                 borderRadius: 5,
-                marginTop: 20,
+                marginVertical: 10,
                 justifyContent: "center",
               }}
             >
@@ -318,7 +375,7 @@ export default function SeeAllindividuals({ navigation }) {
                   // justifyContent: "space-between",
                 }}
               >
-                <View>
+                <View style={{ width: "11%" }}>
                   <Image
                     source={require("../images/dummy.jpg")}
                     style={{
@@ -330,10 +387,13 @@ export default function SeeAllindividuals({ navigation }) {
                     }}
                   />
                 </View>
-                <View>
+                <View style={{ width: "69%", marginHorizontal: 5 }}>
                   <Text
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
                     style={{
-                      fontSize: 18,
+                      // width: 200,
+                      fontSize: 15,
                       fontWeight: "bold",
                       marginLeft: 10,
                       // marginTop: 10,
@@ -357,7 +417,7 @@ export default function SeeAllindividuals({ navigation }) {
                     {apic.fname} {apic.lname}
                   </Text>
                 </View>
-                <View style={{ flexDirection: "column", flex: 1 }}>
+                <View style={{ flexDirection: "column", width: "20%" }}>
                   <View style={{ alignSelf: "flex-end", flexDirection: "row" }}>
                     <Icon
                       name="delete"
@@ -527,6 +587,14 @@ export default function SeeAllindividuals({ navigation }) {
           </View>
         </View>
       </Modal>
+      <ToastAlert
+        status={toastObject.status}
+        message={toastObject.message}
+        open={toastObject.open}
+        type={toastObject.type}
+        change={toastObject.change}
+      />
+      <Loader animating={loading1} color="#fff" size="small" />
     </View>
   );
 }
@@ -535,7 +603,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffff",
-    paddingTop: 60,
+    paddingTop: 10,
     paddingBottom: 20,
   },
   buttonContainer: {

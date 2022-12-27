@@ -44,7 +44,6 @@ function Loader({ animating }) {
       animationStyle={styles.lottie}
       speed={1}
       source={require("./assets/LOADER1.json")}
-      s
     />
   );
 }

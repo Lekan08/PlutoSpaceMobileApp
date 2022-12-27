@@ -43,22 +43,34 @@ function NavigationStack() {
         <Stack.Screen
           name="seeAllindividuals"
           component={seeAllindividuals}
-          options={{ title: "seeAllindividuals" }}
+          options={{
+            title: " ",
+            headerTintColor: "#F96D02",
+            headerStyle: { backgroundColor: "#FFFFFF", height: 80 },
+          }}
         />
         <Stack.Screen
           name="editprofile"
           component={editprofile}
-          options={{ title: "editprofile" }}
+          options={{
+            title: " ",
+            headerTintColor: "#F96D02",
+            headerStyle: { backgroundColor: "#FFFFFF", height: 80 },
+          }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Profile"
           component={Profile}
           options={{ title: "Profile" }}
-        />
+        /> */}
         <Stack.Screen
           name="Individual"
           component={Individual}
-          options={{ title: "Individual" }}
+          options={{
+            title: " ",
+            headerTintColor: "#F96D02",
+            headerStyle: { backgroundColor: "#FFFFFF", height: 80 },
+          }}
         />
         <Stack.Screen
           name="sales"
@@ -129,12 +141,20 @@ function NavigationStack() {
         <Stack.Screen
           name="changePassword"
           component={ChangePassword}
-          options={{ title: "Change your password" }}
+          options={{
+            title: " ",
+            headerTintColor: "#F96D02",
+            headerStyle: { backgroundColor: "#FFFFFF", height: 80 },
+          }}
         />
         <Stack.Screen
           name="EditProfile"
           component={EditProfile}
-          options={{ title: "Edit Your Profile" }}
+          options={{
+            title: " ",
+            headerTintColor: "#F96D02",
+            headerStyle: { backgroundColor: "#FFFFFF", height: 80 },
+          }}
         />
         <Stack.Screen
           name="Cart"

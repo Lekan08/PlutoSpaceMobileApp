@@ -31,10 +31,9 @@ export default function Login({ navigation }) {
   const handlePress = () => {
     const raw = JSON.stringify({
       email: emailx,
-    
     });
     const myHeaders = {
-      "Accept": "application/json",
+      Accept: "application/json",
       "Content-Type": "application/json",
     };
     const requestOptions = {
@@ -44,23 +43,27 @@ export default function Login({ navigation }) {
       redirect: "follow",
     };
 
-
     const url = "https://tarastoreservice.plutospace.space";
 
     fetch(`${url}/users/doLogin`, requestOptions)
-        .then((res) => res.json())
-        .then((result) => {
-          if (result.status === "SUCCESS") {
-            Alert.alert(result.status, result.message, [{text: "Continue", onPress:() =>{
-            navigation.navigate("Home", {replace: true})  
-            }}]);
-          } else {
-            Alert.alert(result.status, result.message);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.status === "SUCCESS") {
+          Alert.alert(result.status, result.message, [
+            {
+              text: "Continue",
+              onPress: () => {
+                navigation.navigate("Home", { replace: true });
+              },
+            },
+          ]);
+        } else {
+          Alert.alert(result.status, result.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     // const raw = JSON.stringify({
     //   username: usernamex,
     //   password: passwordx,
@@ -92,7 +95,7 @@ export default function Login({ navigation }) {
       newpasswordx.length === 0 ||
       newpasswordx === "" ||
       confirmpasswordx.length === 0 ||
-      confirmpasswordx === "" 
+      confirmpasswordx === ""
     ) {
       Alert.alert("Damm", "You can't fuckin leave this place empty dude!!");
     } else {
@@ -152,18 +155,20 @@ export default function Login({ navigation }) {
             style={styles.input}
             placeholderTextColor={"#777"}
           />
-              <Text style={{
-                  variant:"button",
-                    fontSize:"60%",
-                    align:"right",
-                    onClick:{togglePassword},
-                    color:"#ffff"
-              }}>
-                    show password
-                  </Text>
+          <Text
+            style={{
+              variant: "button",
+              fontSize: "60%",
+              align: "right",
+              onClick: { togglePassword },
+              color: "#ffff",
+            }}
+          >
+            show password
+          </Text>
           <Text style={styles.inputText}> Current Password:</Text>
           <TextInput
-           type={passwordShown ? "text" : "password"}
+            type={passwordShown ? "text" : "password"}
             placeholder="Currentpassword"
             value={cpasswordx}
             onChangeText={(value) => setCpassword(value)}
@@ -172,8 +177,8 @@ export default function Login({ navigation }) {
             placeholderTextColor={"#777"}
           />
           <Text style={styles.inputText}> New Password:</Text>
-           <TextInput
-           type={passwordShown ? "text" : "password"}
+          <TextInput
+            type={passwordShown ? "text" : "password"}
             placeholder="New Password"
             value={newpasswordx}
             onChangeText={(value) => setNewpassword(value)}
@@ -182,8 +187,8 @@ export default function Login({ navigation }) {
             placeholderTextColor={"#777"}
           />
           <Text style={styles.inputText}> Confirm Password:</Text>
-           <TextInput
-           type={passwordShown ? "text" : "password"}
+          <TextInput
+            type={passwordShown ? "text" : "password"}
             placeholder="Currentpassword"
             value={confirmpasswordx}
             onChangeText={(value) => setConfirmpassword(value)}
@@ -192,7 +197,7 @@ export default function Login({ navigation }) {
             placeholderTextColor={"#777"}
           />
           {/* <TextInput label={passwordx} right={ <TextInput.Icon color="grey" name={'eye'} />} /> */}
-        
+
           <TouchableOpacity onPress={clickHandler}>
             <View style={styles.loginButton}>
               <Text style={styles.loginText}>LOGIN</Text>
@@ -207,9 +212,7 @@ export default function Login({ navigation }) {
             }}
           >
             <Text style={styles.inputText}>Don't have an account? </Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Welcome")}
-            >
+            <TouchableOpacity onPress={() => navigation.navigate("Welcome")}>
               <Text style={styles.link}>Register</Text>
             </TouchableOpacity>
           </View>
@@ -237,9 +240,9 @@ const styles = StyleSheet.create({
   // list: { marginTop: 20 },
   container: {
     flex: 1,
-    backgroundColor: "#0F0F0F",
+    backgroundColor: "#FFFFFF",
     alignItems: "center",
-    paddingTop: 60,
+    paddingTop: Constants.statusBarHeight,
     justifyContent: "center",
   },
   buttonContainer: {

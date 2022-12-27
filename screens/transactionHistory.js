@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Image,
@@ -19,6 +19,7 @@ import Icon from "@expo/vector-icons/MaterialIcons";
 import { Picker } from "@react-native-picker/picker";
 import AllCountriesAndStates from "../countries-states-master/countries";
 
+import { PrintReceiptContext } from "./printReceiptContext";
 import { REACT_APP_TARA_URL } from "@env";
 import { globalStyles } from "../styles/global";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -39,6 +40,7 @@ function History({ navigation }) {
     taxAmount: 0,
     totalAmount: 0,
   });
+  const { print } = useContext(PrintReceiptContext);
   const [sales, setSales] = useState([]);
   const [mainItems, setMainItems] = useState([]);
   const [productName, setProductName] = useState("");
@@ -588,7 +590,7 @@ function History({ navigation }) {
   `;
 
     setLoading1(false);
-    await printAsync({ html, width: 303 });
+    await print(html);
     // await shareAsync(file.uri);
   };
 
@@ -649,12 +651,12 @@ function History({ navigation }) {
                       justifyContent: "space-between",
                     }}
                   >
-                    <View>
+                    <View style={{ width: "70%" }}>
                       <Text
                         ellipsizeMode="tail"
                         numberOfLines={2}
                         style={{
-                          width: 200,
+                          // width: 200,
                           color: "#0F0F0F",
                           paddingHorizontal: 0,
                         }}
@@ -675,7 +677,7 @@ function History({ navigation }) {
                         ))} */}
                         <Text
                           style={{
-                            fontSize: 18,
+                            fontSize: 15,
                             fontWeight: "500",
                             color: "#0F0F0F",
                             paddingHorizontal: 0,
@@ -691,12 +693,33 @@ function History({ navigation }) {
                           {item.individual.fname} {item.individual.lname}
                         </Text>
                       </Text>
+
+                      <Text
+                        style={{
+                          fontSize: 13,
+                          fontWeight: "400",
+                          color: "#000",
+                          paddingHorizontal: 0,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 13,
+                            fontWeight: "900",
+                            color: "#000",
+                          }}
+                        >
+                          Subtotal:
+                        </Text>
+                        &nbsp;₦{numberWithCommas(item.subTotalAmount)}
+                      </Text>
                     </View>
                     <View
                       style={{
                         paddingHorizontal: 5,
                         // paddingVertical: 5,
                         alignSelf: "flex-end",
+                        width: "30%",
                       }}
                     >
                       <View
@@ -706,27 +729,6 @@ function History({ navigation }) {
                           alignItems: "center",
                         }}
                       >
-                        <Text
-                          ellipsizeMode="tail"
-                          numberOfLines={2}
-                          style={{
-                            fontSize: 13,
-                            fontWeight: "400",
-                            color: "#000",
-                            paddingHorizontal: 0,
-                          }}
-                        >
-                          <Text
-                            style={{
-                              fontSize: 13,
-                              fontWeight: "900",
-                              color: "#000",
-                            }}
-                          >
-                            Subtotal:
-                          </Text>
-                          &nbsp;₦{numberWithCommas(item.subTotalAmount)}
-                        </Text>
                         <TouchableOpacity
                           onPress={() => generatePdf(sales, item.id)}
                         >

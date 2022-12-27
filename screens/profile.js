@@ -28,14 +28,13 @@ export default function Profile({ navigation }) {
       const getUser = async () => {
         try {
           const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
-          setFname(`${userData.fname}`);
-          setLname(`${userData.lname}`);
-          setEmail(`${userData.email}`);
-          setcategories(`${userData.categories}`);
-          setcountry(`${userData.country}`);
-          setstate(`${userData.state}`);
-          setcity(`${userData.city}`);
-          setaddress(`${userData.address}`);
+          setFname(`${userData.otherDetailsDTO.personal.fname}`);
+          setLname(`${userData.otherDetailsDTO.personal.lname}`);
+          setEmail(`${userData.otherDetailsDTO.personal.email}`);
+          setcountry(`${userData.otherDetailsDTO.personal.residentialCountry}`);
+          setstate(`${userData.otherDetailsDTO.personal.residentialState}`);
+          setcity(`${userData.otherDetailsDTO.personal.residentialCity}`);
+          setaddress(`${userData.otherDetailsDTO.personal.residentialStreet}`);
           console.log(userData);
         } catch (error) {
           console.log(error);
@@ -192,7 +191,7 @@ export default function Profile({ navigation }) {
                       marginBottom: 5,
                     }}
                   >
-                    Change Password 🗝️
+                    Change Password
                   </Text>
                   <View
                     style={{
