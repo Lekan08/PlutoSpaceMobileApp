@@ -46,6 +46,53 @@ export default function SeeAllindividuals({ navigation }) {
   const [modalCountry, setModalCoumtry] = useState("");
   const [userDatax, setUserData] = useState({});
   const [items, setItems] = useState([]);
+
+  // const [nameCircleColor, setNameCircleColor] = useState("#F96D02");
+
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   if (isMounted) {
+  //     // getting data
+  //     const getUser = async () => {
+  //       try {
+  //         const fnamee = apic.fname;
+  //         const firstLetter = fnamee.charAt(0).toUpperCase();
+  //         console.log(firstLetter);
+  //         const alpha1 = ["A", "B", "C", "D", "E", "F"];
+  //         const alpha2 = ["G", "H", "I", "J", "K", "L"];
+  //         const alpha3 = ["M", "N", "O", "P", "Q", "R"];
+  //         const alpha4 = ["S", "T", "U", "V", "W", "X", "Y", "Z"];
+  //         alpha1.map((alp) => {
+  //           if (firstLetter === alp) {
+  //             setNameCircleColor("#009EFF");
+  //           }
+  //         });
+  //         alpha2.map((alp) => {
+  //           if (firstLetter === alp) {
+  //             setNameCircleColor("#54B435");
+  //           }
+  //         });
+  //         alpha3.map((alp) => {
+  //           if (firstLetter === alp) {
+  //             setNameCircleColor("#533E85");
+  //           }
+  //         });
+  //         alpha4.map((alp) => {
+  //           if (firstLetter === alp) {
+  //             setNameCircleColor("#F96D02");
+  //           }
+  //         });
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     };
+  //     getUser();
+  //   }
+  //   return () => {
+  //     isMounted = false;
+  //   };
+  // }, []);
+
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const handleModal = (id) => {
     console.log(id);
@@ -249,7 +296,7 @@ export default function SeeAllindividuals({ navigation }) {
     // console.log("WEREEEY");
     Alert.alert(
       "WARNING!!",
-      "Are you sure you want to delete the Client from list?",
+      "Are you sure? Client will be deleted from list!",
       [
         {
           text: "Cancel",
@@ -263,6 +310,37 @@ export default function SeeAllindividuals({ navigation }) {
       { cancelable: false }
     );
   };
+  const handleNameCircleColor = (fnamee) => {
+    const firstLetter = fnamee.charAt(0).toUpperCase();
+    console.log(firstLetter);
+    const alpha1 = ["A", "B", "C", "D", "E", "F"];
+    const alpha2 = ["G", "H", "I", "J", "K", "L"];
+    const alpha3 = ["M", "N", "O", "P", "Q", "R"];
+    const alpha4 = ["S", "T", "U", "V", "W", "X", "Y", "Z"];
+    let colorr = "#009EFF";
+    alpha1.map((alp) => {
+      if (firstLetter === alp) {
+        colorr = "#ACC6AA";
+      }
+    });
+    alpha2.map((alp) => {
+      if (firstLetter === alp) {
+        colorr = "#54B435";
+      }
+    });
+    alpha3.map((alp) => {
+      if (firstLetter === alp) {
+        colorr = "#4FD3C4";
+      }
+    });
+    alpha4.map((alp) => {
+      if (firstLetter === alp) {
+        colorr = "#F96D02";
+      }
+    });
+    return colorr;
+  };
+
   // console.log(bigZZ);
   return (
     <View style={styles.container}>
@@ -289,7 +367,7 @@ export default function SeeAllindividuals({ navigation }) {
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            colors={["#F96D02", "#0f0f0f", "#fff"]}
+            colors={["#F96D02", "#0f0f0f", "#DC0000"]}
             onRefresh={onRefresh}
           />
         }
@@ -307,28 +385,6 @@ export default function SeeAllindividuals({ navigation }) {
                 justifyContent: "center",
               }}
             >
-              {/* <Text
-              style={{
-                textTransform: "uppercase",
-                color: "#ffffff",
-                fontSize: 18,
-                marginLeft: 10,
-                paddingTop: 7,
-                borderBottomColor: "#0f0f0f",
-                borderBottomWidth: 1,
-                letterSpacing: 1,
-              }}
-            >
-              <Text
-                style={{
-                  color: "#0f0f0f",
-                  fontWeight: "bold",
-                }}
-              >
-                Title:
-              </Text>
-              {apic.title}
-            </Text> */}
               <View
                 style={{
                   // marginTop: 10,
@@ -338,8 +394,31 @@ export default function SeeAllindividuals({ navigation }) {
                   // justifyContent: "space-between",
                 }}
               >
-                <View>
-                  <Image
+                <View
+                  style={{
+                    backgroundColor: handleNameCircleColor(apic.fname),
+                    // backgroundColor: "#F96D02",
+                    width: 35.5,
+                    borderRadius: 100,
+                    height: 35.5,
+                    // padding: 9,
+                    margin: 6,
+                    justifyContent: "center",
+                    alignContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#ffff",
+                      fontSize: 20,
+                      textAlign: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {apic.fname.charAt(0)}
+                  </Text>
+                  {/* <Image
                     source={require("../images/dummy.jpg")}
                     style={{
                       width: 35.5,
@@ -348,7 +427,7 @@ export default function SeeAllindividuals({ navigation }) {
                       padding: 9,
                       margin: 6,
                     }}
-                  />
+                  /> */}
                 </View>
                 <View>
                   <Text
@@ -385,7 +464,7 @@ export default function SeeAllindividuals({ navigation }) {
                       // onPress={(e) => handleMyModal(apic)}
                       onPress={() => clickHandler(apic.id)}
                       style={{
-                        color: "#0f0f0f",
+                        color: "#DC0000",
                         marginRight: 5,
                         // alignSelf: "flex-end",
                         // marginTop: 7,
@@ -397,7 +476,7 @@ export default function SeeAllindividuals({ navigation }) {
                       onPress={() => handleModal(apic.id)}
                       // onPress={handleModal}
                       style={{
-                        color: "#0f0f0f",
+                        color: "#F96D02",
                         marginRight: 5,
                         // alignSelf: "flex-end",
                         // marginTop: 7,
@@ -429,7 +508,7 @@ export default function SeeAllindividuals({ navigation }) {
                 alignItems: "flex-start",
                 backgroundColor: "#fff",
                 // borderBottomWidth: 1,
-                borderColor: "#f96d02",
+                borderColor: "#F96D02",
                 // padding: 2,
                 marginBottom: 10,
               }}
@@ -438,7 +517,7 @@ export default function SeeAllindividuals({ navigation }) {
                 name="highlight-remove"
                 size={30}
                 onPress={handleModal}
-                color="#0f0f0f"
+                color="#F96D02"
               />
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -446,7 +525,7 @@ export default function SeeAllindividuals({ navigation }) {
                 style={{
                   flexDirection: "row",
                   justifyContent: "center",
-                  backgroundColor: "#f96d02",
+                  backgroundColor: "#F96D02",
                   padding: 20,
                   borderRadius: 5,
                   shadowColor: "#000",
