@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -39,6 +39,7 @@ import AllCountriesAndStates from "../countries-states-master/countries";
 import { useIsFocused } from "@react-navigation/native";
 import { GHeaders } from "../getHeader";
 import PHeaders from "../postHeader";
+import { PrintReceiptContext } from "./printReceiptContext";
 
 const windowWidth = Dimensions.get("screen").width;
 
@@ -133,6 +134,7 @@ export default function Sales({ navigation }) {
   const handleOnChangeRCState = (valuex) => {
     setResidentialState(valuex);
   };
+  const { print } = useContext(PrintReceiptContext);
 
   let [name, setName] = useState("anthony");
 
@@ -507,7 +509,7 @@ export default function Sales({ navigation }) {
   `;
 
     setLoading1(false);
-    await printAsync({ html, width: 303 });
+    await print(html);
     // await shareAsync(file.uri);
   };
 

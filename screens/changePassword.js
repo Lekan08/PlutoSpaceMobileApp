@@ -180,6 +180,7 @@ export default function Login({ navigation }) {
     }
   };
 
+<<<<<<< HEAD
   /* An example function called when transaction is completed successfully or canceled */
   const handleOnRedirect = (data) => {
     console.log(data);
@@ -209,6 +210,81 @@ export default function Login({ navigation }) {
             <Image source={require("../images/house_of_tara_logo.png")} />
           </View> */}
           <View style={{ borderRadius: 5 }}>
+=======
+  return (
+    <View style={styles.container}>
+      <ScrollView>
+        {/* <View style={{ marginLeft: 50, marginTop: 50 }}>
+          <Image source={require("../images/house_of_tara_logo.png")} />
+        </View> */}
+
+        <View
+          style={{
+            elevation: 5,
+            backgroundColor: "#ffffff",
+            marginVertical: 10,
+            paddingVertical: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 30,
+              fontWeight: "bold",
+              color: "#F96D02",
+              paddingHorizontal: 10,
+              // paddingTop: 10,
+              fontFamily: "serif",
+              // width: 300,
+              // textAlign: "center",
+            }}
+          >
+            Change Password
+          </Text>
+        </View>
+        <Text style={styles.inputText}>Email:</Text>
+        <TextInput
+          placeholder="Enter your email"
+          keyboardType="default"
+          value={usernamex}
+          onChangeText={(value) => getUsername(value)}
+          style={styles.input}
+          placeholderTextColor={"#777"}
+        />
+        <Text style={styles.inputText}>Current password:</Text>
+        <TextInput
+          placeholder="Enter current Password"
+          value={currentPasswordx}
+          onChangeText={(value) => getCurrentPassword(value)}
+          style={styles.input}
+          secureTextEntry={true}
+          placeholderTextColor={"#777"}
+        />
+        <Text style={styles.inputText}>New password:</Text>
+        <TextInput
+          placeholder="Enter a new Password"
+          value={newPasswordx}
+          onChangeText={(value) => getNewPassword(value)}
+          style={styles.input}
+          secureTextEntry={true}
+          placeholderTextColor={"#777"}
+        />
+        <Text style={styles.inputText}>Confirm new password:</Text>
+        <TextInput
+          placeholder="Retype new Password"
+          value={newRPasswordx}
+          onChangeText={(value) => getRNewPassword(value)}
+          style={styles.input}
+          secureTextEntry={true}
+          placeholderTextColor={"#777"}
+        />
+        <TouchableOpacity onPress={clickHandler}>
+          <View
+            style={[
+              styles.changePassButton,
+              { flexDirection: "row", justifyContent: "center" },
+            ]}
+          >
+>>>>>>> 6cc42668f5a98f6d8bf3ad27b5f67fa749e0b7b1
             <Text
               style={{
                 fontSize: 40,
@@ -350,6 +426,7 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+<<<<<<< HEAD
     backgroundColor: "#ffffff",
     alignItems: "center",
     paddingTop: 60,
@@ -358,6 +435,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 20,
     padding: 20,
+=======
+    backgroundColor: "#FFFFFF",
+>>>>>>> 6cc42668f5a98f6d8bf3ad27b5f67fa749e0b7b1
   },
   input: {
     borderWidth: 1,
@@ -377,6 +457,7 @@ const styles = StyleSheet.create({
     width: 300,
     color: "#fff",
     paddingHorizontal: 20,
+<<<<<<< HEAD
     borderRadius: 10,
     flexDirection: "row",
     alignItems: "center",
@@ -384,16 +465,25 @@ const styles = StyleSheet.create({
   inputField: {
     width: "90%",
     color: "#0f0f0f",
+=======
+    borderRadius: 5,
+>>>>>>> 6cc42668f5a98f6d8bf3ad27b5f67fa749e0b7b1
   },
   loginButton: {
     padding: 15,
     marginTop: 30,
     backgroundColor: "#F96D02",
+<<<<<<< HEAD
     marginHorizontal: 10,
     borderRadius: 8,
+=======
+    marginHorizontal: 60,
+    borderRadius: 10,
+>>>>>>> 6cc42668f5a98f6d8bf3ad27b5f67fa749e0b7b1
   },
   loginText: {
     textAlign: "center",
+<<<<<<< HEAD
     color: "#fff",
   },
   inputText: {
@@ -411,6 +501,11 @@ const styles = StyleSheet.create({
   link: {
     marginTop: 10,
     color: "#F96D02",
+=======
+    color: "#0F0F0F",
+    fontWeight: "bold",
+    paddingTop: 10,
+>>>>>>> 6cc42668f5a98f6d8bf3ad27b5f67fa749e0b7b1
   },
 });
 // {

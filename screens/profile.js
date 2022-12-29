@@ -34,41 +34,14 @@ export default function Profile({ navigation }) {
       const getUser = async () => {
         try {
           const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
-          setUserName(`${userData.otherDetailsDTO.personal.fname}`);
-          const fnamee = userData.otherDetailsDTO.personal.fname;
-          const firstLetter = fnamee.charAt(0).toUpperCase();
-          console.log(firstLetter);
-          const alpha1 = ["A", "B", "C", "D", "E", "F"];
-          const alpha2 = ["G", "H", "I", "J", "K", "L"];
-          const alpha3 = ["M", "N", "O", "P", "Q", "R"];
-          const alpha4 = ["S", "T", "U", "V", "W", "X", "Y", "Z"];
-          alpha1.map((alp) => {
-            if (firstLetter === alp) {
-              setNameCircleColor("#F96D02");
-            }
-          });
-          alpha2.map((alp) => {
-            if (firstLetter === alp) {
-              setNameCircleColor("#54B435");
-            }
-          });
-          alpha3.map((alp) => {
-            if (firstLetter === alp) {
-              setNameCircleColor("#533E85");
-            }
-          });
-          alpha4.map((alp) => {
-            if (firstLetter === alp) {
-              setNameCircleColor("#F96D02");
-            }
-          });
-          setLastName(`${userData.otherDetailsDTO.personal.lname}`);
-          setPno(`${userData.otherDetailsDTO.personal.pno}`);
+          setFname(`${userData.otherDetailsDTO.personal.fname}`);
+          setLname(`${userData.otherDetailsDTO.personal.lname}`);
           setEmail(`${userData.otherDetailsDTO.personal.email}`);
-          setCountry(`${userData.otherDetailsDTO.personal.residentialCountry}`);
-          setState(`${userData.otherDetailsDTO.personal.residentialState}`);
-          setCity(`${userData.otherDetailsDTO.personal.residentialStreet}`);
-          setUserData(userData);
+          setcountry(`${userData.otherDetailsDTO.personal.residentialCountry}`);
+          setstate(`${userData.otherDetailsDTO.personal.residentialState}`);
+          setcity(`${userData.otherDetailsDTO.personal.residentialCity}`);
+          setaddress(`${userData.otherDetailsDTO.personal.residentialStreet}`);
+          console.log(userData);
         } catch (error) {
           console.log(error);
         }
@@ -477,6 +450,7 @@ export default function Profile({ navigation }) {
           marginTop: 15,
         }}
       >
+<<<<<<< HEAD
         <View>
           <View
             style={{
@@ -511,6 +485,182 @@ export default function Profile({ navigation }) {
             </Text>
           </View>
         </View>
+=======
+        <Con>
+          <Row>
+            <Col numRows={2}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("editprofile")}
+              >
+                <View
+                  style={{
+                    flexDirection: "column",
+                    backgroundColor: "#F96D02",
+                    borderRadius: 10,
+                    alignItems: "center",
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    marginTop: 5,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      lineHeight: 22,
+                      color: "#fff",
+                      marginBottom: 5,
+                    }}
+                  >
+                    Edit Profile
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor: "#ffff",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: 40,
+                      width: 40,
+                      borderRadius: 50,
+                    }}
+                  >
+                    <Icon name="account-plus" size={28} color="#0f0f0f" />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Col>
+            <Col numRows={2}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("changePassword")}
+              >
+                <View
+                  style={{
+                    flexDirection: "column",
+                    backgroundColor: "#F96D02",
+                    borderRadius: 10,
+                    alignItems: "center",
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    marginTop: 5,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      lineHeight: 22,
+                      color: "#fff",
+                      marginBottom: 5,
+                    }}
+                  >
+                    Change Password
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor: "#ffff",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: 40,
+                      width: 40,
+                      borderRadius: 50,
+                    }}
+                  >
+                    <Icon
+                      name="form-textbox-password"
+                      size={28}
+                      color="#0f0f0f"
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Col>
+          </Row>
+          <Row>
+            <Col numRows={2}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Individual")}
+              >
+                <View
+                  style={{
+                    flexDirection: "column",
+                    backgroundColor: "#F96D02",
+                    borderRadius: 10,
+                    alignItems: "center",
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    marginTop: 5,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      lineHeight: 22,
+                      color: "#fff",
+                      marginBottom: 5,
+                    }}
+                  >
+                    Create Client
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor: "#ffff",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: 40,
+                      width: 40,
+                      borderRadius: 50,
+                    }}
+                  >
+                    <Icon name="archive-plus" size={28} color="#0f0f0f" />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Col>
+            <Col numRows={2}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("seeAllindividuals")}
+              >
+                <View
+                  style={{
+                    flexDirection: "column",
+                    backgroundColor: "#F96D02",
+                    borderRadius: 10,
+                    alignItems: "center",
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    marginTop: 5,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      lineHeight: 22,
+                      color: "#fff",
+                      marginBottom: 5,
+                    }}
+                  >
+                    See All Client
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor: "#ffff",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: 40,
+                      width: 40,
+                      borderRadius: 50,
+                    }}
+                  >
+                    <Icon name="account-multiple" size={28} color="#0f0f0f" />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Col>
+          </Row>
+        </Con>
+>>>>>>> 6cc42668f5a98f6d8bf3ad27b5f67fa749e0b7b1
       </View>
     </View>
   );
