@@ -13,6 +13,7 @@ import { globalStyles } from "../styles/global";
 import { Con, Col, Row } from "../components/grid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
 export default function Dashboard({ navigation }) {
   // const [reviews, setReviews] = useState([
   //   { title: "Zelda, breath of fire", rating: 5, body: "lorem ipsum", key: 1 },
@@ -110,7 +111,7 @@ export default function Dashboard({ navigation }) {
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            marginTop: 60,
+            marginTop: verticalScale(60),
           }}
         >
           <View
@@ -148,20 +149,24 @@ export default function Dashboard({ navigation }) {
           </View>
           <View
             style={{
-              height: 115,
-              width: 115,
+              height: verticalScale(115),
+              width: horizontalScale(115),
               backgroundColor: "#F96D02",
               borderWidth: 5,
               borderColor: "#fff",
               justifyContent: "center",
               alignItems: "center",
-              borderRadius: 60,
+              borderRadius: moderateScale(60),
               marginRight: 20,
             }}
           >
             <Image
               source={require("../images/kpurkish.jpeg")}
-              style={{ width: 100, borderRadius: 50, height: 100 }}
+              style={{
+                width: horizontalScale(100),
+                borderRadius: moderateScale(50),
+                height: verticalScale(100),
+              }}
             />
           </View>
         </View>
@@ -189,7 +194,7 @@ export default function Dashboard({ navigation }) {
         /> */}
         <Text
           style={{
-            fontSize: 40,
+            fontSize: moderateScale(40),
             fontWeight: "bold",
             marginLeft: 20,
             color: "#ffff",
@@ -199,7 +204,7 @@ export default function Dashboard({ navigation }) {
         </Text>
         <Text
           style={{
-            fontSize: 40,
+            fontSize: moderateScale(40),
             fontWeight: "bold",
             marginLeft: 20,
             color: "#ffff",
@@ -239,7 +244,7 @@ export default function Dashboard({ navigation }) {
             >
               <Text
                 style={{
-                  fontSize: 20,
+                  fontSize: moderateScale(20),
                   letterSpacing: 2,
                   fontWeight: "bold",
                   color: "#FFFFFF",
@@ -271,20 +276,20 @@ export default function Dashboard({ navigation }) {
                   style={{
                     flexDirection: "column",
                     backgroundColor: "#FFFFFF",
-                    borderRadius: 10,
+                    borderRadius: moderateScale(10),
                     elevation: 5,
                     // justifyContent: "center",
                     alignItems: "center",
                     paddingVertical: 10,
                     paddingHorizontal: 20,
-                    marginTop: 5,
+                    marginTop: verticalScale(5),
                   }}
                 >
                   <Text
                     style={{
-                      fontSize: 15,
+                      fontSize: moderateScale(15),
                       fontWeight: "600",
-                      lineHeight: 22,
+                      lineHeight: verticalScale(22),
                       color: "#0F0F0F",
                       marginBottom: 5,
                     }}
@@ -298,7 +303,7 @@ export default function Dashboard({ navigation }) {
                       alignItems: "center",
                       // height: 40,
                       // width: 40,
-                      borderRadius: 50,
+                      borderRadius: moderateScale(50),
                     }}
                   >
                     <Icon name="sale" size={28} color="#0F0F0F" />
@@ -314,20 +319,20 @@ export default function Dashboard({ navigation }) {
                   style={{
                     flexDirection: "column",
                     backgroundColor: "#FFFFFF",
-                    borderRadius: 10,
+                    borderRadius: moderateScale(10),
                     elevation: 5,
                     // justifyContent: "center",
                     alignItems: "center",
                     paddingVertical: 10,
                     paddingHorizontal: 20,
-                    marginTop: 5,
+                    marginTop: verticalScale(5),
                   }}
                 >
                   <Text
                     style={{
-                      fontSize: 15,
+                      fontSize: moderateScale(15),
                       fontWeight: "600",
-                      lineHeight: 22,
+                      lineHeight: verticalScale(22),
                       color: "#0F0F0F",
                       marginBottom: 5,
                     }}
@@ -341,7 +346,7 @@ export default function Dashboard({ navigation }) {
                       alignItems: "center",
                       // height: 40,
                       // width: 40,
-                      borderRadius: 50,
+                      borderRadius: moderateScale(50),
                     }}
                   >
                     <Icon name="account-outline" size={28} color="#0F0F0F" />
@@ -359,21 +364,21 @@ export default function Dashboard({ navigation }) {
                   style={{
                     flexDirection: "column",
                     backgroundColor: "#FFFFFF",
-                    borderRadius: 10,
+                    borderRadius: moderateScale(10),
                     elevation: 5,
                     // justifyContent: "center",
                     alignItems: "center",
                     paddingVertical: 10,
                     paddingHorizontal: 20,
-                    marginTop: 5,
+                    marginTop: verticalScale(5),
                   }}
                 >
                   <Text
                     style={{
-                      fontSize: 15,
+                      fontSize: moderateScale(15),
                       fontWeight: "600",
                       // alignSelf: "center",
-                      lineHeight: 22,
+                      lineHeight: verticalScale(22),
                       color: "#0F0F0F",
                       marginBottom: 5,
                     }}
@@ -387,7 +392,7 @@ export default function Dashboard({ navigation }) {
                       alignItems: "center",
                       // height: 40,
                       // width: 40,
-                      borderRadius: 50,
+                      borderRadius: moderateScale(50),
                     }}
                   >
                     <Icon name="history" size={28} color="#0F0F0F" />
@@ -482,11 +487,11 @@ const styles = StyleSheet.create({
   //}
   item: {
     padding: 16,
-    marginTop: 16,
+    marginTop: verticalScale(16),
     borderColor: "#bbb",
     borderWidth: 1,
     borderStyle: "",
-    borderRadius: 10,
+    borderRadius: moderateScale(10),
   },
   icon: {
     flex: 1,

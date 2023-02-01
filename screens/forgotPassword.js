@@ -13,6 +13,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
 // import Header from "./components/header";
 // import TodoItem from "./components/todoItem";
 // import AddTodo from "./components/addTodo";
@@ -67,16 +68,16 @@ export default function ForgotPassword({ navigation }) {
         <View>
           <Image source={require("../images/house_of_tara_logo.png")} />
         </View>
-        <View style={{ borderRadius: 5 }}>
+        <View style={{ borderRadius: moderateScale(5) }}>
           <Text
             style={{
-              fontSize: 40,
+              fontSize: moderateScale(40),
               fontWeight: "900",
               color: "#ffffff",
               paddingHorizontal: 0,
               paddingTop: 30,
               fontFamily: "serif",
-              width: 300,
+              width: horizontalScale(300),
             }}
           >
             FORGOTTEN YOUR PASSWORD?
@@ -85,12 +86,12 @@ export default function ForgotPassword({ navigation }) {
         <Text
           style={{
             color: "#ffffff",
-            fontSize: 20,
+            fontSize: moderateScale(20),
             fontWeight: "50",
             paddingHorizontal: 0,
             paddingTop: 10,
             fontFamily: "serif",
-            width: 200,
+            width: horizontalScale(200),
           }}
         >
           Enter the email attached to your account to reset your password.
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
   },
   buttonContainer: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
     padding: 20,
   },
   input: {
@@ -152,32 +153,32 @@ const styles = StyleSheet.create({
     borderColor: "#777",
     padding: 8,
     margin: 5,
-    width: 300,
+    width: horizontalScale(300),
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 50,
+    borderRadius: moderateScale(50),
   },
   submitButton: {
     padding: 15,
-    marginTop: 30,
+    marginTop: verticalScale(30),
     backgroundColor: "#F96D02",
     marginHorizontal: 10,
-    borderRadius: 50,
+    borderRadius: moderateScale(50),
   },
   submitText: {
     textAlign: "center",
     color: "#fff",
   },
   inputText: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     alignSelf: "center",
     color: "#fff",
   },
   item: {
     padding: 30,
-    marginTop: 24,
+    marginTop: verticalScale(24),
     backgroundColor: "#F96D02",
-    fontSize: 24,
+    fontSize: moderateScale(24),
     marginHorizontal: 10,
   },
 });

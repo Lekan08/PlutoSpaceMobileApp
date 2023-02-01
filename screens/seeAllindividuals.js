@@ -20,6 +20,7 @@ import {
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { REACT_APP_TARA_URL, FLUTTER_AUTH_KEY } from "@env";
+import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Loader, InnerLoader } from "../components/loader";
 import { useIsFocused } from "@react-navigation/native";
@@ -347,11 +348,11 @@ export default function SeeAllindividuals({ navigation }) {
       <View>
         <Text
           style={{
-            fontSize: 30,
+            fontSize: moderateScale(30),
             fontWeight: "900",
             color: "#F96D02",
             fontFamily: "serif",
-            width: 300,
+            width: horizontalScale(300),
             alignSelf: "center",
             alignItems: "center",
             alignContent: "center",
@@ -378,10 +379,10 @@ export default function SeeAllindividuals({ navigation }) {
               style={{
                 backgroundColor: "#ffffffff",
                 elevation: 5,
-                height: 60,
+                height: verticalScale(60),
                 width: "97%",
-                borderRadius: 5,
-                marginTop: 20,
+                borderRadius: moderateScale(5),
+                marginTop: verticalScale(20),
                 justifyContent: "center",
               }}
             >
@@ -398,9 +399,9 @@ export default function SeeAllindividuals({ navigation }) {
                   style={{
                     backgroundColor: handleNameCircleColor(apic.fname),
                     // backgroundColor: "#F96D02",
-                    width: 35.5,
-                    borderRadius: 100,
-                    height: 35.5,
+                    width: horizontalScale(35.5),
+                    borderRadius: moderateScale(100),
+                    height: verticalScale(35.5),
                     // padding: 9,
                     margin: 6,
                     justifyContent: "center",
@@ -411,7 +412,7 @@ export default function SeeAllindividuals({ navigation }) {
                   <Text
                     style={{
                       color: "#ffff",
-                      fontSize: 20,
+                      fontSize: moderateScale(20),
                       textAlign: "center",
                       justifyContent: "center",
                     }}
@@ -432,7 +433,7 @@ export default function SeeAllindividuals({ navigation }) {
                 <View>
                   <Text
                     style={{
-                      fontSize: 18,
+                      fontSize: moderateScale(18),
                       fontWeight: "bold",
                       marginLeft: 0,
                       // marginTop: 10,
@@ -527,11 +528,11 @@ export default function SeeAllindividuals({ navigation }) {
                   justifyContent: "center",
                   backgroundColor: "#F96D02",
                   padding: 20,
-                  borderRadius: 5,
+                  borderRadius: moderateScale(5),
                   shadowColor: "#000",
                   shadowOffset: {
-                    width: 0,
-                    height: 2,
+                    width: horizontalScale(0),
+                    height: verticalScale(2),
                   },
                   shadowOpacity: 0.25,
                   shadowRadius: 4,
@@ -542,7 +543,7 @@ export default function SeeAllindividuals({ navigation }) {
                   style={{
                     textTransform: "uppercase",
                     fontWeight: "bold",
-                    fontSize: 20,
+                    fontSize: moderateScale(20),
                     color: "#fff",
                   }}
                 >
@@ -637,7 +638,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   buttonContainer: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
     padding: 20,
   },
   input: {
@@ -645,20 +646,20 @@ const styles = StyleSheet.create({
     borderColor: "#777",
     padding: 15,
     margin: 5,
-    width: 300,
+    width: horizontalScale(300),
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 50,
+    borderRadius: moderateScale(50),
   },
   inputContainer: {
     borderWidth: 1,
     borderColor: "#777",
     padding: 15,
     margin: 5,
-    width: 300,
+    width: horizontalScale(300),
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 50,
+    borderRadius: moderateScale(50),
     flexDirection: "row",
     alignItems: "center",
   },
@@ -670,43 +671,43 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#777",
     margin: 5,
-    width: 300,
+    width: horizontalScale(300),
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 50,
+    borderRadius: moderateScale(50),
   },
   loginButton: {
     padding: 15,
-    marginTop: 30,
+    marginTop: verticalScale(30),
     backgroundColor: "#F96D02",
     marginHorizontal: 10,
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
   },
   loginText: {
     textAlign: "center",
     color: "#fff",
   },
   inputText: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     alignSelf: "center",
     color: "#F96D02",
   },
   item: {
     padding: 30,
-    marginTop: 24,
+    marginTop: verticalScale(24),
     backgroundColor: "#F96D02",
-    fontSize: 24,
+    fontSize: moderateScale(24),
     marginHorizontal: 10,
   },
   link: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     color: "#F96D02",
   },
   itemStyle: {
     backgroundColor: "#F96D02",
     color: "#000",
     fontFamily: "Ebrima",
-    fontSize: 19,
+    fontSize: moderateScale(19),
   },
 
   modalView: {
@@ -714,14 +715,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingVertical: 20,
     paddingHorizontal: 10,
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
     height: "70%",
-    minHeight: 200,
-    maxHeight: 700,
+    minHeight: verticalScale(200),
+    maxHeight: verticalScale(700),
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
-      height: 2,
+      width: horizontalScale(0),
+      height: verticalScale(2),
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
@@ -729,7 +730,7 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
     padding: 20,
   },
   txAInput: {
@@ -737,11 +738,11 @@ const styles = StyleSheet.create({
     borderColor: "#777",
     padding: 8,
     margin: 5,
-    height: 100,
+    height: verticalScale(100),
     textAlignVertical: "top",
     color: "#777",
     paddingHorizontal: 10,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   input: {
     borderWidth: 1,
@@ -751,7 +752,7 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
     color: "#777",
     paddingHorizontal: 10,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   pickerContainer: {
     borderWidth: 1,
@@ -759,7 +760,7 @@ const styles = StyleSheet.create({
     margin: 5,
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
     flexDirection: "row",
     alignItems: "center",
   },
@@ -769,7 +770,7 @@ const styles = StyleSheet.create({
     margin: 5,
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   inputContainer: {
     borderWidth: 1,
@@ -778,7 +779,7 @@ const styles = StyleSheet.create({
     margin: 5,
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
     flexDirection: "row",
     alignItems: "center",
   },
@@ -788,10 +789,10 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     padding: 15,
-    marginTop: 30,
+    marginTop: verticalScale(30),
     backgroundColor: "#F96D02",
     marginHorizontal: 10,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   loginText: {
     fontWeight: "bold",
@@ -799,7 +800,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   inputText: {
-    marginTop: 5,
+    marginTop: verticalScale(5),
     marginLeft: 10,
     fontWeight: "bold",
     alignSelf: "flex-start",
@@ -807,13 +808,13 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: 30,
-    marginTop: 24,
+    marginTop: verticalScale(24),
     backgroundColor: "#F96D02",
-    fontSize: 24,
+    fontSize: moderateScale(24),
     marginHorizontal: 10,
   },
   link: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     color: "#F96D02",
   },
   pickerContainer: {
@@ -822,12 +823,12 @@ const styles = StyleSheet.create({
     margin: 5,
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
     flexDirection: "row",
     alignItems: "center",
   },
   inputText: {
-    marginTop: 5,
+    marginTop: verticalScale(5),
     marginLeft: 10,
     fontWeight: "bold",
     alignSelf: "flex-start",
@@ -838,14 +839,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingVertical: 20,
     paddingHorizontal: 10,
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
     height: "70%",
-    minHeight: 200,
-    maxHeight: 700,
+    minHeight: verticalScale(200),
+    maxHeight: verticalScale(700),
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
-      height: 2,
+      width: horizontalScale(0),
+      height: verticalScale(2),
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,

@@ -18,6 +18,7 @@ import {
 
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { PayWithFlutterwave } from "flutterwave-react-native";
+import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
 // or import PayWithFlutterwave from 'flutterwave-react-native';
 import { REACT_APP_ZAVE_URL, FLUTTER_AUTH_KEY } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -201,15 +202,15 @@ export default function Login({ navigation }) {
           <View>
             <Image source={require("../images/house_of_tara_logo.png")} />
           </View>
-          <View style={{ borderRadius: 5 }}>
+          <View style={{ borderRadius: moderateScale(5) }}>
             <Text
               style={{
-                fontSize: 40,
+                fontSize: moderateScale(40),
                 fontWeight: "900",
                 color: "#F96D02",
                 paddingHorizontal: 0,
                 paddingTop: 40,
-                width: 300,
+                width: horizontalScale(300),
               }}
             >
               Let’s Help You Find Your Match
@@ -360,20 +361,20 @@ const styles = StyleSheet.create({
     borderColor: "#777",
     padding: 8,
     margin: 5,
-    width: 300,
+    width: horizontalScale(300),
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 50,
+    borderRadius: moderateScale(50),
   },
   inputContainer: {
     borderWidth: 1,
     borderColor: "#777",
     padding: 8,
     margin: 5,
-    width: 300,
+    width: horizontalScale(300),
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 50,
+    borderRadius: moderateScale(50),
     flexDirection: "row",
     alignItems: "center",
   },
@@ -383,29 +384,29 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     padding: 15,
-    marginTop: 30,
+    marginTop: verticalScale(30),
     backgroundColor: "#F96D02",
     marginHorizontal: 10,
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
   },
   loginText: {
     textAlign: "center",
     color: "#fff",
   },
   inputText: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     alignSelf: "center",
     color: "#F96D02",
   },
   item: {
     padding: 30,
-    marginTop: 24,
+    marginTop: verticalScale(24),
     backgroundColor: "#F96D02",
-    fontSize: 24,
+    fontSize: moderateScale(24),
     marginHorizontal: 10,
   },
   link: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     color: "#F96D02",
   },
 });

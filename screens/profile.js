@@ -15,6 +15,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { globalStyles } from "../styles/global";
 import { Con, Col, Row } from "../components/grid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
 import { ScrollView } from "react-native-gesture-handler";
 export default function Profile({ navigation }) {
   const [kpurkish, setKpurkish] = useState("");
@@ -96,19 +97,19 @@ export default function Profile({ navigation }) {
             style={{
               backgroundColor: nameCircleColor,
               // backgroundColor: {kpurkish},
-              height: 70,
-              width: 70,
-              borderRadius: 100,
+              height: verticalScale(70),
+              width: horizontalScale(70),
+              borderRadius: moderateScale(100),
               alignSelf: "center",
               marginLeft: 146,
               justifyContent: "center",
-              marginTop: 10,
+              marginTop: verticalScale(10),
             }}
           >
             <Text
               style={{
                 color: "#ffff",
-                fontSize: 40,
+                fontSize: moderateScale(40),
                 textAlign: "center",
                 textTransform: "uppercase",
               }}
@@ -154,7 +155,7 @@ export default function Profile({ navigation }) {
         >
           <Text
             style={{
-              fontSize: 20,
+              fontSize: moderateScale(20),
               textAlign: "center",
               fontWeight: "900",
               marginRight: 10,
@@ -164,7 +165,7 @@ export default function Profile({ navigation }) {
           </Text>
           <Text
             style={{
-              fontSize: 20,
+              fontSize: moderateScale(20),
               textAlign: "center",
               fontWeight: "900",
             }}
@@ -174,7 +175,7 @@ export default function Profile({ navigation }) {
         </View>
         <Text
           style={{
-            fontSize: 15,
+            fontSize: moderateScale(15),
             textAlign: "center",
           }}
         >
@@ -208,7 +209,7 @@ export default function Profile({ navigation }) {
           </View>
           <Text
             style={{
-              fontSize: 18,
+              fontSize: moderateScale(18),
               textAlign: "center",
               marginLeft: 25,
               fontWeight: "900",
@@ -223,16 +224,16 @@ export default function Profile({ navigation }) {
       <View
         style={{
           flexDirection: "row",
-          marginTop: 20,
+          marginTop: verticalScale(20),
           marginLeft: 20,
         }}
       >
         <View
           style={{
             backgroundColor: "#fff",
-            height: 120,
-            width: 100,
-            borderRadius: 10,
+            height: verticalScale(120),
+            width: horizontalScale(100),
+            borderRadius: moderateScale(10),
             // marginLeft: 10,
             elevation: 5,
           }}
@@ -254,9 +255,9 @@ export default function Profile({ navigation }) {
           <Text
             style={{
               color: "#F96D02",
-              fontSize: 16,
+              fontSize: moderateScale(16),
               textAlign: "center",
-              marginTop: 10,
+              marginTop: verticalScale(10),
               fontWeight: "bold",
             }}
           >
@@ -266,9 +267,9 @@ export default function Profile({ navigation }) {
         <View
           style={{
             backgroundColor: "#fff",
-            height: 120,
-            width: 100,
-            borderRadius: 10,
+            height: verticalScale(120),
+            width: horizontalScale(100),
+            borderRadius: moderateScale(10),
             marginLeft: 10,
             elevation: 5,
           }}
@@ -281,7 +282,7 @@ export default function Profile({ navigation }) {
               color: "#F96D02",
               // marginLeft: 85,
               // paddingTop: 80,
-              marginTop: 20,
+              marginTop: verticalScale(20),
               // alignSelf: "flex-end",
               // marginRight: 10,
               alignSelf: "center",
@@ -290,9 +291,9 @@ export default function Profile({ navigation }) {
           <Text
             style={{
               color: "#F96D02",
-              fontSize: 16,
+              fontSize: moderateScale(16),
               textAlign: "center",
-              marginTop: 10,
+              marginTop: verticalScale(10),
               fontWeight: "bold",
             }}
           >
@@ -302,9 +303,9 @@ export default function Profile({ navigation }) {
         <View
           style={{
             backgroundColor: "#fff",
-            height: 120,
-            width: 100,
-            borderRadius: 10,
+            height: verticalScale(120),
+            width: horizontalScale(100),
+            borderRadius: moderateScale(10),
             marginLeft: 10,
             elevation: 5,
           }}
@@ -317,7 +318,7 @@ export default function Profile({ navigation }) {
               color: "#F96D02",
               // marginLeft: 85,
               // paddingTop: 80,
-              marginTop: 20,
+              marginTop: verticalScale(20),
               // alignSelf: "flex-end",
               // marginRight: 10,
               alignSelf: "center",
@@ -326,9 +327,9 @@ export default function Profile({ navigation }) {
           <Text
             style={{
               color: "#F96D02",
-              fontSize: 16,
+              fontSize: moderateScale(16),
               textAlign: "center",
-              marginTop: 10,
+              marginTop: verticalScale(10),
               fontWeight: "bold",
             }}
           >
@@ -344,19 +345,19 @@ export default function Profile({ navigation }) {
           elevation: 5,
           height: "5%",
           width: "90%",
-          marginTop: 10,
+          marginTop: verticalScale(10),
           flex: 1,
           flexDirection: "row",
-          borderRadius: 20,
+          borderRadius: moderateScale(20),
         }}
       >
         <View>
           <Text
             style={{
               color: "#0f0f0f",
-              fontSize: 15,
+              fontSize: moderateScale(15),
               // textAlign: "left",
-              marginTop: 16,
+              marginTop: verticalScale(16),
               marginLeft: 20,
               fontWeight: "bold",
               textTransform: "uppercase",
@@ -372,7 +373,7 @@ export default function Profile({ navigation }) {
               color: "#0f0f0f",
               marginLeft: 15,
               // paddingTop: 80,
-              marginTop: 20,
+              marginTop: verticalScale(20),
               // alignSelf: "flex-end",
               // marginRight: 10,
               alignSelf: "center",
@@ -384,9 +385,9 @@ export default function Profile({ navigation }) {
           <Text
             style={{
               color: "#0f0f0f",
-              fontSize: 15,
+              fontSize: moderateScale(15),
               // textAlign: "left",
-              marginTop: 16,
+              marginTop: verticalScale(16),
               marginLeft: 30,
               fontWeight: "bold",
               textTransform: "uppercase",
@@ -402,7 +403,7 @@ export default function Profile({ navigation }) {
               color: "#0f0f0f",
               marginLeft: 25,
               // paddingTop: 80,
-              marginTop: 20,
+              marginTop: verticalScale(20),
               // alignSelf: "flex-end",
               // marginRight: 10,
               alignSelf: "center",
@@ -413,9 +414,9 @@ export default function Profile({ navigation }) {
           <Text
             style={{
               color: "#0f0f0f",
-              fontSize: 15,
+              fontSize: moderateScale(15),
               // textAlign: "left",
-              marginTop: 15,
+              marginTop: verticalScale(15),
               marginLeft: 60,
               fontWeight: "bold",
               textTransform: "uppercase",
@@ -432,7 +433,7 @@ export default function Profile({ navigation }) {
               color: "#0f0f0f",
               marginLeft: 55,
               // paddingTop: 80,
-              marginTop: 20,
+              marginTop: verticalScale(20),
               // alignSelf: "flex-end",
               // marginRight: 10,
               alignSelf: "center",
@@ -447,7 +448,7 @@ export default function Profile({ navigation }) {
           // elevation: 2,
           height: "20%",
           width: "100%",
-          marginTop: 15,
+          marginTop: verticalScale(15),
         }}
       >
         <View>
@@ -455,7 +456,7 @@ export default function Profile({ navigation }) {
             style={{
               flexDirection: "row",
               paddingTop: 20,
-              marginTop: 20,
+              marginTop: verticalScale(20),
             }}
           >
             <View
@@ -474,10 +475,10 @@ export default function Profile({ navigation }) {
             </View>
             <Text
               style={{
-                fontSize: 18,
+                fontSize: moderateScale(18),
                 textAlign: "center",
                 marginLeft: 25,
-                marginTop: 3,
+                marginTop: verticalScale(3),
               }}
             >
               LogOut

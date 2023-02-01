@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import { REACT_APP_ZAVE_URL, FLUTTER_AUTH_KEY } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
 import { Loader, InnerLoader } from "../components/loader";
 // import GHeaders from "../getHeader";
 // import PHeaders from "../postHeader";
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonContainer: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
     padding: 20,
   },
   input: {
@@ -164,20 +165,20 @@ const styles = StyleSheet.create({
     borderColor: "#777",
     padding: 8,
     margin: 5,
-    width: 300,
+    width: horizontalScale(300),
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 50,
+    borderRadius: moderateScale(50),
   },
   inputContainer: {
     borderWidth: 1,
     borderColor: "#777",
     padding: 8,
     margin: 5,
-    width: 300,
+    width: horizontalScale(300),
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 50,
+    borderRadius: moderateScale(50),
     flexDirection: "row",
     alignItems: "center",
   },
@@ -187,29 +188,29 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     padding: 15,
-    marginTop: 30,
+    marginTop: verticalScale(30),
     backgroundColor: "#F96D02",
     marginHorizontal: 10,
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
   },
   loginText: {
     textAlign: "center",
     color: "#fff",
   },
   inputText: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     alignSelf: "center",
     color: "#F96D02",
   },
   item: {
     padding: 30,
-    marginTop: 24,
+    marginTop: verticalScale(24),
     backgroundColor: "#F96D02",
-    fontSize: 24,
+    fontSize: moderateScale(24),
     marginHorizontal: 10,
   },
   link: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     color: "#F96D02",
   },
 });

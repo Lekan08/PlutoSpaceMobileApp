@@ -14,6 +14,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Con, Col, Row } from "../components/grid";
 import { color } from "react-native-reanimated";
 
+import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
 export default function Checkout({ navigation }) {
   return (
     <View style={globalStyles.dashContainer}>
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   },
   loginText: {
     alignSelf: "center",
-    fontSize: 30,
+    fontSize: moderateScale(30),
     fontWeight: "bold",
     color: "#ffff",
   },
@@ -58,6 +59,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#3CCF4E",
     height: "30%",
     width: "80%",
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
   },
 });

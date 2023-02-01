@@ -18,7 +18,7 @@ import {
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { Picker } from "@react-native-picker/picker";
 import AllCountriesAndStates from "../countries-states-master/countries";
-
+import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
 import { PrintReceiptContext } from "./printReceiptContext";
 import { REACT_APP_TARA_URL } from "@env";
 import { globalStyles } from "../styles/global";
@@ -638,7 +638,7 @@ function History({ navigation }) {
                     backgroundColor: "#ffff",
                     width: screenWidth - 30,
                     maxWidth: screenWidth,
-                    borderRadius: 5,
+                    borderRadius: moderateScale(5),
                     padding: 5,
                     elevation: 2,
                     margin: 5,
@@ -677,7 +677,7 @@ function History({ navigation }) {
                         ))} */}
                         <Text
                           style={{
-                            fontSize: 15,
+                            fontSize: moderateScale(15),
                             fontWeight: "500",
                             color: "#0F0F0F",
                             paddingHorizontal: 0,
@@ -696,7 +696,7 @@ function History({ navigation }) {
 
                       <Text
                         style={{
-                          fontSize: 13,
+                          fontSize: moderateScale(13),
                           fontWeight: "400",
                           color: "#000",
                           paddingHorizontal: 0,
@@ -704,7 +704,7 @@ function History({ navigation }) {
                       >
                         <Text
                           style={{
-                            fontSize: 13,
+                            fontSize: moderateScale(13),
                             fontWeight: "900",
                             color: "#000",
                           }}
@@ -734,9 +734,9 @@ function History({ navigation }) {
                         >
                           <View
                             style={{
-                              marginTop: 5,
-                              borderRadius: 5,
-                              width: 100,
+                              marginTop: verticalScale(5),
+                              borderRadius: moderateScale(5),
+                              width: horizontalScale(100),
                               padding: 8,
                               backgroundColor: "#F96D02",
                             }}
@@ -747,7 +747,7 @@ function History({ navigation }) {
                                 fontWeight: "bold",
                                 textAlign: "center",
                                 textTransform: "uppercase",
-                                fontSize: 13,
+                                fontSize: moderateScale(13),
                               }}
                             >
                               PRINT
@@ -794,7 +794,7 @@ function History({ navigation }) {
                   style={{
                     textTransform: "uppercase",
                     fontWeight: "bold",
-                    fontSize: 15,
+                    fontSize: moderateScale(15),
                     color: "#fff",
                   }}
                 >
@@ -808,7 +808,7 @@ function History({ navigation }) {
                     color: "#FFFFFF",
                     padding: 5,
                     marginHorizontal: 5,
-                    borderRadius: 5,
+                    borderRadius: moderateScale(5),
                     borderWidth: 1,
                     borderColor: "#ddd",
                     marginVertical: 1,
@@ -817,7 +817,7 @@ function History({ navigation }) {
                   <Text
                     style={{
                       fontWeight: "bold",
-                      fontSize: 15,
+                      fontSize: moderateScale(15),
                       color: "#0F0F0F",
                     }}
                   >
@@ -825,14 +825,14 @@ function History({ navigation }) {
                   </Text>
                   <Text
                     style={{
-                      fontSize: 13,
+                      fontSize: moderateScale(13),
                       fontWeight: "bold",
                       color: "#000",
                     }}
                   >
                     <Text
                       style={{
-                        fontSize: 13,
+                        fontSize: moderateScale(13),
                         fontWeight: "400",
                         color: "#000",
                         paddingHorizontal: 0,
@@ -844,7 +844,7 @@ function History({ navigation }) {
                   </Text>
                   <Text
                     style={{
-                      fontSize: 13,
+                      fontSize: moderateScale(13),
                       fontWeight: "900",
                       color: "#000",
                     }}
@@ -863,7 +863,7 @@ function History({ navigation }) {
                   style={{
                     textTransform: "uppercase",
                     fontWeight: "bold",
-                    fontSize: 15,
+                    fontSize: moderateScale(15),
                     color: "#fff",
                   }}
                 >
@@ -875,7 +875,7 @@ function History({ navigation }) {
                   color: "#FFFFFF",
                   padding: 5,
                   marginHorizontal: 5,
-                  borderRadius: 5,
+                  borderRadius: moderateScale(5),
                   borderWidth: 1,
                   borderColor: "#ddd",
                   marginVertical: 1,
@@ -883,14 +883,14 @@ function History({ navigation }) {
               >
                 <Text
                   style={{
-                    fontSize: 13,
+                    fontSize: moderateScale(13),
                     fontWeight: "bold",
                     color: "#000",
                   }}
                 >
                   <Text
                     style={{
-                      fontSize: 13,
+                      fontSize: moderateScale(13),
                       fontWeight: "400",
                       color: "#000",
                       paddingHorizontal: 0,
@@ -902,14 +902,14 @@ function History({ navigation }) {
                 </Text>
                 <Text
                   style={{
-                    fontSize: 13,
+                    fontSize: moderateScale(13),
                     fontWeight: "bold",
                     color: "#000",
                   }}
                 >
                   <Text
                     style={{
-                      fontSize: 13,
+                      fontSize: moderateScale(13),
                       fontWeight: "400",
                       color: "#000",
                       paddingHorizontal: 0,
@@ -940,14 +940,14 @@ function History({ navigation }) {
                 </Text>
                 <Text
                   style={{
-                    fontSize: 13,
+                    fontSize: moderateScale(13),
                     fontWeight: "bold",
                     color: "#000",
                   }}
                 >
                   <Text
                     style={{
-                      fontSize: 13,
+                      fontSize: moderateScale(13),
                       fontWeight: "400",
                       color: "#000",
                       paddingHorizontal: 0,
@@ -976,29 +976,29 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonContainer: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
     padding: 20,
   },
 
   loginButton: {
     padding: 10,
-    marginTop: 10,
+    marginTop: verticalScale(10),
     backgroundColor: "#F96D02",
     // marginHorizontal: 10,
     width: "100%",
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   addRemove: {
     backgroundColor: "#F96D02",
-    width: 30,
-    height: 30,
-    borderRadius: 5,
+    width: horizontalScale(30),
+    height: verticalScale(30),
+    borderRadius: moderateScale(5),
   },
   purchaseButton: {
     padding: 10,
     backgroundColor: "#F96D02",
     width: "100%",
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   pickerContainer: {
     borderBottomColor: "#777",
@@ -1019,26 +1019,26 @@ const styles = StyleSheet.create({
     // borderRadius: 50,
   },
   inputText: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
     alignSelf: "flex-start",
     color: "#777",
   },
   item: {
     padding: 30,
-    marginTop: 24,
+    marginTop: verticalScale(24),
     backgroundColor: "#F96D02",
-    fontSize: 24,
+    fontSize: moderateScale(24),
     marginHorizontal: 10,
   },
   link: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     color: "#F96D02",
   },
   // modal style
   centeredView: {
     flex: 1,
     alignItems: "center",
-    marginTop: 22,
+    marginTop: verticalScale(22),
   },
   modalView: {
     backgroundColor: "#fff",
@@ -1047,19 +1047,19 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 10,
     // borderRadius: 20,
     height: "100%",
-    minHeight: 200,
+    minHeight: verticalScale(200),
     // maxHeight: 700,
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
-      height: 2,
+      width: horizontalScale(0),
+      height: verticalScale(2),
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 20,
   },
   button: {
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
     padding: 10,
     elevation: 2,
   },

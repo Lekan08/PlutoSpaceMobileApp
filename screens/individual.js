@@ -19,6 +19,7 @@ import {
 import { ToastAlert } from "../components/alert";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
+import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
 import AllCountriesAndStates from "../countries-states-master/countries";
 import {
   REACT_APP_ZAVE_URL,
@@ -280,7 +281,7 @@ export default function Individual({ navigation }) {
           >
             <Text
               style={{
-                fontSize: 30,
+                fontSize: moderateScale(30),
                 fontWeight: "bold",
                 color: "#F96D02",
                 paddingHorizontal: 10,
@@ -336,7 +337,7 @@ export default function Individual({ navigation }) {
                     backgroundColor: "#0f0f0f",
                     color: "#000",
                     fontFamily: "Ebrima",
-                    fontSize: 19,
+                    fontSize: moderateScale(19),
                   }}
                   selectedValue={titlex}
                   onValueChange={(newValue) => setTitle(newValue)}
@@ -380,7 +381,7 @@ export default function Individual({ navigation }) {
                     backgroundColor: "#0f0f0f",
                     color: "#000",
                     fontFamily: "Ebrima",
-                    fontSize: 19,
+                    fontSize: moderateScale(19),
                   }}
                   selectedValue={residentialCountryx}
                   onValueChange={(newValue) =>
@@ -480,7 +481,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttonContainer: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
     padding: 20,
   },
   input: {
@@ -488,21 +489,21 @@ const styles = StyleSheet.create({
     borderColor: "#0f0f0f",
     padding: 15,
     margin: 5,
-    fontSize: 18,
-    width: 300,
+    fontSize: moderateScale(18),
+    width: horizontalScale(300),
     color: "#0f0f0f",
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   inputContainer: {
     borderWidth: 1,
     borderColor: "#0f0f0f",
     padding: 15,
     margin: 5,
-    width: 300,
+    width: horizontalScale(300),
     color: "#0f0f0f",
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
     flexDirection: "row",
     alignItems: "center",
   },
@@ -514,17 +515,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#0f0f0f",
     margin: 5,
-    width: 300,
+    width: horizontalScale(300),
     color: "#0f0f0f",
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   loginButton: {
     padding: 15,
-    marginTop: 30,
+    marginTop: verticalScale(30),
     backgroundColor: "#F96D02",
     marginHorizontal: 10,
-    borderRadius: 10,
+    borderRadius: moderateScale(10),
   },
   loginText: {
     textAlign: "center",
@@ -532,7 +533,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   inputText: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     alignSelf: "center",
     color: "#0F0F0F",
     fontWeight: "bold",
@@ -540,19 +541,19 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: 30,
-    marginTop: 24,
+    marginTop: verticalScale(24),
     backgroundColor: "#F96D02",
-    fontSize: 24,
+    fontSize: moderateScale(24),
     marginHorizontal: 10,
   },
   link: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     color: "#F96D02",
   },
   itemStyle: {
     backgroundColor: "#F96D02",
     color: "#000",
     fontFamily: "Ebrima",
-    fontSize: 19,
+    fontSize: moderateScale(19),
   },
 });

@@ -4,6 +4,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
 
+import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
 const slides = [
   {
     key: "one",
@@ -44,7 +45,7 @@ export default function Appintro({ navigation }) {
           style={{
             paddingTop: 25,
             paddingBottom: 10,
-            fontSize: 23,
+            fontSize: moderateScale(23),
             fontWeight: "bold",
             color: "#F96D02",
             alignSelf: "center",
@@ -57,7 +58,7 @@ export default function Appintro({ navigation }) {
           style={{
             textAlign: "center",
             color: "#0f0f0f",
-            fontSize: 16,
+            fontSize: moderateScale(16),
             paddingHorizontal: 30,
           }}
         >
@@ -104,7 +105,7 @@ export default function Appintro({ navigation }) {
           style={{
             color: "#777",
             fontWeight: "700",
-            fontSize: 20,
+            fontSize: moderateScale(20),
             letterSpacing: 1,
           }}
         >
@@ -151,30 +152,30 @@ const styles = StyleSheet.create({
 
   loginButton: {
     padding: 15,
-    marginTop: 30,
+    marginTop: verticalScale(30),
     marginLeft: 45,
     backgroundColor: "#F96D02",
     justifyContent: "center",
     alignContent: "center",
-    borderRadius: 15,
+    borderRadius: moderateScale(15),
   },
   loginText: {
     textAlign: "center",
     color: "#fff",
   },
   buttonCircle: {
-    width: 40,
-    height: 40,
+    width: horizontalScale(40),
+    height: verticalScale(40),
     backgroundColor: "rgba(0, 0, 0, .2)",
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
     justifyContent: "center",
     alignItems: "center",
   },
   textSquare: {
-    width: 40,
-    height: 40,
+    width: horizontalScale(40),
+    height: verticalScale(40),
     backgroundColor: "#f96d02",
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
     justifyContent: "center",
     alignItems: "center",
   },

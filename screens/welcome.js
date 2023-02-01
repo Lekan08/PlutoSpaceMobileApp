@@ -14,6 +14,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
 export default function Welcome({ navigation }) {
   return (
     <View style={styles.container}>
@@ -22,10 +23,10 @@ export default function Welcome({ navigation }) {
         <View>
           <Image source={require("../images/house_of_tara_logo.png")} />
         </View>
-        <View style={{ borderRadius: 5 }}>
+        <View style={{ borderRadius: moderateScale(5) }}>
           <Text
             style={{
-              fontSize: 40,
+              fontSize: moderateScale(40),
               fontWeight: "900",
               color: "#F96D02",
               paddingHorizontal: 0,
@@ -39,7 +40,7 @@ export default function Welcome({ navigation }) {
         </View>
         <Text
           style={{
-            fontSize: 20,
+            fontSize: moderateScale(20),
             fontWeight: "100",
             color: "#F96D02",
             paddingHorizontal: 0,
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: "#F96D02",
     marginHorizontal: 10,
-    borderRadius: 50,
+    borderRadius: moderateScale(50),
   },
   loginText: {
     textAlign: "center",

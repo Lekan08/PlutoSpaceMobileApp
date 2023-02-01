@@ -1691,12 +1691,12 @@ export default function Sales({ navigation }) {
         >
           <Text
             style={{
-              fontSize: 20,
+              fontSize: moderateScale(20),
               fontWeight: "900",
               color: "#F96D02",
               paddingHorizontal: 10,
               // fontFamily: "serif",
-              width: 300,
+              width: horizontalScale(300),
             }}
           >
             Make a sale
@@ -1718,7 +1718,7 @@ export default function Sales({ navigation }) {
                 backgroundColor: "#F96D02",
                 color: "#000",
                 fontFamily: "Ebrima",
-                fontSize: 19,
+                fontSize: moderateScale(19),
               }}
               selectedValue={clientx}
               onValueChange={(newValue) => setClientx(newValue)}
@@ -1787,11 +1787,11 @@ export default function Sales({ navigation }) {
                       justifyContent: "center",
                       backgroundColor: "#f96d02",
                       padding: 20,
-                      borderRadius: 5,
+                      borderRadius: moderateScale(5),
                       shadowColor: "#000",
                       shadowOffset: {
-                        width: 0,
-                        height: 2,
+                        width: horizontalScale(0),
+                        height: verticalScale(2),
                       },
                       shadowOpacity: 0.25,
                       shadowRadius: 4,
@@ -1802,7 +1802,7 @@ export default function Sales({ navigation }) {
                       style={{
                         textTransform: "uppercase",
                         fontWeight: "bold",
-                        fontSize: 20,
+                        fontSize: moderateScale(20),
                         color: "#fff",
                       }}
                     >
@@ -1885,7 +1885,7 @@ export default function Sales({ navigation }) {
                         backgroundColor: "#F96D02",
                         color: "#000",
                         fontFamily: "Ebrima",
-                        fontSize: 19,
+                        fontSize: moderateScale(19),
                       }}
                       selectedValue={residentialCountryx}
                       onValueChange={(newValue) =>
@@ -1970,11 +1970,11 @@ export default function Sales({ navigation }) {
               <View
                 style={{
                   padding: 10,
-                  marginTop: 10,
+                  marginTop: verticalScale(10),
                   backgroundColor: "#F96D02",
                   marginHorizontal: 10,
-                  borderRadius: 5,
-                  width: 100,
+                  borderRadius: moderateScale(5),
+                  width: horizontalScale(100),
                 }}
               >
                 <Text
@@ -2020,11 +2020,11 @@ export default function Sales({ navigation }) {
                       justifyContent: "center",
                       backgroundColor: "#f96d02",
                       padding: 20,
-                      borderRadius: 5,
+                      borderRadius: moderateScale(5),
                       shadowColor: "#000",
                       shadowOffset: {
-                        width: 0,
-                        height: 2,
+                        width: horizontalScale(0),
+                        height: verticalScale(2),
                       },
                       shadowOpacity: 0.25,
                       shadowRadius: 4,
@@ -2035,7 +2035,7 @@ export default function Sales({ navigation }) {
                       style={{
                         textTransform: "uppercase",
                         fontWeight: "bold",
-                        fontSize: 20,
+                        fontSize: moderateScale(20),
                         color: "#fff",
                       }}
                     >
@@ -2078,7 +2078,7 @@ export default function Sales({ navigation }) {
                                 backgroundColor: "#F96D02",
                                 color: "#000",
                                 fontFamily: "Ebrima",
-                                fontSize: 19,
+                                fontSize: moderateScale(19),
                               }}
                               selectedValue={productID}
                               onValueChange={(newValue) =>
@@ -2109,7 +2109,7 @@ export default function Sales({ navigation }) {
                                 backgroundColor: "#F96D02",
                                 color: "#000",
                                 fontFamily: "Ebrima",
-                                fontSize: 19,
+                                fontSize: moderateScale(19),
                               }}
                               selectedValue={productBranchID}
                               onValueChange={(newValue) =>
@@ -2144,7 +2144,7 @@ export default function Sales({ navigation }) {
                                 backgroundColor: "#F96D02",
                                 color: "#000",
                                 fontFamily: "Ebrima",
-                                fontSize: 19,
+                                fontSize: moderateScale(19),
                               }}
                               selectedValue={productID}
                               onValueChange={(newValue) =>
@@ -2175,7 +2175,7 @@ export default function Sales({ navigation }) {
                                 backgroundColor: "#F96D02",
                                 color: "#000",
                                 fontFamily: "Ebrima",
-                                fontSize: 19,
+                                fontSize: moderateScale(19),
                               }}
                               selectedValue={productBranchID}
                               onValueChange={(newValue) =>
@@ -2223,7 +2223,7 @@ export default function Sales({ navigation }) {
                             backgroundColor: "#F96D02",
                             color: "#000",
                             fontFamily: "Ebrima",
-                            fontSize: 19,
+                            fontSize: moderateScale(19),
                           }}
                           selectedValue={productBranchID}
                           onValueChange={(newValue) =>
@@ -2350,11 +2350,11 @@ export default function Sales({ navigation }) {
                         justifyContent: "center",
                         backgroundColor: "red",
                         padding: 15,
-                        borderRadius: 5,
+                        borderRadius: moderateScale(5),
                         shadowColor: "#000",
                         shadowOffset: {
-                          width: 0,
-                          height: 2,
+                          width: horizontalScale(0),
+                          height: verticalScale(2),
                         },
                         shadowOpacity: 0.25,
                         shadowRadius: 4,
@@ -2365,7 +2365,7 @@ export default function Sales({ navigation }) {
                         style={{
                           textTransform: "uppercase",
                           fontWeight: "bold",
-                          fontSize: 20,
+                          fontSize: moderateScale(20),
                           color: "#fff",
                         }}
                       >
@@ -2409,7 +2409,7 @@ export default function Sales({ navigation }) {
                                 backgroundColor: "#F96D02",
                                 color: "#000",
                                 fontFamily: "Ebrima",
-                                fontSize: 19,
+                                fontSize: moderateScale(19),
                               }}
                               selectedValue={productID}
                               onValueChange={(newValue) =>
@@ -2440,7 +2440,7 @@ export default function Sales({ navigation }) {
                                 backgroundColor: "#F96D02",
                                 color: "#000",
                                 fontFamily: "Ebrima",
-                                fontSize: 19,
+                                fontSize: moderateScale(19),
                               }}
                               selectedValue={productBranchID}
                               onValueChange={(newValue) =>
@@ -2475,7 +2475,7 @@ export default function Sales({ navigation }) {
                                 backgroundColor: "#F96D02",
                                 color: "#000",
                                 fontFamily: "Ebrima",
-                                fontSize: 19,
+                                fontSize: moderateScale(19),
                               }}
                               selectedValue={productID}
                               onValueChange={(newValue) =>
@@ -2506,7 +2506,7 @@ export default function Sales({ navigation }) {
                                 backgroundColor: "#F96D02",
                                 color: "#000",
                                 fontFamily: "Ebrima",
-                                fontSize: 19,
+                                fontSize: moderateScale(19),
                               }}
                               selectedValue={productBranchID}
                               onValueChange={(newValue) =>
@@ -2554,7 +2554,7 @@ export default function Sales({ navigation }) {
                             backgroundColor: "#F96D02",
                             color: "#000",
                             fontFamily: "Ebrima",
-                            fontSize: 19,
+                            fontSize: moderateScale(19),
                           }}
                           selectedValue={productBranchID}
                           onValueChange={(newValue) =>
@@ -2687,7 +2687,7 @@ export default function Sales({ navigation }) {
                         style={{
                           backgroundColor: "#f5f5f5",
                           padding: 10,
-                          borderRadius: 5,
+                          borderRadius: moderateScale(5),
                         }}
                       >
                         <Animated.View
@@ -2699,7 +2699,7 @@ export default function Sales({ navigation }) {
                             style={{
                               color: "#000",
                               margin: 5,
-                              fontSize: 15,
+                              fontSize: moderateScale(15),
                               fontWeight: "bold",
                             }}
                           >
@@ -2708,8 +2708,8 @@ export default function Sales({ navigation }) {
                           <Image
                             source={require("../images/flutterwave.png")}
                             style={{
-                              height: 25,
-                              width: 159,
+                              height: verticalScale(25),
+                              width: horizontalScale(159),
                               alignSelf: "flex-end",
                             }}
                           />
@@ -2774,11 +2774,11 @@ export default function Sales({ navigation }) {
                                   <View
                                     style={{
                                       padding: 10,
-                                      marginTop: 10,
+                                      marginTop: verticalScale(10),
                                       backgroundColor: "red",
                                       marginHorizontal: 10,
-                                      borderRadius: 5,
-                                      width: 80,
+                                      borderRadius: moderateScale(5),
+                                      width: horizontalScale(80),
                                     }}
                                   >
                                     <Text style={styles.loginText}>CLOSE</Text>
@@ -2806,11 +2806,11 @@ export default function Sales({ navigation }) {
                                       <View
                                         style={{
                                           padding: 10,
-                                          marginTop: 10,
+                                          marginTop: verticalScale(10),
                                           backgroundColor: "#F96D02",
                                           marginHorizontal: 10,
-                                          borderRadius: 5,
-                                          width: 80,
+                                          borderRadius: moderateScale(5),
+                                          width: horizontalScale(80),
                                           flexDirection: "row",
                                           justifyContent: "center",
                                         }}
@@ -2838,7 +2838,7 @@ export default function Sales({ navigation }) {
                         style={{
                           backgroundColor: "#f5f5f5",
                           padding: 10,
-                          borderRadius: 5,
+                          borderRadius: moderateScale(5),
                         }}
                       >
                         <Animated.View
@@ -2850,7 +2850,7 @@ export default function Sales({ navigation }) {
                             style={{
                               color: "#000",
                               margin: 5,
-                              fontSize: 15,
+                              fontSize: moderateScale(15),
                               fontWeight: "bold",
                             }}
                           >
@@ -2923,11 +2923,11 @@ export default function Sales({ navigation }) {
                                   <View
                                     style={{
                                       padding: 10,
-                                      marginTop: 10,
+                                      marginTop: verticalScale(10),
                                       backgroundColor: "red",
                                       marginHorizontal: 10,
-                                      borderRadius: 5,
-                                      width: 80,
+                                      borderRadius: moderateScale(5),
+                                      width: horizontalScale(80),
                                     }}
                                   >
                                     <Text style={styles.loginText}>CLOSE</Text>
@@ -2940,11 +2940,11 @@ export default function Sales({ navigation }) {
                                   <View
                                     style={{
                                       padding: 10,
-                                      marginTop: 10,
+                                      marginTop: verticalScale(10),
                                       backgroundColor: "#F96D02",
                                       marginHorizontal: 10,
-                                      borderRadius: 5,
-                                      width: 80,
+                                      borderRadius: moderateScale(5),
+                                      width: horizontalScale(80),
                                       flexDirection: "row",
                                       justifyContent: "center",
                                     }}
@@ -2967,7 +2967,7 @@ export default function Sales({ navigation }) {
                         style={{
                           backgroundColor: "#f5f5f5",
                           padding: 10,
-                          borderRadius: 5,
+                          borderRadius: moderateScale(5),
                         }}
                       >
                         <Animated.View
@@ -2979,7 +2979,7 @@ export default function Sales({ navigation }) {
                             style={{
                               color: "#000",
                               margin: 5,
-                              fontSize: 15,
+                              fontSize: moderateScale(15),
                               fontWeight: "bold",
                             }}
                           >
@@ -3053,11 +3053,11 @@ export default function Sales({ navigation }) {
                                   <View
                                     style={{
                                       padding: 10,
-                                      marginTop: 10,
+                                      marginTop: verticalScale(10),
                                       backgroundColor: "red",
                                       marginHorizontal: 10,
-                                      borderRadius: 5,
-                                      width: 80,
+                                      borderRadius: moderateScale(5),
+                                      width: horizontalScale(80),
                                     }}
                                   >
                                     <Text style={styles.loginText}>CLOSE</Text>
@@ -3070,11 +3070,11 @@ export default function Sales({ navigation }) {
                                   <View
                                     style={{
                                       padding: 10,
-                                      marginTop: 10,
+                                      marginTop: verticalScale(10),
                                       backgroundColor: "#F96D02",
                                       marginHorizontal: 10,
-                                      borderRadius: 5,
-                                      width: 80,
+                                      borderRadius: moderateScale(5),
+                                      width: horizontalScale(80),
                                       flexDirection: "row",
                                       justifyContent: "center",
                                     }}
@@ -3097,10 +3097,10 @@ export default function Sales({ navigation }) {
                   <View
                     style={{
                       padding: 15,
-                      marginTop: 10,
+                      marginTop: verticalScale(10),
                       backgroundColor: "#F96D02",
                       marginHorizontal: 10,
-                      borderRadius: 5,
+                      borderRadius: moderateScale(5),
                       // width: 80,
                       flexDirection: "row",
                       justifyContent: "center",
@@ -3119,7 +3119,7 @@ export default function Sales({ navigation }) {
           </Modal>
           <View
             style={{
-              marginTop: 10,
+              marginTop: verticalScale(10),
               paddingTop: 20,
               marginHorizontal: 5,
               borderTopWidth: 1,
@@ -3128,7 +3128,7 @@ export default function Sales({ navigation }) {
           >
             <View
               style={{
-                marginTop: 10,
+                marginTop: verticalScale(10),
                 borderTopWidth: 1,
                 borderColor: "#0f0f0f",
               }}
@@ -3309,7 +3309,7 @@ export default function Sales({ navigation }) {
           <View
             style={{
               marginHorizontal: 5,
-              minHeight: 30,
+              minHeight: verticalScale(30),
               marginBottom: 10,
             }}
           >
@@ -3491,7 +3491,7 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
   },
   buttonContainer: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
     padding: 20,
   },
   txAInput: {
@@ -3501,11 +3501,11 @@ const styles = StyleSheet.create({
     margin: 5,
     // width: "90%",
     // marginHorizontal: 10,
-    height: 100,
+    height: verticalScale(100),
     textAlignVertical: "top",
     color: "#777",
     paddingHorizontal: 10,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   input: {
     borderWidth: 1,
@@ -3517,7 +3517,7 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
     color: "#777",
     paddingHorizontal: 10,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   pickerContainer: {
     borderWidth: 1,
@@ -3527,7 +3527,7 @@ const styles = StyleSheet.create({
     width: windowWidth - 10,
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
     flexDirection: "row",
     alignItems: "center",
     // justifyContent: "space-between",
@@ -3540,7 +3540,7 @@ const styles = StyleSheet.create({
     // width: windowWidth - 10,
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
     // flexDirection: "row",
     // justifycontent: "center",
   },
@@ -3552,7 +3552,7 @@ const styles = StyleSheet.create({
     width: windowWidth - 10,
     color: "#fff",
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
     flexDirection: "row",
     alignItems: "center",
   },
@@ -3562,10 +3562,10 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     padding: 15,
-    marginTop: 30,
+    marginTop: verticalScale(30),
     backgroundColor: "#F96D02",
     marginHorizontal: 10,
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   loginText: {
     fontWeight: "bold",
@@ -3573,7 +3573,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   inputText: {
-    marginTop: 5,
+    marginTop: verticalScale(5),
     marginLeft: 10,
     fontWeight: "bold",
     alignSelf: "flex-start",
@@ -3581,13 +3581,13 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: 30,
-    marginTop: 24,
+    marginTop: verticalScale(24),
     backgroundColor: "#F96D02",
-    fontSize: 24,
+    fontSize: moderateScale(24),
     marginHorizontal: 10,
   },
   link: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     color: "#F96D02",
   },
   modalView: {
@@ -3595,14 +3595,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingVertical: 20,
     paddingHorizontal: 10,
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
     height: "70%",
-    minHeight: 200,
-    maxHeight: 700,
+    minHeight: verticalScale(200),
+    maxHeight: verticalScale(700),
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
-      height: 2,
+      width: horizontalScale(0),
+      height: verticalScale(2),
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
@@ -3616,12 +3616,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     height: "85%",
-    minHeight: 200,
-    maxHeight: 900,
+    minHeight: verticalScale(200),
+    maxHeight: verticalScale(900),
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
-      height: 2,
+      width: horizontalScale(0),
+      height: verticalScale(2),
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,

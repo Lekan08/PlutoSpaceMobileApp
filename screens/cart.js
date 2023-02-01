@@ -18,7 +18,7 @@ import {
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { Picker } from "@react-native-picker/picker";
 import AllCountriesAndStates from "../countries-states-master/countries";
-
+import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
 import { REACT_APP_TARA_URL, FLUTTER_AUTH_KEY } from "@env";
 import { PayWithFlutterwave } from "flutterwave-react-native";
 // or import PayWithFlutterwave from 'flutterwave-react-native';
@@ -296,8 +296,8 @@ function Cart() {
     >
       <View
         style={{
-          maxHeight: 50,
-          minHeight: 50,
+          maxHeight: verticalScale(50),
+          minHeight: verticalScale(50),
           backgroundColor: "#F96D02",
           borderBottomLeftRadius: 10,
           borderBottomRightRadius: 10,
@@ -306,7 +306,7 @@ function Cart() {
         <View
           style={{
             margin: 8,
-            width: 300,
+            width: horizontalScale(300),
             color: "#fff",
             paddingHorizontal: 20,
             flexDirection: "row",
@@ -330,7 +330,7 @@ function Cart() {
       <View
         style={{
           paddingHorizontal: 5,
-          marginTop: 25,
+          marginTop: verticalScale(25),
           flex: 1,
           alignItems: "center",
         }}
@@ -361,7 +361,7 @@ function Cart() {
                   backgroundColor: "#ffff",
                   width: screenWidth - 30,
                   maxWidth: screenWidth,
-                  borderRadius: 5,
+                  borderRadius: moderateScale(5),
                   padding: 5,
                   margin: 5,
                 }}
@@ -375,9 +375,9 @@ function Cart() {
                   <Image
                     source={{ uri: imagee }}
                     style={{
-                      width: 100,
-                      borderRadius: 5,
-                      height: 100,
+                      width: horizontalScale(100),
+                      borderRadius: moderateScale(5),
+                      height: verticalScale(100),
                     }}
                   />
                   <View
@@ -397,8 +397,8 @@ function Cart() {
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         style={{
-                          width: 195,
-                          fontSize: 13,
+                          width: horizontalScale(195),
+                          fontSize: moderateScale(13),
                           fontWeight: "800",
                           color: "#F96D02",
                           paddingHorizontal: 0,
@@ -418,8 +418,8 @@ function Cart() {
                         ellipsizeMode="tail"
                         numberOfLines={2}
                         style={{
-                          width: 195,
-                          fontSize: 13,
+                          width: horizontalScale(195),
+                          fontSize: moderateScale(13),
                           fontWeight: "400",
                           color: "#000",
                           paddingHorizontal: 0,
@@ -427,7 +427,7 @@ function Cart() {
                       >
                         <Text
                           style={{
-                            fontSize: 13,
+                            fontSize: moderateScale(13),
                             fontWeight: "900",
                             color: "#000",
                           }}
@@ -448,10 +448,10 @@ function Cart() {
                     >
                       <Text
                         style={{
-                          marginTop: 5,
+                          marginTop: verticalScale(5),
                           fontWeight: "bold",
                           marginLeft: 5,
-                          fontSize: 20,
+                          fontSize: moderateScale(20),
                         }}
                       >
                         ₦{item.product.pricePerQuantity}
@@ -489,7 +489,12 @@ function Cart() {
                         isBusy={props.isInitializing}
                         disabled={props.disabled}
                       >
-                        <View style={[styles.purchaseButton, { marginTop: 5 }]}>
+                        <View
+                          style={[
+                            styles.purchaseButton,
+                            { marginTop: verticalScale(5) },
+                          ]}
+                        >
                           <Text
                             style={{
                               color: "#fff",
@@ -500,7 +505,7 @@ function Cart() {
                               alignContent: "center",
                               textTransform: "uppercase",
                               alignSelf: "center",
-                              fontSize: 13,
+                              fontSize: moderateScale(13),
                             }}
                           >
                             Pay
@@ -552,29 +557,29 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonContainer: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
     padding: 20,
   },
 
   loginButton: {
     padding: 10,
-    marginTop: 10,
+    marginTop: verticalScale(10),
     backgroundColor: "#F96D02",
     // marginHorizontal: 10,
     width: "100%",
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   addRemove: {
     backgroundColor: "#F96D02",
-    width: 30,
-    height: 30,
-    borderRadius: 5,
+    width: horizontalScale(30),
+    height: verticalScale(30),
+    borderRadius: moderateScale(5),
   },
   purchaseButton: {
     padding: 10,
     backgroundColor: "#F96D02",
     width: "100%",
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   pickerContainer: {
     borderBottomColor: "#777",
@@ -595,44 +600,44 @@ const styles = StyleSheet.create({
     // borderRadius: 50,
   },
   inputText: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
     alignSelf: "flex-start",
     color: "#777",
   },
   item: {
     padding: 30,
-    marginTop: 24,
+    marginTop: verticalScale(24),
     backgroundColor: "#F96D02",
-    fontSize: 24,
+    fontSize: moderateScale(24),
     marginHorizontal: 10,
   },
   link: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     color: "#F96D02",
   },
   // modal style
   centeredView: {
     flex: 1,
     alignItems: "center",
-    marginTop: 22,
+    marginTop: verticalScale(22),
   },
   modalView: {
     marginVertical: 20,
     backgroundColor: "white",
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
     padding: 30,
     height: "100%",
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
-      height: 2,
+      width: horizontalScale(0),
+      height: verticalScale(2),
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
   },
   button: {
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
     padding: 10,
     elevation: 2,
   },

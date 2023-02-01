@@ -18,6 +18,7 @@ import Icon from "@expo/vector-icons/MaterialIcons";
 import { Picker } from "@react-native-picker/picker";
 import AllCountriesAndStates from "../countries-states-master/countries";
 
+import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
 import { REACT_APP_TARA_URL } from "@env";
 import { globalStyles } from "../styles/global";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -179,7 +180,7 @@ export default function ProductDetails({ navigation, route }) {
         <View
           style={{
             backgroundColor: "#fff",
-            borderRadius: 5,
+            borderRadius: moderateScale(5),
             padding: 5,
             margin: 5,
           }}
@@ -187,9 +188,9 @@ export default function ProductDetails({ navigation, route }) {
           <Image
             source={{ uri: item.image }}
             style={{
-              width: 300,
-              borderRadius: 10,
-              height: 300,
+              width: horizontalScale(300),
+              borderRadius: moderateScale(10),
+              height: verticalScale(300),
               alignSelf: "center",
             }}
           />
@@ -197,25 +198,25 @@ export default function ProductDetails({ navigation, route }) {
         <View
           style={{
             backgroundColor: "#fff",
-            borderRadius: 5,
+            borderRadius: moderateScale(5),
             padding: 5,
             margin: 5,
             flex: 1,
           }}
         >
-          <View style={{ margin: 5, marginTop: 10 }}>
+          <View style={{ margin: 5, marginTop: verticalScale(10) }}>
             <Text
               style={{
                 fontWeight: "500",
                 color: "#000",
-                fontSize: 18,
+                fontSize: moderateScale(18),
                 textTransform: "capitalize",
               }}
             >
               {item.product.name}
             </Text>
           </View>
-          <View style={{ margin: 5, marginTop: 10 }}>
+          <View style={{ margin: 5, marginTop: verticalScale(10) }}>
             <Text style={{ fontWeight: "bold", fontSize: 20 }}>
               ₦{item.product.pricePerQuantity}
             </Text>
@@ -229,7 +230,7 @@ export default function ProductDetails({ navigation, route }) {
                 borderBottomColor: "#777",
                 borderBottomWidth: 1,
                 letterSpacing: 1,
-                fontSize: 15,
+                fontSize: moderateScale(15),
               }}
             >
               Details
@@ -237,7 +238,7 @@ export default function ProductDetails({ navigation, route }) {
           </View>
           <Text
             style={{
-              marginTop: 5,
+              marginTop: verticalScale(5),
               fontWeight: "bold",
               color: "#000",
               textTransform: "capitalize",
@@ -274,7 +275,7 @@ export default function ProductDetails({ navigation, route }) {
               padding: 10,
               backgroundColor: "#F96D02",
               width: "100%",
-              borderRadius: 5,
+              borderRadius: moderateScale(5),
             }}
           >
             <Text
@@ -283,7 +284,7 @@ export default function ProductDetails({ navigation, route }) {
                 fontWeight: "bold",
                 textTransform: "uppercase",
                 alignSelf: "center",
-                fontSize: 13,
+                fontSize: moderateScale(13),
               }}
             >
               Request Purchase
@@ -313,7 +314,11 @@ export default function ProductDetails({ navigation, route }) {
               <Text
                 style={[
                   styles.modalText,
-                  { color: "#F96D02", fontWeight: "bold", fontSize: 25 },
+                  {
+                    color: "#F96D02",
+                    fontWeight: "bold",
+                    fontSize: moderateScale(25),
+                  },
                 ]}
               >
                 {productName}
@@ -525,36 +530,36 @@ const styles = StyleSheet.create({
   //}
   item: {
     padding: 16,
-    marginTop: 16,
+    marginTop: verticalScale(16),
     borderColor: "#bbb",
     borderWidth: 1,
     borderStyle: "",
-    borderRadius: 10,
+    borderRadius: moderateScale(10),
   },
   buttonContainer: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
     padding: 20,
   },
 
   loginButton: {
     padding: 10,
-    marginTop: 10,
+    marginTop: verticalScale(10),
     backgroundColor: "#F96D02",
     // marginHorizontal: 10,
     width: "100%",
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   addRemove: {
     backgroundColor: "#F96D02",
-    width: 30,
-    height: 30,
-    borderRadius: 5,
+    width: horizontalScale(30),
+    height: verticalScale(30),
+    borderRadius: moderateScale(5),
   },
   purchaseButton: {
     padding: 10,
     backgroundColor: "#F96D02",
     width: "100%",
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   pickerContainer: {
     borderBottomColor: "#777",
@@ -575,36 +580,36 @@ const styles = StyleSheet.create({
     // borderRadius: 50,
   },
   inputText: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
     alignSelf: "flex-start",
     color: "#777",
   },
   item: {
     padding: 30,
-    marginTop: 24,
+    marginTop: verticalScale(24),
     backgroundColor: "#F96D02",
-    fontSize: 24,
+    fontSize: moderateScale(24),
     marginHorizontal: 10,
   },
   link: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
     color: "#F96D02",
   },
   // modal style
   centeredView: {
     flex: 1,
     alignItems: "center",
-    marginTop: 22,
+    marginTop: verticalScale(22),
   },
   modalView: {
     marginVertical: 20,
     backgroundColor: "white",
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
     padding: 30,
     height: "100%",
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
+      width: horizontalScale(0),
       height: 2,
     },
     shadowOpacity: 0.25,
@@ -612,7 +617,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
     padding: 10,
     elevation: 2,
   },
