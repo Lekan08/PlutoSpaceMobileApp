@@ -19,7 +19,7 @@ import {
 import { ToastAlert } from "../components/alert";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
-import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
+import { horizontalScale, moderateScale, verticalScale } from "../Metrics";
 import AllCountriesAndStates from "../countries-states-master/countries";
 import {
   REACT_APP_ZAVE_URL,
@@ -271,29 +271,6 @@ export default function Individual({ navigation }) {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View
-            style={{
-              elevation: 5,
-              backgroundColor: "#ffffff",
-              marginVertical: 10,
-              paddingVertical: 10,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: moderateScale(30),
-                fontWeight: "bold",
-                color: "#F96D02",
-                paddingHorizontal: 10,
-                // paddingTop: 10,
-                fontFamily: "serif",
-                // width: 300,
-                // textAlign: "center",
-              }}
-            >
-              CREATE CLIENT
-            </Text>
-          </View>
           <View style={styles.subContainer}>
             {/* <View>
               <Image source={require("../images/house_of_tara_logo.png")} />
@@ -486,14 +463,14 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#0f0f0f",
-    padding: 15,
+    borderColor: "#777",
+    padding: 8,
     margin: 5,
-    fontSize: moderateScale(18),
-    width: horizontalScale(300),
+    // width: 300,
+    marginHorizontal: 5,
     color: "#0f0f0f",
     paddingHorizontal: 20,
-    borderRadius: moderateScale(5),
+    borderRadius: 5,
   },
   inputContainer: {
     borderWidth: 1,
@@ -503,7 +480,7 @@ const styles = StyleSheet.create({
     width: horizontalScale(300),
     color: "#0f0f0f",
     paddingHorizontal: 20,
-    borderRadius: moderateScale(5),
+    borderRadius: moderateScale(10),
     flexDirection: "row",
     alignItems: "center",
   },
@@ -518,7 +495,7 @@ const styles = StyleSheet.create({
     width: horizontalScale(300),
     color: "#0f0f0f",
     paddingHorizontal: 20,
-    borderRadius: moderateScale(5),
+    borderRadius: moderateScale(10),
   },
   loginButton: {
     padding: 15,
@@ -534,10 +511,9 @@ const styles = StyleSheet.create({
   },
   inputText: {
     marginTop: verticalScale(10),
-    alignSelf: "center",
-    color: "#0F0F0F",
-    fontWeight: "bold",
-    // marginLeft: 40,
+    // alignSelf: "center",
+    color: "#777",
+    fontWeight: "900",
   },
   item: {
     padding: 30,

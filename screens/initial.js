@@ -17,7 +17,7 @@ import {
 } from "react-native";
 import { REACT_APP_ZAVE_URL, FLUTTER_AUTH_KEY } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
+import { horizontalScale, moderateScale, verticalScale } from "../Metrics";
 import { Loader, InnerLoader } from "../components/loader";
 // import GHeaders from "../getHeader";
 // import PHeaders from "../postHeader";

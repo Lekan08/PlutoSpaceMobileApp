@@ -4,25 +4,25 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
 
-import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
+import { horizontalScale, moderateScale, verticalScale } from "../Metrics";
 const slides = [
   {
     key: "one",
     title: "JUST TRAVEL",
     text: "The best things is to look natural, but it takes make-up to look natural.",
-    image: require("../images/appslider1.png"),
+    image: require("../images/make01.png"),
   },
   {
     key: "two",
     title: "TAKE A BREAK",
     text: "Joy is the best make-up. But a little lipstick is a close runner-up",
-    image: require("../images/perfume.jpeg"),
+    image: require("../images/make02.png"),
   },
   {
     key: "three",
     title: "ENJOY YOUR JOURNEY",
     text: "Beauty, to me , is about being comfortable in your own skin. That, a kik-ass red lipsick.",
-    image: require("../images/makeup.jpeg"),
+    image: require("../images/make03.png"),
   },
 ];
 
@@ -30,15 +30,13 @@ export default function Appintro({ navigation }) {
   const [showHomePage, setshowHomePage] = useState(false);
   const _renderItem = ({ item }) => {
     return (
-      <View style={{ flex: 1, backgroundColor: "#fff" }}>
+      <View style={{ flex: 1, backgroundColor: "#FDF4F5" }}>
         <Image
           source={item.image}
           style={{
-            resizeMode: "cover",
+            resizeMode: "center",
             height: "70%",
             width: "100%",
-            borderBottomLeftRadius: 35,
-            borderBottomRightRadius: 35,
           }}
         />
         <Text
@@ -133,10 +131,15 @@ export default function Appintro({ navigation }) {
         showPrevButton={true}
         dotStyle={{
           backgroundColor: "#0f0f0f",
+          height: 8,
+          width: 8,
+          borderRadius: 4,
         }}
         activeDotStyle={{
           backgroundColor: "#F96D02",
-          width: 30,
+          height: 8,
+          width: 8,
+          borderRadius: 4,
         }}
       />
     );

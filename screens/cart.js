@@ -18,7 +18,7 @@ import {
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { Picker } from "@react-native-picker/picker";
 import AllCountriesAndStates from "../countries-states-master/countries";
-import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
+import { horizontalScale, moderateScale, verticalScale } from "../Metrics";
 import { REACT_APP_TARA_URL, FLUTTER_AUTH_KEY } from "@env";
 import { PayWithFlutterwave } from "flutterwave-react-native";
 // or import PayWithFlutterwave from 'flutterwave-react-native';

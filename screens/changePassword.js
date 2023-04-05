@@ -25,7 +25,7 @@ import { Loader, InnerLoader } from "../components/loader";
 import { ToastAlert } from "../components/alert";
 import { printToFileAsync } from "expo-print";
 import { shareAsync } from "expo-sharing";
-import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
+import { horizontalScale, moderateScale, verticalScale } from "../Metrics";
 // import GHeaders from "../getHeader";
 // import PHeaders from "../postHeader";
 

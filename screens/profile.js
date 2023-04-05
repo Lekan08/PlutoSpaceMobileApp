@@ -11,21 +11,22 @@ import {
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import Icons from "@expo/vector-icons/MaterialIcons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { globalStyles } from "../styles/global";
 import { Con, Col, Row } from "../components/grid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
+import { horizontalScale, moderateScale, verticalScale } from "../Metrics";
 import { ScrollView } from "react-native-gesture-handler";
 export default function Profile({ navigation }) {
-  const [kpurkish, setKpurkish] = useState("");
-  const [userName, setUserName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [pno, setPno] = useState("");
   const [email, setEmail] = useState("");
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
+  const [address, setAddress] = useState("");
   const [nameCircleColor, setNameCircleColor] = useState("#F96D02");
 
   useEffect(() => {
@@ -38,10 +39,10 @@ export default function Profile({ navigation }) {
           setFname(`${userData.otherDetailsDTO.personal.fname}`);
           setLname(`${userData.otherDetailsDTO.personal.lname}`);
           setEmail(`${userData.otherDetailsDTO.personal.email}`);
-          setcountry(`${userData.otherDetailsDTO.personal.residentialCountry}`);
-          setstate(`${userData.otherDetailsDTO.personal.residentialState}`);
-          setcity(`${userData.otherDetailsDTO.personal.residentialCity}`);
-          setaddress(`${userData.otherDetailsDTO.personal.residentialStreet}`);
+          setCountry(`${userData.otherDetailsDTO.personal.residentialCountry}`);
+          setState(`${userData.otherDetailsDTO.personal.residentialState}`);
+          setCity(`${userData.otherDetailsDTO.personal.residentialCity}`);
+          setAddress(`${userData.otherDetailsDTO.personal.residentialStreet}`);
           console.log(userData);
         } catch (error) {
           console.log(error);
@@ -76,414 +77,185 @@ export default function Profile({ navigation }) {
   };
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          alignSelf: "center",
-          backgroundColor: "#fff",
-          elevation: 5,
-          height: "29%",
-          width: "100%",
-          // marginTop: 10,
-        }}
-      >
+      <View style={{ alignSelf: "center" }}>
         <View
           style={{
-            flexDirection: "row",
-            // alignContent: "center",
-            // justifyContent: "center",
+            backgroundColor: "#ffff",
+            height: 80,
+            width: 80,
+            borderRadius: 40,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 30,
           }}
         >
-          <View
-            style={{
-              backgroundColor: nameCircleColor,
-              // backgroundColor: {kpurkish},
-              height: verticalScale(70),
-              width: horizontalScale(70),
-              borderRadius: moderateScale(100),
-              alignSelf: "center",
-              marginLeft: 146,
-              justifyContent: "center",
-              marginTop: verticalScale(10),
-            }}
-          >
-            <Text
-              style={{
-                color: "#ffff",
-                fontSize: moderateScale(40),
-                textAlign: "center",
-                textTransform: "uppercase",
-              }}
-            >
-              {userName.charAt(0)}
-              {lastName.charAt(0)}
-            </Text>
-          </View>
-          {/* <Image
-            source={require("../images/dummy.jpg")}
-            style={{
-              width: 60,
-              borderRadius: 100,
-              height: 60,
-              padding: 9,
-              margin: 6,
-              alignSelf: "center",
-              marginLeft: 146,
-            }}
-          /> */}
-
-          <Icons
-            name="edit"
-            size={25.5}
-            onPress={() => navigation.navigate("editprofile")}
+          <Text
             style={{
               color: "#F96D02",
-              // marginLeft: 85,
-              // paddingTop: 80,
-              // marginTop: 40,
-              // alignSelf: "flex-end",
-              // marginRight: 10,
-              marginLeft: 120,
+              fontWeight: "bold",
+              fontSize: moderateScale(40),
+              textTransform: "uppercase",
             }}
-          />
+          >
+            {fname.charAt(0)}
+          </Text>
         </View>
         <View
           style={{
-            flex: 1,
             flexDirection: "row",
-            justifyContent: "center",
+            marginTop: 8,
+            alignSelf: "center",
           }}
         >
           <Text
             style={{
-              fontSize: moderateScale(20),
+              color: "#fff",
+              fontSize: moderateScale(15),
+              fontWeight: "700",
               textAlign: "center",
-              fontWeight: "900",
-              marginRight: 10,
+              textTransform: "capitalize",
             }}
           >
-            {userName}
-          </Text>
-          <Text
-            style={{
-              fontSize: moderateScale(20),
-              textAlign: "center",
-              fontWeight: "900",
-            }}
-          >
-            {lastName}
+            {fname}
           </Text>
         </View>
+      </View>
+      <View
+        style={{
+          backgroundColor: "#ffff",
+          width: "100%",
+          height: "80%",
+          marginTop: 6,
+          borderTopRightRadius: 20,
+          borderTopLeftRadius: 20,
+        }}
+      >
         <Text
           style={{
-            fontSize: moderateScale(15),
-            textAlign: "center",
+            color: "#454545",
+            fontWeight: "bold",
+            textTransform: "capitalize",
+            fontSize: moderateScale(16),
+            marginTop: 20,
+            marginHorizontal: 20,
           }}
         >
-          +{pno}
+          settings
         </Text>
         <View
           style={{
             flexDirection: "row",
-            paddingTop: 20,
-            alignContent: "center",
+            backgroundColor: "#fff",
+            elevation: 4,
+            height: 60,
+            width: "90%",
+            alignSelf: "center",
+            marginTop: 10,
+            alignItems: "center",
+            // borderBottomColor: "#F96D02",
+            // borderWidth: 1,
           }}
         >
           <View
             style={{
-              marginLeft: 25,
+              backgroundColor: "#F96D02",
+              height: 40,
+              width: 40,
+              borderRadius: 20,
+              justifyContent: "center",
+              alignItems: "center",
+              marginHorizontal: 10,
             }}
           >
-            <Icon
-              name="email"
-              size={25}
-              style={{
-                color: "#F96D02",
-                // marginLeft: 85,
-                // paddingTop: 80,
-                // marginTop: 40,
-                // alignSelf: "flex-end",
-                // marginRight: 10,
-                // marginLeft: 120,
-              }}
-            />
+            <Icon name="account-settings" size={28} color="#ffff" />
           </View>
-          <Text
-            style={{
-              fontSize: moderateScale(18),
-              textAlign: "center",
-              marginLeft: 25,
-              fontWeight: "900",
-              textTransform: "uppercase",
-            }}
-          >
-            {email}
+          <Text style={{ color: "#454545", fontWeight: "800" }}>
+            Edit Profile
           </Text>
+          <MaterialIcons
+            onPress={() => navigation.navigate("EditProfile")}
+            name="navigate-next"
+            size={30}
+            color="black"
+            style={{ marginHorizontal: 150 }}
+          />
         </View>
-      </View>
 
-      <View
-        style={{
-          flexDirection: "row",
-          marginTop: verticalScale(20),
-          marginLeft: 20,
-        }}
-      >
         <View
           style={{
+            flexDirection: "row",
             backgroundColor: "#fff",
-            height: verticalScale(120),
-            width: horizontalScale(100),
-            borderRadius: moderateScale(10),
-            // marginLeft: 10,
-            elevation: 5,
+            elevation: 4,
+            height: 60,
+            width: "90%",
+            alignSelf: "center",
+            marginTop: 10,
+            alignItems: "center",
+            // borderBottomColor: "#F96D02",
+            // borderWidth: 1,
           }}
         >
-          <Icon
-            name="account-plus"
-            size={50}
-            onPress={() => navigation.navigate("Individual")}
+          <View
             style={{
-              color: "#F96D02",
-              // marginLeft: 85,
-              // paddingTop: 80,
-              marginTop: 20,
-              // alignSelf: "flex-end",
-              // marginRight: 10,
-              alignSelf: "center",
-            }}
-          />
-          <Text
-            style={{
-              color: "#F96D02",
-              fontSize: moderateScale(16),
-              textAlign: "center",
-              marginTop: verticalScale(10),
-              fontWeight: "bold",
+              backgroundColor: "#F96D02",
+              height: 40,
+              width: 40,
+              borderRadius: 20,
+              justifyContent: "center",
+              alignItems: "center",
+              marginHorizontal: 10,
             }}
           >
+            <Icon name="account-plus" size={28} color="#ffff" />
+          </View>
+          <Text style={{ color: "#454545", fontWeight: "800" }}>
             Create Client
           </Text>
+          <MaterialIcons
+            onPress={() => navigation.navigate("Individual")}
+            name="navigate-next"
+            size={30}
+            color="black"
+            style={{ marginHorizontal: 140 }}
+          />
         </View>
         <View
           style={{
+            flexDirection: "row",
             backgroundColor: "#fff",
-            height: verticalScale(120),
-            width: horizontalScale(100),
-            borderRadius: moderateScale(10),
-            marginLeft: 10,
-            elevation: 5,
+            elevation: 4,
+            height: 60,
+            width: "90%",
+            alignSelf: "center",
+            marginTop: 10,
+            alignItems: "center",
+            // borderBottomColor: "#F96D02",
+            // borderWidth: 1,
           }}
         >
-          <Icon
-            name="account-multiple"
-            size={50}
-            onPress={() => navigation.navigate("seeAllindividuals")}
-            style={{
-              color: "#F96D02",
-              // marginLeft: 85,
-              // paddingTop: 80,
-              marginTop: verticalScale(20),
-              // alignSelf: "flex-end",
-              // marginRight: 10,
-              alignSelf: "center",
-            }}
-          />
-          <Text
-            style={{
-              color: "#F96D02",
-              fontSize: moderateScale(16),
-              textAlign: "center",
-              marginTop: verticalScale(10),
-              fontWeight: "bold",
-            }}
-          >
-            All Client
-          </Text>
-        </View>
-        <View
-          style={{
-            backgroundColor: "#fff",
-            height: verticalScale(120),
-            width: horizontalScale(100),
-            borderRadius: moderateScale(10),
-            marginLeft: 10,
-            elevation: 5,
-          }}
-        >
-          <Icon
-            name="form-textbox-password"
-            size={50}
-            onPress={() => navigation.navigate("changePassword")}
-            style={{
-              color: "#F96D02",
-              // marginLeft: 85,
-              // paddingTop: 80,
-              marginTop: verticalScale(20),
-              // alignSelf: "flex-end",
-              // marginRight: 10,
-              alignSelf: "center",
-            }}
-          />
-          <Text
-            style={{
-              color: "#F96D02",
-              fontSize: moderateScale(16),
-              textAlign: "center",
-              marginTop: verticalScale(10),
-              fontWeight: "bold",
-            }}
-          >
-            Change Password
-          </Text>
-        </View>
-      </View>
-
-      <View
-        style={{
-          alignSelf: "center",
-          backgroundColor: "#F96D02",
-          elevation: 5,
-          height: "5%",
-          width: "90%",
-          marginTop: verticalScale(10),
-          flex: 1,
-          flexDirection: "row",
-          borderRadius: moderateScale(20),
-        }}
-      >
-        <View>
-          <Text
-            style={{
-              color: "#0f0f0f",
-              fontSize: moderateScale(15),
-              // textAlign: "left",
-              marginTop: verticalScale(16),
-              marginLeft: 20,
-              fontWeight: "bold",
-              textTransform: "uppercase",
-            }}
-          >
-            {city}
-          </Text>
-          <Icon
-            name="city"
-            size={50}
-            // onPress={() => navigation.navigate("")}
-            style={{
-              color: "#0f0f0f",
-              marginLeft: 15,
-              // paddingTop: 80,
-              marginTop: verticalScale(20),
-              // alignSelf: "flex-end",
-              // marginRight: 10,
-              alignSelf: "center",
-            }}
-          />
-        </View>
-
-        <View>
-          <Text
-            style={{
-              color: "#0f0f0f",
-              fontSize: moderateScale(15),
-              // textAlign: "left",
-              marginTop: verticalScale(16),
-              marginLeft: 30,
-              fontWeight: "bold",
-              textTransform: "uppercase",
-            }}
-          >
-            {state}
-          </Text>
-          <Icon
-            name="state-machine"
-            size={50}
-            // onPress={() => navigation.navigate("")}
-            style={{
-              color: "#0f0f0f",
-              marginLeft: 25,
-              // paddingTop: 80,
-              marginTop: verticalScale(20),
-              // alignSelf: "flex-end",
-              // marginRight: 10,
-              alignSelf: "center",
-            }}
-          />
-        </View>
-        <View>
-          <Text
-            style={{
-              color: "#0f0f0f",
-              fontSize: moderateScale(15),
-              // textAlign: "left",
-              marginTop: verticalScale(15),
-              marginLeft: 60,
-              fontWeight: "bold",
-              textTransform: "uppercase",
-            }}
-          >
-            {country}
-          </Text>
-
-          <Icon
-            name="flag"
-            size={50}
-            // onPress={() => navigation.navigate("")}
-            style={{
-              color: "#0f0f0f",
-              marginLeft: 55,
-              // paddingTop: 80,
-              marginTop: verticalScale(20),
-              // alignSelf: "flex-end",
-              // marginRight: 10,
-              alignSelf: "center",
-            }}
-          />
-        </View>
-      </View>
-      <View
-        style={{
-          alignSelf: "center",
-          backgroundColor: "#fff",
-          // elevation: 2,
-          height: "20%",
-          width: "100%",
-          marginTop: verticalScale(15),
-        }}
-      >
-        <View>
           <View
             style={{
-              flexDirection: "row",
-              paddingTop: 20,
-              marginTop: verticalScale(20),
+              backgroundColor: "#F96D02",
+              height: 40,
+              width: 40,
+              borderRadius: 20,
+              justifyContent: "center",
+              alignItems: "center",
+              marginHorizontal: 10,
             }}
           >
-            <View
-              style={{
-                marginLeft: 25,
-              }}
-            >
-              <Icon
-                name="logout"
-                onPress={() => clickHandler()}
-                size={25}
-                style={{
-                  color: "#F96D02",
-                }}
-              />
-            </View>
-            <Text
-              style={{
-                fontSize: moderateScale(18),
-                textAlign: "center",
-                marginLeft: 25,
-                marginTop: verticalScale(3),
-              }}
-            >
-              LogOut
-            </Text>
+            <Icon name="account-multiple" size={28} color="#ffff" />
           </View>
+          <Text style={{ color: "#454545", fontWeight: "800" }}>
+            See All Client
+          </Text>
+          <MaterialIcons
+            onPress={() => navigation.navigate("seeAllindividuals")}
+            name="navigate-next"
+            size={30}
+            color="black"
+            style={{ marginHorizontal: 138 }}
+          />
         </View>
       </View>
     </View>
@@ -493,7 +265,7 @@ export default function Profile({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffff",
-    paddingBottom: 60,
+    backgroundColor: "#F96D02",
+    // paddingBottom: 60,
   },
 });

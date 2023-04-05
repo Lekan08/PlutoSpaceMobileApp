@@ -18,7 +18,7 @@ import {
 
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { PayWithFlutterwave } from "flutterwave-react-native";
-import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
+import { horizontalScale, moderateScale, verticalScale } from "../Metrics";
 // or import PayWithFlutterwave from 'flutterwave-react-native';
 import { REACT_APP_ZAVE_URL, FLUTTER_AUTH_KEY } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";

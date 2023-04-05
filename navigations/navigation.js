@@ -44,20 +44,23 @@ function NavigationStack() {
           name="seeAllindividuals"
           component={seeAllindividuals}
           options={{
-            title: " ",
-            headerTintColor: "#F96D02",
-            headerStyle: { backgroundColor: "#FFFFFF", height: 80 },
+            title: "All Individuals ",
+            headerTitleAlign: "center",
+            headerTintColor: "#ffff",
+            headerStyle: { backgroundColor: "#F96D02", height: 70 },
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="editprofile"
           component={editprofile}
           options={{
-            title: " ",
-            headerTintColor: "#F96D02",
-            headerStyle: { backgroundColor: "#FFFFFF", height: 80 },
+            headerShown: false,
+            title: "Make a trip",
+            headerTintColor: "#ffff",
+            headerBackVisible: false,`
+            // headerStyle: { backgroundColor: "#FFFFFF", height: 80 },
           }}
-        />
+        /> */}
         {/* <Stack.Screen
           name="Profile"
           component={Profile}
@@ -67,9 +70,10 @@ function NavigationStack() {
           name="Individual"
           component={Individual}
           options={{
-            title: " ",
-            headerTintColor: "#F96D02",
-            headerStyle: { backgroundColor: "#FFFFFF", height: 80 },
+            title: "Create Idividual  Client",
+            headerTitleAlign: "center",
+            headerTintColor: "#ffff",
+            headerStyle: { backgroundColor: "#F96D02", height: 70 },
           }}
         />
         <Stack.Screen
@@ -151,9 +155,10 @@ function NavigationStack() {
           name="EditProfile"
           component={EditProfile}
           options={{
-            title: " ",
-            headerTintColor: "#F96D02",
-            headerStyle: { backgroundColor: "#FFFFFF", height: 80 },
+            title: " Edit Profile",
+            headerTitleAlign: "center",
+            headerTintColor: "#ffff",
+            headerStyle: { backgroundColor: "#F96D02", height: 70 },
           }}
         />
         <Stack.Screen

@@ -39,6 +39,7 @@ import AllCountriesAndStates from "../countries-states-master/countries";
 import { useIsFocused } from "@react-navigation/native";
 import { GHeaders } from "../getHeader";
 import PHeaders from "../postHeader";
+import { horizontalScale, moderateScale, verticalScale } from "../Metrics";
 import { PrintReceiptContext } from "./printReceiptContext";
 
 const windowWidth = Dimensions.get("screen").width;

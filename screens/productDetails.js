@@ -18,7 +18,7 @@ import Icon from "@expo/vector-icons/MaterialIcons";
 import { Picker } from "@react-native-picker/picker";
 import AllCountriesAndStates from "../countries-states-master/countries";
 
-import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
+import { horizontalScale, moderateScale, verticalScale } from "../Metrics";
 import { REACT_APP_TARA_URL } from "@env";
 import { globalStyles } from "../styles/global";
 import AsyncStorage from "@react-native-async-storage/async-storage";

@@ -20,7 +20,7 @@ import {
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { REACT_APP_TARA_URL, FLUTTER_AUTH_KEY } from "@env";
-import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
+import { horizontalScale, moderateScale, verticalScale } from "../Metrics";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Loader, InnerLoader } from "../components/loader";
 import { useIsFocused } from "@react-navigation/native";
@@ -345,24 +345,6 @@ export default function SeeAllindividuals({ navigation }) {
   // console.log(bigZZ);
   return (
     <View style={styles.container}>
-      <View>
-        <Text
-          style={{
-            fontSize: moderateScale(30),
-            fontWeight: "900",
-            color: "#F96D02",
-            fontFamily: "serif",
-            width: horizontalScale(300),
-            alignSelf: "center",
-            alignItems: "center",
-            alignContent: "center",
-            justifyContent: "center",
-            marginStart: 40,
-          }}
-        >
-          ALL CLIENTS
-        </Text>
-      </View>
       <ScrollView
         style={{ flex: 1 }}
         refreshControl={
@@ -634,8 +616,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffff",
-    paddingTop: 60,
-    paddingBottom: 20,
+    paddingTop: 0,
+    paddingBottom: 10,
   },
   buttonContainer: {
     marginTop: verticalScale(20),

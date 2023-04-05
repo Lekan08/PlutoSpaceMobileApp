@@ -20,7 +20,7 @@ import AllCountriesAndStates from "../countries-states-master/countries";
 import { ToastAlert } from "../components/alert";
 import { Picker } from "@react-native-picker/picker";
 import { useIsFocused } from "@react-navigation/native";
-import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
+import { horizontalScale, moderateScale, verticalScale } from "../Metrics";
 export default function EditProfile({ navigation }) {
   //Getting user info
 
@@ -125,29 +125,6 @@ export default function EditProfile({ navigation }) {
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* <Image source={require("../images/house_of_tara_logo.png")} /> */}
-        <View
-          style={{
-            elevation: 5,
-            backgroundColor: "#ffffff",
-            marginVertical: 10,
-            paddingVertical: 10,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: moderateScale(30),
-              fontWeight: "bold",
-              color: "#F96D02",
-              paddingHorizontal: 10,
-              // paddingTop: 10,
-              fontFamily: "serif",
-              // width: 300,
-              // textAlign: "center",
-            }}
-          >
-            EDIT PROFILE
-          </Text>
-        </View>
         <View style={styles.subContainer}>
           <View style={{ paddingTop: 10 }}>
             <Text style={styles.inputText}>First Name</Text>
@@ -291,14 +268,14 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#0f0f0f",
-    padding: 15,
+    borderColor: "#777",
+    padding: 8,
     margin: 5,
-    fontSize: moderateScale(18),
-    width: horizontalScale(300),
+    // width: 300,
+    marginHorizontal: 5,
     color: "#0f0f0f",
     paddingHorizontal: 20,
-    borderRadius: moderateScale(5),
+    borderRadius: 5,
   },
   inputContainer: {
     borderWidth: 1,
@@ -338,11 +315,11 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   inputText: {
-    marginTop: verticalScale(10),
-    alignSelf: "center",
-    color: "#0F0F0F",
-    fontWeight: "bold",
-    // marginLeft: 40,
+    marginTop: 10,
+    // alignSelf: "center",
+    marginHorizontal: 10,
+    color: "#777",
+    fontWeight: "900",
   },
   item: {
     padding: 30,

@@ -14,7 +14,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Con, Col, Row } from "../components/grid";
 import { color } from "react-native-reanimated";
 
-import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
+import { horizontalScale, moderateScale, verticalScale } from "../Metrics";
 export default function Checkout({ navigation }) {
   return (
     <View style={globalStyles.dashContainer}>

@@ -13,7 +13,7 @@ import { globalStyles } from "../styles/global";
 import { Con, Col, Row } from "../components/grid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { horizontalScale, moderateScale, verticalScale } from "../../Metrics";
+import { horizontalScale, moderateScale, verticalScale } from "../Metrics";
 export default function Dashboard({ navigation }) {
   // const [reviews, setReviews] = useState([
   //   { title: "Zelda, breath of fire", rating: 5, body: "lorem ipsum", key: 1 },
@@ -149,25 +149,35 @@ export default function Dashboard({ navigation }) {
           </View>
           <View
             style={{
-              height: verticalScale(115),
-              width: horizontalScale(115),
+              height: verticalScale(100),
+              width: horizontalScale(100),
+              borderRadius: moderateScale(50),
               backgroundColor: "#F96D02",
-              borderWidth: 5,
+              borderWidth: 1,
               borderColor: "#fff",
               justifyContent: "center",
               alignItems: "center",
-              borderRadius: moderateScale(60),
-              marginRight: 20,
+              // marginRight: 20,
+              marginHorizontal: 20,
             }}
           >
-            <Image
+            {/* <Image
               source={require("../images/kpurkish.jpeg")}
               style={{
                 width: horizontalScale(100),
                 borderRadius: moderateScale(50),
                 height: verticalScale(100),
               }}
-            />
+            /> */}
+            <Text
+              style={{
+                color: "#ffff",
+                fontSize: moderateScale(50),
+                fontWeight: "bold",
+              }}
+            >
+              {userName.charAt(0)}
+            </Text>
           </View>
         </View>
 
