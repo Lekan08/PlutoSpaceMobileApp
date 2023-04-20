@@ -146,9 +146,10 @@ function NavigationStack() {
           name="changePassword"
           component={ChangePassword}
           options={{
-            title: " ",
-            headerTintColor: "#F96D02",
-            headerStyle: { backgroundColor: "#FFFFFF", height: 80 },
+            title: "Change Your Password",
+            headerTitleAlign: "center",
+            headerTintColor: "#ffff",
+            headerStyle: { backgroundColor: "#F96D02", height: 80 },
           }}
         />
         <Stack.Screen
@@ -158,7 +159,7 @@ function NavigationStack() {
             title: " Edit Profile",
             headerTitleAlign: "center",
             headerTintColor: "#ffff",
-            headerStyle: { backgroundColor: "#F96D02", height: 70 },
+            headerStyle: { backgroundColor: "#F96D02", height: 80 },
           }}
         />
         <Stack.Screen

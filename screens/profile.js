@@ -5,6 +5,8 @@ import {
   StyleSheet,
   Image,
   Button,
+  Pressable,
+  Modal,
   Alert,
   FlatList,
   TouchableOpacity,
@@ -23,12 +25,20 @@ export default function Profile({ navigation }) {
   const [email, setEmail] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
+  const [oname, setOname] = useState("");
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
+  const [sex, setSex] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
+  const [dayOfBirth, setDayOfBirth] = useState("");
+  const [monthOfBirth, setMonthOfBirth] = useState("");
+  const [yearOfBirth, setYearOfBirth] = useState("");
   const [nameCircleColor, setNameCircleColor] = useState("#F96D02");
 
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
+
+  const handleModal = () => setIsModalVisible(() => !isModalVisible);
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
@@ -38,11 +48,17 @@ export default function Profile({ navigation }) {
           const userData = JSON.parse(await AsyncStorage.getItem("userInfo"));
           setFname(`${userData.otherDetailsDTO.personal.fname}`);
           setLname(`${userData.otherDetailsDTO.personal.lname}`);
+          setOname(`${userData.otherDetailsDTO.personal.oname}`);
           setEmail(`${userData.otherDetailsDTO.personal.email}`);
+          setPno(`${userData.otherDetailsDTO.personal.pno}`);
           setCountry(`${userData.otherDetailsDTO.personal.residentialCountry}`);
           setState(`${userData.otherDetailsDTO.personal.residentialState}`);
           setCity(`${userData.otherDetailsDTO.personal.residentialCity}`);
           setAddress(`${userData.otherDetailsDTO.personal.residentialStreet}`);
+          setDayOfBirth(`${userData.otherDetailsDTO.personal.dayOfBirth}`);
+          setMonthOfBirth(`${userData.otherDetailsDTO.personal.monthOfBirth}`);
+          setYearOfBirth(`${userData.otherDetailsDTO.personal.yearOfBirth}`);
+          setSex(`${userData.otherDetailsDTO.personal.sex}`);
           console.log(userData);
         } catch (error) {
           console.log(error);
@@ -167,17 +183,18 @@ export default function Profile({ navigation }) {
               marginHorizontal: 10,
             }}
           >
-            <Icon name="account-settings" size={28} color="#ffff" />
+            <Icon name="account-outline" size={28} color="#ffff" />
           </View>
           <Text style={{ color: "#454545", fontWeight: "800" }}>
-            Edit Profile
+            View Profile
           </Text>
           <MaterialIcons
-            onPress={() => navigation.navigate("EditProfile")}
+            // onPress={() => navigation.navigate("EditProfile")}
+            onPress={handleModal}
             name="navigate-next"
             size={30}
             color="black"
-            style={{ marginHorizontal: 150 }}
+            style={{ marginHorizontal: 145 }}
           />
         </View>
 
@@ -206,17 +223,17 @@ export default function Profile({ navigation }) {
               marginHorizontal: 10,
             }}
           >
-            <Icon name="account-plus" size={28} color="#ffff" />
+            <Icon name="account-settings" size={28} color="#ffff" />
           </View>
           <Text style={{ color: "#454545", fontWeight: "800" }}>
-            Create Client
+            Edit Profile
           </Text>
           <MaterialIcons
             onPress={() => navigation.navigate("Individual")}
             name="navigate-next"
             size={30}
             color="black"
-            style={{ marginHorizontal: 140 }}
+            style={{ marginHorizontal: 150 }}
           />
         </View>
         <View
@@ -247,17 +264,433 @@ export default function Profile({ navigation }) {
             <Icon name="account-multiple" size={28} color="#ffff" />
           </View>
           <Text style={{ color: "#454545", fontWeight: "800" }}>
-            See All Client
+            {" "}
+            Change Passwrd
           </Text>
           <MaterialIcons
-            onPress={() => navigation.navigate("seeAllindividuals")}
+            onPress={() => navigation.navigate("changePassword")}
             name="navigate-next"
             size={30}
             color="black"
-            style={{ marginHorizontal: 138 }}
+            style={{ marginHorizontal: 111 }}
           />
         </View>
+        <TouchableOpacity>
+          <View
+            style={{
+              flexDirection: "row",
+              backgroundColor: "#fff",
+              elevation: 4,
+              height: 60,
+              width: "90%",
+              alignSelf: "center",
+              marginTop: 10,
+              alignItems: "center",
+              // borderBottomColor: "#F96D02",
+              // borderWidth: 1,
+            }}
+          >
+            <View
+              style={{
+                // backgroundColor: "#F96D02",
+                // height: 40,
+                // width: 40,
+                // borderRadius: 20,
+                justifyContent: "center",
+                alignItems: "center",
+                marginHorizontal: 10,
+                flexDirection: "row",
+              }}
+            >
+              <Icon name="logout" size={28} color="#0f0f0f" />
+              <Text
+                style={{
+                  color: "#454545",
+                  fontWeight: "800",
+                  marginHorizontal: 10,
+                }}
+              >
+                LOGOUT
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
       </View>
+
+      <Modal
+        transparent={true}
+        animationType="slide"
+        // animationType="fade"
+        visible={isModalVisible}
+      >
+        <Pressable
+          onPress={handleModal}
+          style={{
+            flex: 1,
+            justifyContent: "flex-end",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "white",
+              padding: 10,
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+              }}
+            ></View>
+            <Pressable
+              style={({ pressed }) => {
+                return {
+                  backgroundColor: pressed ? "#ccc" : "transparent",
+                  paddingVertical: 20,
+                };
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Full name:
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignSelf: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      // fontWeight: "bold",
+                      textAlign: "center",
+                      color: "#aaaa",
+                    }}
+                  >
+                    {fname}
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      // fontWeight: "bold",
+                      textAlign: "center",
+                      marginHorizontal: 10,
+                      color: "#aaaa",
+                    }}
+                  >
+                    {lname}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      // fontWeight: "bold",
+                      textAlign: "center",
+                      marginHorizontal: 10,
+                      color: "#aaaa",
+                    }}
+                  >
+                    {oname}
+                  </Text>
+                </View>
+              </View>
+            </Pressable>
+
+            <Pressable
+              style={({ pressed }) => {
+                return {
+                  backgroundColor: pressed ? "#ccc" : "transparent",
+                  paddingVertical: 20,
+                };
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Email:
+                </Text>
+                <Text
+                  style={{ fontSize: 15, color: "#aaaa", textAlign: "center" }}
+                >
+                  {email}
+                </Text>
+              </View>
+            </Pressable>
+
+            <Pressable
+              style={({ pressed }) => {
+                return {
+                  backgroundColor: pressed ? "#ccc" : "transparent",
+                  paddingVertical: 20,
+                };
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Phone Number:
+                </Text>
+                <Text
+                  style={{ fontSize: 15, color: "#aaaa", textAlign: "center" }}
+                >
+                  +{pno}
+                </Text>
+              </View>
+            </Pressable>
+
+            <Pressable
+              style={({ pressed }) => {
+                return {
+                  backgroundColor: pressed ? "#ccc" : "transparent",
+                  paddingVertical: 20,
+                };
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Sex:
+                </Text>
+                <Text
+                  style={{ fontSize: 15, color: "#aaaa", textAlign: "center" }}
+                >
+                  {sex}
+                </Text>
+              </View>
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => {
+                return {
+                  backgroundColor: pressed ? "#ccc" : "transparent",
+                  paddingVertical: 20,
+                };
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Nationality:
+                </Text>
+                <Text
+                  style={{ fontSize: 15, color: "#aaaa", textAlign: "center" }}
+                >
+                  {country}
+                </Text>
+              </View>
+            </Pressable>
+
+            <Pressable
+              style={({ pressed }) => {
+                return {
+                  backgroundColor: pressed ? "#ccc" : "transparent",
+                  paddingVertical: 20,
+                };
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  State:
+                </Text>
+                <Text
+                  style={{ fontSize: 15, color: "#aaaa", textAlign: "center" }}
+                >
+                  {state}
+                </Text>
+              </View>
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => {
+                return {
+                  backgroundColor: pressed ? "#ccc" : "transparent",
+                  paddingVertical: 20,
+                };
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Address:
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignSelf: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: "#aaaa",
+                      textAlign: "center",
+                    }}
+                  >
+                    {address},{" "}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: "#aaaa",
+                      textAlign: "center",
+                    }}
+                  >
+                    {city},{" "}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: "#aaaa",
+                      textAlign: "center",
+                    }}
+                  >
+                    {state},{" "}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: "#aaaa",
+                      textAlign: "center",
+                    }}
+                  >
+                    {country},{" "}
+                  </Text>
+                </View>
+              </View>
+            </Pressable>
+
+            <Pressable
+              style={({ pressed }) => {
+                return {
+                  backgroundColor: pressed ? "#ccc" : "transparent",
+                  paddingVertical: 20,
+                };
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Date Of Birth :
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignSelf: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: "#aaaa",
+                      textAlign: "center",
+                    }}
+                  >
+                    {dayOfBirth},{" "}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: "#aaaa",
+                      textAlign: "center",
+                    }}
+                  >
+                    {monthOfBirth},{" "}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: "#aaaa",
+                      textAlign: "center",
+                    }}
+                  >
+                    {yearOfBirth},{" "}
+                  </Text>
+                </View>
+              </View>
+            </Pressable>
+            {/* <Pressable
+              onPress={() => navigation.navigate("Customeredit")}
+              style={({ pressed }) => {
+                return {
+                  backgroundColor: pressed ? "#ccc" : "transparent",
+                  paddingVertical: 20,
+                };
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 20,
+                  textAlign: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                Edit Profile
+              </Text>
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => {
+                return {
+                  backgroundColor: pressed ? "#ccc" : "transparent",
+                  paddingVertical: 20,
+                };
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                Share QR Code
+              </Text>
+            </Pressable> */}
+          </View>
+        </Pressable>
+      </Modal>
     </View>
   );
 }

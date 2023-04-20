@@ -209,7 +209,7 @@ export default function Login({ navigation }) {
           {/* <View>
             <Image source={require("../images/house_of_tara_logo.png")} />
           </View> */}
-          <View style={{ borderRadius: moderateScale(5) }}>
+          {/* <View style={{ borderRadius: moderateScale(5) }}>
             <Text
               style={{
                 fontSize: moderateScale(40),
@@ -223,8 +223,8 @@ export default function Login({ navigation }) {
             >
               Change Password
             </Text>
-          </View>
-          <View style={{ paddingTop: 20 }}>
+          </View> */}
+          <View>
             <Text style={styles.inputText}>Username:</Text>
             <TextInput
               keyboardType="default"
@@ -330,7 +330,7 @@ export default function Login({ navigation }) {
                   { flexDirection: "row", justifyContent: "center" },
                 ]}
               >
-                <Text style={styles.loginText}>LOGIN</Text>
+                <Text style={styles.loginText}>Save</Text>
                 <InnerLoader animating={loading} color="#fff" size="small" />
               </View>
             </TouchableOpacity>
@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
     alignItems: "center",
-    paddingTop: 60,
+    paddingTop: 40,
     justifyContent: "center",
   },
   buttonContainer: {
@@ -400,7 +400,8 @@ const styles = StyleSheet.create({
   inputText: {
     marginTop: verticalScale(10),
     alignSelf: "center",
-    color: "#0f0f0f",
+    color: "#aaaa",
+    fontWeight: "900",
   },
   item: {
     padding: 30,

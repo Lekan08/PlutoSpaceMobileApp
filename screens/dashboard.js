@@ -368,7 +368,7 @@ export default function Dashboard({ navigation }) {
           <Row>
             <Col numRows={2}>
               <TouchableOpacity
-                onPress={() => navigation.navigate("TransactionHistory")}
+                onPress={() => navigation.navigate("seeAllindividuals")}
               >
                 <View
                   style={{
@@ -393,7 +393,7 @@ export default function Dashboard({ navigation }) {
                       marginBottom: 5,
                     }}
                   >
-                    History
+                    View All Clients
                   </Text>
                   <View
                     style={{
@@ -405,7 +405,7 @@ export default function Dashboard({ navigation }) {
                       borderRadius: moderateScale(50),
                     }}
                   >
-                    <Icon name="history" size={28} color="#0F0F0F" />
+                    <Icon name="account-multiple" size={28} color="#0F0F0F" />
                   </View>
                 </View>
               </TouchableOpacity>
