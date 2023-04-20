@@ -82,7 +82,7 @@ export default function Profile({ navigation }) {
     console.log("Done.");
   };
 
-  const clickHandler = () => {
+  const clickHandler = (id) => {
     console.log("WEREEEY");
     Alert.alert(
       "LOGOUT",
@@ -241,7 +241,7 @@ export default function Profile({ navigation }) {
             Edit Profile
           </Text>
           <MaterialIcons
-            onPress={() => navigation.navigate("Individual")}
+            onPress={() => navigation.navigate("EditProfile")}
             name="navigate-next"
             size={30}
             color="black"
