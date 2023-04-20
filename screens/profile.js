@@ -71,6 +71,17 @@ export default function Profile({ navigation }) {
     };
   }, []);
 
+  const LogOut = async () => {
+    try {
+      await AsyncStorage.clear();
+      navigation.navigate("Login");
+    } catch (e) {
+      // clear error
+    }
+
+    console.log("Done.");
+  };
+
   const clickHandler = () => {
     console.log("WEREEEY");
     Alert.alert(
@@ -83,6 +94,7 @@ export default function Profile({ navigation }) {
         },
         {
           text: "Yes Logout",
+          onPress: () => LogOut(id),
           // onPress: () => navigation.navigate("Login"),
           // onPress: () => handleDeleteIndividual(id),
           // onPress: () => navigation.navigate("Login"),
@@ -275,7 +287,7 @@ export default function Profile({ navigation }) {
             style={{ marginHorizontal: 111 }}
           />
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={clickHandler}>
           <View
             style={{
               flexDirection: "row",

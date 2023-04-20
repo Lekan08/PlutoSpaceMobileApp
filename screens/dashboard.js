@@ -237,7 +237,7 @@ export default function Dashboard({ navigation }) {
               borderBottomWidth: 5,
             }}
           />
-          <TouchableOpacity onPress={() => LogOut}>
+          {/* <TouchableOpacity onPress={() => LogOut}>
             <View
               style={{
                 // padding: 2,
@@ -264,7 +264,7 @@ export default function Dashboard({ navigation }) {
                 LOGOUT
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
       <View
