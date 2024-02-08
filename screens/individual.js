@@ -311,9 +311,9 @@ export default function Individual({ navigation }) {
                     color: "#0f0f0f",
                   }}
                   itemStyle={{
-                    backgroundColor: "#0f0f0f",
+                    // backgroundColor: "#0f0f0f",
                     color: "#000",
-                    fontFamily: "Ebrima",
+                    // fontFamily: "Ebrima",
                     fontSize: moderateScale(19),
                   }}
                   selectedValue={titlex}
@@ -355,9 +355,9 @@ export default function Individual({ navigation }) {
                     color: "#0f0f0f",
                   }}
                   itemStyle={{
-                    backgroundColor: "#0f0f0f",
+                    // backgroundColor: "#0f0f0f",
                     color: "#000",
-                    fontFamily: "Ebrima",
+                    // fontFamily: "Ebrima",
                     fontSize: moderateScale(19),
                   }}
                   selectedValue={residentialCountryx}
@@ -529,7 +529,7 @@ const styles = StyleSheet.create({
   itemStyle: {
     backgroundColor: "#F96D02",
     color: "#000",
-    fontFamily: "Ebrima",
+    // fontFamily: "Ebrima",
     fontSize: moderateScale(19),
   },
 });

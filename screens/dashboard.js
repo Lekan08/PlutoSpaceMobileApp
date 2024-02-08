@@ -216,6 +216,7 @@ export default function Dashboard({ navigation }) {
           style={{
             fontSize: moderateScale(40),
             fontWeight: "bold",
+            fontFamily: "Cochin",
             marginLeft: 20,
             color: "#ffff",
           }}

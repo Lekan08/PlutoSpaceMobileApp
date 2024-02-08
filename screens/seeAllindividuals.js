@@ -123,6 +123,8 @@ export default function SeeAllindividuals({ navigation }) {
         // console.log("nowwww");
 
         let ogrIDx;
+        console.log("AHHH");
+        console.log(ogrID);
         let headers;
         // getting data
         try {
@@ -219,6 +221,10 @@ export default function SeeAllindividuals({ navigation }) {
   //   console.log(read);
   //   read.fname;
   // });
+
+  console.log("Kpurkish");
+  console.log(clientsx);
+  console.log("SHow me ");
 
   const handleDeleteIndividual = (id) => {
     // console.log(id);
@@ -608,6 +614,8 @@ export default function SeeAllindividuals({ navigation }) {
           </View>
         </View>
       </Modal>
+
+      <Loader animating={loading1} color="#fff" size="small" />
     </View>
   );
 }

@@ -82,18 +82,23 @@ export default function Profile({ navigation }) {
     console.log("Done.");
   };
 
+  const MyalertColor = "#0f0f";
+
   const clickHandler = (id) => {
     console.log("WEREEEY");
     Alert.alert(
-      "LOGOUT",
-      "You will loggeed out of this session!!",
+      "Logout",
+      "Logout of your account?",
       [
         {
           text: "Cancel",
-          style: "cancel",
+          // style: "cancel",
+          // style: styles.Myalert,
         },
         {
-          text: "Yes Logout",
+          text: "Logout",
+          MyalertColor,
+          // style: styles.container,
           onPress: () => LogOut(id),
           // onPress: () => navigation.navigate("Login"),
           // onPress: () => handleDeleteIndividual(id),
@@ -343,6 +348,17 @@ export default function Profile({ navigation }) {
             backgroundColor: "rgba(0,0,0,0.5)",
           }}
         >
+          <Text
+            style={{
+              color: "#ffff",
+              textTransform: "capitalize",
+              fontSize: 20,
+              marginHorizontal: 20,
+              fontWeight: "bold",
+            }}
+          >
+            • personal info •
+          </Text>
           <View
             style={{
               backgroundColor: "white",
@@ -383,9 +399,10 @@ export default function Profile({ navigation }) {
                   <Text
                     style={{
                       fontSize: 15,
-                      // fontWeight: "bold",
+                      fontWeight: "bold",
                       textAlign: "center",
                       color: "#aaaa",
+                      textTransform: "capitalize",
                     }}
                   >
                     {fname}
@@ -394,7 +411,7 @@ export default function Profile({ navigation }) {
                   <Text
                     style={{
                       fontSize: 15,
-                      // fontWeight: "bold",
+                      fontWeight: "bold",
                       textAlign: "center",
                       marginHorizontal: 10,
                       color: "#aaaa",
@@ -405,10 +422,11 @@ export default function Profile({ navigation }) {
                   <Text
                     style={{
                       fontSize: 15,
-                      // fontWeight: "bold",
+                      fontWeight: "bold",
                       textAlign: "center",
                       marginHorizontal: 10,
                       color: "#aaaa",
+                      textTransform: "capitalize",
                     }}
                   >
                     {oname}
@@ -436,7 +454,12 @@ export default function Profile({ navigation }) {
                   Email:
                 </Text>
                 <Text
-                  style={{ fontSize: 15, color: "#aaaa", textAlign: "center" }}
+                  style={{
+                    fontSize: 15,
+                    color: "#aaaa",
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
                 >
                   {email}
                 </Text>
@@ -462,7 +485,12 @@ export default function Profile({ navigation }) {
                   Phone Number:
                 </Text>
                 <Text
-                  style={{ fontSize: 15, color: "#aaaa", textAlign: "center" }}
+                  style={{
+                    fontSize: 15,
+                    color: "#aaaa",
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
                 >
                   +{pno}
                 </Text>
@@ -488,7 +516,12 @@ export default function Profile({ navigation }) {
                   Sex:
                 </Text>
                 <Text
-                  style={{ fontSize: 15, color: "#aaaa", textAlign: "center" }}
+                  style={{
+                    fontSize: 15,
+                    color: "#aaaa",
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
                 >
                   {sex}
                 </Text>
@@ -513,7 +546,12 @@ export default function Profile({ navigation }) {
                   Nationality:
                 </Text>
                 <Text
-                  style={{ fontSize: 15, color: "#aaaa", textAlign: "center" }}
+                  style={{
+                    fontSize: 15,
+                    color: "#aaaa",
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
                 >
                   {country}
                 </Text>
@@ -539,7 +577,12 @@ export default function Profile({ navigation }) {
                   State:
                 </Text>
                 <Text
-                  style={{ fontSize: 15, color: "#aaaa", textAlign: "center" }}
+                  style={{
+                    fontSize: 15,
+                    color: "#aaaa",
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
                 >
                   {state}
                 </Text>
@@ -574,6 +617,7 @@ export default function Profile({ navigation }) {
                       fontSize: 15,
                       color: "#aaaa",
                       textAlign: "center",
+                      fontWeight: "bold",
                     }}
                   >
                     {address},{" "}
@@ -583,6 +627,7 @@ export default function Profile({ navigation }) {
                       fontSize: 15,
                       color: "#aaaa",
                       textAlign: "center",
+                      fontWeight: "bold",
                     }}
                   >
                     {city},{" "}
@@ -592,6 +637,7 @@ export default function Profile({ navigation }) {
                       fontSize: 15,
                       color: "#aaaa",
                       textAlign: "center",
+                      fontWeight: "bold",
                     }}
                   >
                     {state},{" "}
@@ -601,6 +647,7 @@ export default function Profile({ navigation }) {
                       fontSize: 15,
                       color: "#aaaa",
                       textAlign: "center",
+                      fontWeight: "bold",
                     }}
                   >
                     {country},{" "}
@@ -638,6 +685,7 @@ export default function Profile({ navigation }) {
                       fontSize: 15,
                       color: "#aaaa",
                       textAlign: "center",
+                      fontWeight: "bold",
                     }}
                   >
                     {dayOfBirth},{" "}
@@ -647,6 +695,7 @@ export default function Profile({ navigation }) {
                       fontSize: 15,
                       color: "#aaaa",
                       textAlign: "center",
+                      fontWeight: "bold",
                     }}
                   >
                     {monthOfBirth},{" "}
@@ -656,6 +705,7 @@ export default function Profile({ navigation }) {
                       fontSize: 15,
                       color: "#aaaa",
                       textAlign: "center",
+                      fontWeight: "bold",
                     }}
                   >
                     {yearOfBirth},{" "}
@@ -712,5 +762,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F96D02",
     // paddingBottom: 60,
+  },
+  Myalert: {
+    color: "#0f0f",
   },
 });
